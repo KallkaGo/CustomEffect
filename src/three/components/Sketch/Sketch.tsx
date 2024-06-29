@@ -4,8 +4,9 @@ import { useEffect, useRef } from "react";
 import { EffectComposer } from "@react-three/postprocessing";
 import { DualBlur } from "../Effect/DualBlur";
 import { useControls } from "leva";
+import { Bloom } from "../Effect/Bloom";
 
-useFBO
+useFBO;
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
@@ -23,6 +24,45 @@ const Sketch = () => {
     },
   });
 
+  const { intensity, radius, luminanceThreshold, iteration,luminanceSmoothing,glowColor } = useControls(
+    "Bloom",
+    {
+      intensity: {
+        value: 1,
+        min: 0,
+        max: 10,
+        step: 0.01,
+      },
+      radius: {
+        value: 1,
+        min: 0,
+        max: 10,
+        step: 0.01,
+      },
+      luminanceThreshold: {
+        value: 0.1,
+        min: 0,
+        max: 1,
+        step: 0.01,
+      },
+      luminanceSmoothing: {
+        value: 0.1,
+        min: 0,
+        max: 1,
+        step: 0.01,
+      },
+      iteration: {
+        value: 4,
+        min: 1,
+        max: 10,
+        step: 1,
+      },
+      glowColor: {
+        value:'white'
+      }
+    }
+  );
+
   return (
     <>
       <OrbitControls domElement={controlDom} />
@@ -31,8 +71,16 @@ const Sketch = () => {
         <boxGeometry args={[1, 1, 1]} />
         <meshBasicMaterial color="hotpink" />
       </mesh>
-      <EffectComposer disableNormalPass >
-        <DualBlur loopCount={loopCount} />
+      <EffectComposer disableNormalPass>
+        {/* <DualBlur loopCount={loopCount} /> */}
+        <Bloom 
+        intensity={intensity}
+        radius={radius}
+        luminanceThreshold={luminanceThreshold}
+        luminanceSmoothing={luminanceSmoothing}
+        glowColor={glowColor}
+        iteration={iteration}
+        />
       </EffectComposer>
     </>
   );
