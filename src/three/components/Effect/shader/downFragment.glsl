@@ -8,5 +8,4 @@ void main() {
   col += texture2D(inputBuffer, vUv[4]);
   col *= .125;
   gl_FragColor = col;
-
 }

@@ -1,4 +1,5 @@
 varying vec2 vUv[8];
+varying vec2 vOriUV;
 uniform float u_blurRange;
 uniform vec2 uSize;
 
@@ -12,5 +13,5 @@ void main() {
   vUv[5] = uv + vec2(0., -2.) * (1. + u_blurRange) * uSize.xy * 0.5;
   vUv[6] = uv + vec2(2., 0.) * (1. + u_blurRange) * uSize.xy * 0.5;
   vUv[7] = uv + vec2(0., 2.) * (1. + u_blurRange) * uSize.xy * 0.5;
-
+  vOriUV = uv;
 }

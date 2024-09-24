@@ -2,6 +2,7 @@ import { Effect, ShaderPass } from "postprocessing";
 import {
   Color,
   HalfFloatType,
+  SRGBColorSpace,
   ShaderMaterial,
   Texture,
   Uniform,
@@ -28,7 +29,7 @@ uniform vec3 glowColor;
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 { 
     vec4 color = texture2D(blurMap, uv);
-    outputColor =  inputColor+color * intensity *vec4(glowColor,1.0);
+    outputColor =  inputColor + color * intensity;
 }
 `;
 
@@ -56,7 +57,8 @@ class BloomEffect extends Effect {
     });
     tempRt?.dispose();
     tempRt = new WebGLRenderTarget(innerWidth, innerHeight, {
-      samples: 4,
+      type: HalfFloatType,
+      colorSpace: SRGBColorSpace,
     });
 
     this.luminanceMaterial = new ShaderMaterial({
@@ -80,10 +82,8 @@ class BloomEffect extends Effect {
         void main() {
           vec4 color = texture2D(inputBuffer, vUv);
           float luma = luminance(color.rgb);
-          luma = smoothstep(luminanceThreshold, clamp(luminanceThreshold + luminanceSmoothing,0.,1.), luma);
-          // float v = step(luminanceThreshold, luminance(color.rgb));
-          // float v = clamp(luminance(color.rgb) - luminanceThreshold, 0.0, 1.0);
-          gl_FragColor = vec4(color.rgb * luma, color.a);
+          float v = max(luminance(color.rgb)-luminanceThreshold ,0.);
+          gl_FragColor = vec4(color.rgb * v, color.a);
         }
       `,
       uniforms: {
