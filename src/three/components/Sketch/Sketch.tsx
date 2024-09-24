@@ -6,8 +6,6 @@ import { DualBlur } from "../Effect/DualBlur";
 import { useControls } from "leva";
 import { Bloom } from "../Effect/Bloom";
 
-useFBO;
-
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
 
@@ -15,53 +13,63 @@ const Sketch = () => {
     useLoadedStore.setState({ ready: true });
   }, []);
 
-  const { loopCount } = useControls("DualBlur", {
+  const { loopCount, blurRange } = useControls("DualBlur", {
     loopCount: {
       value: 5,
       min: 1,
       max: 10,
       step: 1,
     },
+    blurRange: {
+      value: 0,
+      min: 0,
+      max: 10,
+      step: 0.001,
+    },
   });
 
-  const { intensity, radius, luminanceThreshold, iteration,luminanceSmoothing,glowColor } = useControls(
-    "Bloom",
-    {
-      intensity: {
-        value: 1,
-        min: 0,
-        max: 10,
-        step: 0.01,
-      },
-      radius: {
-        value: 1,
-        min: 0,
-        max: 10,
-        step: 0.01,
-      },
-      luminanceThreshold: {
-        value: 0.1,
-        min: 0,
-        max: 1,
-        step: 0.01,
-      },
-      luminanceSmoothing: {
-        value: 0.1,
-        min: 0,
-        max: 1,
-        step: 0.01,
-      },
-      iteration: {
-        value: 4,
-        min: 1,
-        max: 10,
-        step: 1,
-      },
-      glowColor: {
-        value:'white'
-      }
-    }
-  );
+  const {
+    intensity,
+    radius,
+    luminanceThreshold,
+    iteration,
+    luminanceSmoothing,
+    glowColor,
+  } = useControls("Bloom", {
+    intensity: {
+      value: 1,
+      min: 0,
+      max: 10,
+      step: 0.01,
+    },
+    radius: {
+      value: 1,
+      min: 0,
+      max: 10,
+      step: 0.01,
+    },
+    luminanceThreshold: {
+      value: 0.1,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    luminanceSmoothing: {
+      value: 0.1,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    iteration: {
+      value: 4,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+    glowColor: {
+      value: "white",
+    },
+  });
 
   return (
     <>
@@ -72,15 +80,15 @@ const Sketch = () => {
         <meshBasicMaterial color="hotpink" />
       </mesh>
       <EffectComposer disableNormalPass>
-        {/* <DualBlur loopCount={loopCount} /> */}
-        <Bloom 
+        <DualBlur loopCount={loopCount} blurRange={blurRange} />
+        {/* <Bloom 
         intensity={intensity}
         radius={radius}
         luminanceThreshold={luminanceThreshold}
         luminanceSmoothing={luminanceSmoothing}
         glowColor={glowColor}
         iteration={iteration}
-        />
+        /> */}
       </EffectComposer>
     </>
   );
