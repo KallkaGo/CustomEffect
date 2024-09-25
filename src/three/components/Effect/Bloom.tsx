@@ -29,7 +29,7 @@ uniform vec3 glowColor;
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 { 
     vec4 color = texture2D(blurMap, uv);
-    outputColor =  inputColor + color * intensity;
+    outputColor = vec4(inputColor.rgb + glowColor * intensity * color.rgb, inputColor.a); ;
 }
 `;
 
@@ -82,7 +82,8 @@ class BloomEffect extends Effect {
         void main() {
           vec4 color = texture2D(inputBuffer, vUv);
           float luma = luminance(color.rgb);
-          float v = max(luminance(color.rgb)-luminanceThreshold ,0.);
+          // vec3 col = max(vec3(0.0), color.rgb - vec3(luminanceThreshold));
+          float v = max(0.0, luma - luminanceThreshold);
           gl_FragColor = vec4(color.rgb * v, color.a);
         }
       `,
@@ -106,6 +107,8 @@ class BloomEffect extends Effect {
   ) {
     tempRt.setSize(inputBuffer.width, inputBuffer.height);
     this.luminancePass.render(renderer, inputBuffer, tempRt);
+    this.dulaBlurPass.LuminanceThreshold =
+      this.luminanceMaterial.uniforms.luminanceThreshold.value;
     this.dulaBlurPass.render(renderer, tempRt);
     this.uniforms.get("blurMap")!.value = this.dulaBlurPass.finRT.texture;
   }

@@ -14,5 +14,5 @@ void main() {
   col += texture2D(inputBuffer, vUv[7]);
   col *= 0.0833;
   vec3 curDownSample = texture2D(uCurDownSample, vOriUV).rgb;
-  gl_FragColor = vec4( col.rgb + curDownSample, 1.0);
+  gl_FragColor = vec4( col.rgb + curDownSample, 1.);
 }

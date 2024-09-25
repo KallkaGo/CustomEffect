@@ -3,7 +3,6 @@ import { useInteractStore, useLoadedStore } from "@utils/Store";
 import { useEffect, useRef } from "react";
 import {
   EffectComposer,
-  Bloom as BloomEffect,
 } from "@react-three/postprocessing";
 import { DualBlur } from "../Effect/DualBlur";
 import { useControls } from "leva";
@@ -80,13 +79,10 @@ const Sketch = () => {
       <OrbitControls domElement={controlDom} />
       <color attach={"background"} args={["black"]} />
       <mesh>
-        <sphereGeometry args={[0.5, 64, 64]} />
+        <boxGeometry args={[0.5, 0.5, 0.5]} />
         <meshBasicMaterial color="#ebcc4b" />
       </mesh>
-      <EffectComposer
-        disableNormalPass
-        frameBufferType={HalfFloatType}
-      >
+      <EffectComposer disableNormalPass frameBufferType={HalfFloatType}>
         {/* <DualBlur loopCount={loopCount} blurRange={blurRange} /> */}
         <Bloom
           intensity={intensity}

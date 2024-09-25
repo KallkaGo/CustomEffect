@@ -40,7 +40,9 @@ class DualBlurPass extends Pass {
         inputBuffer: new Uniform(null),
         uSize: new Uniform(new Vector2(1 / innerWidth, 1 / innerHeight)),
         u_blurRange: new Uniform(blurRange),
-      },
+        uFirst: new Uniform(false),
+        uLuminanceThreshold: new Uniform(0),
+      }
     });
     this.upSampleMaterial = new ShaderMaterial({
       vertexShader: upVertex,
@@ -50,26 +52,26 @@ class DualBlurPass extends Pass {
         uSize: new Uniform(new Vector2(1 / innerWidth, 1 / innerHeight)),
         u_blurRange: new Uniform(blurRange),
         uCurDownSample: new Uniform(null),
-      },
+      }
     });
 
     this.downSamplePass = new ShaderPass(this.downSampleMaterial);
     this.upSamplePass = new ShaderPass(this.upSampleMaterial);
 
-    this.finRT = new WebGLRenderTarget(innerWidth, innerHeight,{
+    this.finRT = new WebGLRenderTarget(innerWidth, innerHeight, {
       type: HalfFloatType,
-      colorSpace:SRGBColorSpace
+      colorSpace: SRGBColorSpace
     });
 
     // initial
     for (let i = 0; i < this.loopCount; i++) {
       const rtDown = new WebGLRenderTarget(1, 1, {
         type: HalfFloatType,
-        colorSpace:SRGBColorSpace
+        colorSpace: SRGBColorSpace,
       });
       const rtUp = new WebGLRenderTarget(1, 1, {
         type: HalfFloatType,
-        colorSpace:SRGBColorSpace
+        colorSpace: SRGBColorSpace
       });
       downRt[i] = rtDown;
       upRt[i] = rtUp;
@@ -95,13 +97,18 @@ class DualBlurPass extends Pass {
 
       width = Math.max(width / 2, 1);
       height = Math.max(height / 2, 1);
+
+      this.downSampleMaterial.uniforms["uFirst"].value = false;
+
       if (i === 0) {
         this.finRT.texture = inputBuffer.texture;
+        this.downSampleMaterial.uniforms["uFirst"].value = true;
       }
       this.downSamplePass.render(renderer, this.finRT, downRt[i]);
       this.finRT.texture = downRt[i].texture;
     }
     upRt[count - 1].texture = downRt[count - 1].texture;
+    this.upSampleMaterial.uniforms["uSize"].value.set(1 / upRt[count - 1].width, 1 / upRt[count - 1].height);
     // up sample
     for (let i = count - 2; i >= 0; i--) {
       this.finRT.setSize(upRt[i].width, upRt[i].height);
@@ -116,6 +123,10 @@ class DualBlurPass extends Pass {
   set blurRange(value: number) {
     this.downSampleMaterial.uniforms["u_blurRange"].value = value;
     this.upSampleMaterial.uniforms["u_blurRange"].value = value;
+  }
+
+  set LuminanceThreshold(value: number) {
+    this.downSampleMaterial.uniforms["uLuminanceThreshold"].value = value;
   }
 
   dispose() {
