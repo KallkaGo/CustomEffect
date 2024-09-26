@@ -37,7 +37,7 @@ const BloomEffect = () => {
       step: 0.01,
     },
     iteration: {
-      value: 4,
+      value: 7,
       min: 1,
       max: 10,
       step: 1,

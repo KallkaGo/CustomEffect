@@ -23,7 +23,7 @@ export default function ThreeContainer() {
         }}
         gl={{ toneMapping: NoToneMapping }}
       >
-        {location.hash.includes("debug") && <Perf position="top-left" />}
+        <Perf position="top-left" />
         <Suspense fallback={null}>
           <Sketch />
         </Suspense>
