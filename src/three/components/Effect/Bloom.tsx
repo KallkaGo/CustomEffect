@@ -98,6 +98,7 @@ class BloomEffect extends Effect {
     this.dulaBlurPass = new DualBlurPass({
       loopCount: iteration,
       blurRange: radius,
+      additive: true,
     });
   }
   update(

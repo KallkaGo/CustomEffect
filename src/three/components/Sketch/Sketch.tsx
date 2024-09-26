@@ -1,76 +1,33 @@
-import { Environment, OrbitControls, useFBO } from "@react-three/drei";
-import { useInteractStore, useLoadedStore } from "@utils/Store";
-import { useEffect, useRef } from "react";
-import {
-  EffectComposer,
-} from "@react-three/postprocessing";
-import { DualBlur } from "../Effect/DualBlur";
+import { OrbitControls } from "@react-three/drei";
+import { useInteractStore, useLoadedStore, useSceneStore } from "@utils/Store";
+import { useEffect } from "react";
 import { useControls } from "leva";
-import { Bloom } from "../Effect/Bloom";
-import { DirectionalLight, HalfFloatType, UnsignedByteType } from "three";
+import { BlurEffect } from "./items/BlurEffect";
+import { BloomEffect } from "./items/BloomEffect";
+import { GTToneMapping } from "./items/GTToneMapping";
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
+  const sceneState = useSceneStore();
 
   useEffect(() => {
     useLoadedStore.setState({ ready: true });
   }, []);
 
-  const { loopCount, blurRange } = useControls("DualBlur", {
-    loopCount: {
-      value: 5,
-      min: 1,
-      max: 10,
-      step: 1,
-    },
-    blurRange: {
-      value: 0,
-      min: 0,
-      max: 10,
-      step: 0.001,
-    },
-  });
-
-  const {
-    intensity,
-    radius,
-    luminanceThreshold,
-    iteration,
-    luminanceSmoothing,
-    glowColor,
-  } = useControls("Bloom", {
-    intensity: {
-      value: 1,
-      min: 0,
-      max: 10,
-      step: 0.01,
-    },
-    radius: {
-      value: 1,
-      min: 0,
-      max: 10,
-      step: 0.01,
-    },
-    luminanceThreshold: {
-      value: 0.1,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
-    luminanceSmoothing: {
-      value: 0.1,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
-    iteration: {
-      value: 4,
-      min: 1,
-      max: 10,
-      step: 1,
-    },
-    glowColor: {
-      value: "white",
+  useControls("Effect", {
+    effect: {
+      value: "original",
+      options: ["original","blur", "bloom", "gtToneMap"],
+      onChange: (value) => {
+        const state = useSceneStore.getState();
+        for (const key in state) {
+          if (key === value) {
+            useSceneStore.setState({ [key]: true });
+          } else {
+            useSceneStore.setState({ [key]: false });
+          }
+        }
+      },
     },
   });
 
@@ -78,21 +35,20 @@ const Sketch = () => {
     <>
       <OrbitControls domElement={controlDom} />
       <color attach={"background"} args={["black"]} />
-      <mesh>
+      <mesh position={[-1, 0, 0]}>
         <boxGeometry args={[0.5, 0.5, 0.5]} />
         <meshBasicMaterial color="#ebcc4b" />
       </mesh>
-      <EffectComposer disableNormalPass frameBufferType={HalfFloatType}>
-        {/* <DualBlur loopCount={loopCount} blurRange={blurRange} /> */}
-        <Bloom
-          intensity={intensity}
-          radius={radius}
-          luminanceThreshold={luminanceThreshold}
-          luminanceSmoothing={luminanceSmoothing}
-          glowColor={glowColor}
-          iteration={iteration}
-        />
-      </EffectComposer>
+
+      <mesh position={[1, 0, 0]}>
+        <boxGeometry args={[0.5, 0.5, 0.5]} />
+        <meshBasicMaterial color="#61ee61" />
+      </mesh>
+
+      {sceneState.blur && <BlurEffect />}
+      {sceneState.bloom && <BloomEffect />}
+      {sceneState.gtToneMap && <GTToneMapping />}
+      {sceneState.original && null}
     </>
   );
 };

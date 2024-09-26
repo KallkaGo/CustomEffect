@@ -17,7 +17,15 @@ const useInteractStore = create(() => ({
 const useGameStore = create(() => ({
     time: 0,
     transfer: false,
-    bodyColor:'#26d6e9',
+    bodyColor: '#26d6e9'
+}));
+
+
+const useSceneStore = create(() => ({
+    original: true,
+    blur: false,
+    bloom: false,
+    gtToneMap: false,
 }));
 
 const useLoadedStore = create(() => ({
@@ -25,4 +33,4 @@ const useLoadedStore = create(() => ({
 }));
 
 
-export { useInteractStore, useGameStore, useLoadedStore };
+export { useInteractStore, useGameStore, useLoadedStore, useSceneStore };

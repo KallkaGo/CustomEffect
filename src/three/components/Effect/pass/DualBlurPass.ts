@@ -1,13 +1,14 @@
 import { Pass, ShaderPass } from "postprocessing";
-import { HalfFloatType, SRGBColorSpace, ShaderMaterial, Texture, Uniform, UnsignedByteType, Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
-import downVertex from "../shader/downVertex.glsl";
-import downFragment from "../shader/downFragment.glsl";
-import upVertex from "../shader/upVertex.glsl";
-import upFragment from "../shader/upFragment.glsl";
+import { HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, SRGBColorSpace, ShaderMaterial, Texture, Uniform, UnsignedByteType, Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
+import downVertex from "../shader/Blur/downVertex.glsl";
+import downFragment from "../shader/Blur/downFragment.glsl";
+import upVertex from "../shader/Blur/upVertex.glsl";
+import upFragment from "../shader/Blur/upFragment.glsl";
 
 interface IProps {
   loopCount?: number;
   blurRange?: number;
+  additive?: boolean;
 }
 
 
@@ -24,14 +25,18 @@ class DualBlurPass extends Pass {
 
   public loopCount: number = 0;
 
+  public additive: boolean;
+
   public finRT!: WebGLRenderTarget;
 
-  constructor({ loopCount = 4, blurRange = 0 }: IProps) {
+  constructor({ loopCount = 4, blurRange = 0, additive = false }: IProps) {
     super('DualBlurPass');
 
     this.dispose();
 
     this.loopCount = loopCount;
+
+    this.additive = additive
 
     this.downSampleMaterial = new ShaderMaterial({
       vertexShader: downVertex,
@@ -102,7 +107,7 @@ class DualBlurPass extends Pass {
 
       if (i === 0) {
         this.finRT.texture = inputBuffer.texture;
-        this.downSampleMaterial.uniforms["uFirst"].value = true;
+        this.additive && (this.downSampleMaterial.uniforms["uFirst"].value = true);
       }
       this.downSamplePass.render(renderer, this.finRT, downRt[i]);
       this.finRT.texture = downRt[i].texture;
@@ -113,7 +118,7 @@ class DualBlurPass extends Pass {
     for (let i = count - 2; i >= 0; i--) {
       this.finRT.setSize(upRt[i].width, upRt[i].height);
       this.upSampleMaterial.uniforms["uSize"].value.set(1 / upRt[i].width, 1 / upRt[i].height);
-      this.upSampleMaterial.uniforms.uCurDownSample.value = downRt[i].texture;
+      this.additive && (this.upSampleMaterial.uniforms.uCurDownSample.value = downRt[i].texture);
       this.upSamplePass.render(renderer, this.finRT, upRt[i]);
       this.finRT.texture = upRt[i].texture;
     }
