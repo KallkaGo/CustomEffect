@@ -5,7 +5,7 @@ import { useFBO } from "@react-three/drei";
 import { DualBlurPass } from "./pass/DualBlurPass";
 
 interface IProps {
-  loopCount: number;
+  loopCount?: number;
   blurRange?: number;
 }
 
@@ -42,12 +42,18 @@ class DualBlurEffect extends Effect {
   }
 }
 
-const DualBlur: FC<IProps> = (props) => {
+const DualBlur = (props: IProps) => {
   const effect = useMemo(() => {
     return new DualBlurEffect(props);
   }, [props]);
 
-  return <primitive object={effect} dispose={null} />;
+  useEffect(() => {
+    return () => {
+      effect.dispose();
+    };
+  });
+
+  return <primitive object={effect} dispose={effect.dispose} />;
 };
 
 export { DualBlur, DualBlurEffect };

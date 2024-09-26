@@ -1,10 +1,10 @@
-import { EffectComposer } from "@react-three/postprocessing";
-import { HalfFloatType } from "three";
 import { DualBlur } from "../../Effect/DualBlur";
 import { useControls } from "leva";
+import { useEffect, useRef } from "react";
+import { EffectWrapper } from "@/hoc/EffectWrapper";
 
 const BlurEffect = () => {
-  const { loopCount, blurRange } = useControls("DualBlur", {
+  const props = useControls("DualBlur", {
     loopCount: {
       value: 5,
       min: 1,
@@ -19,13 +19,9 @@ const BlurEffect = () => {
     },
   });
 
-  return (
-    <>
-      <EffectComposer disableNormalPass frameBufferType={HalfFloatType}>
-        <DualBlur loopCount={loopCount} blurRange={blurRange} />
-      </EffectComposer>
-    </>
-  );
+  const Effect = EffectWrapper(DualBlur, props);
+
+  return <Effect />
 };
 
 export { BlurEffect };

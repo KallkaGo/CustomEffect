@@ -11,7 +11,7 @@ import {
   WebGLRenderer,
 } from "three";
 import { DualBlurPass } from "./pass/DualBlurPass";
-import { FC, forwardRef, useMemo } from "react";
+import { FC, forwardRef, useEffect, useMemo } from "react";
 
 interface IProps {
   luminanceThreshold?: number;
@@ -113,11 +113,25 @@ class BloomEffect extends Effect {
     this.dulaBlurPass.render(renderer, tempRt);
     this.uniforms.get("blurMap")!.value = this.dulaBlurPass.finRT.texture;
   }
+
+  dispose(): void {
+    this.luminanceMaterial.dispose();
+    this.luminancePass.dispose();
+    this.dulaBlurPass.dispose();
+    tempRt.dispose();
+  }
 }
 
 const Bloom: FC<IProps> = forwardRef((props, ref) => {
   const effect = useMemo(() => new BloomEffect(props), [JSON.stringify(props)]);
-  return <primitive object={effect} dispose={null} ref={ref} />;
+
+  useEffect(() => {
+    return () => {
+      effect.dispose();
+    };
+  });
+
+  return <primitive object={effect} dispose={effect.dispose} ref={ref} />;
 });
 
 export { Bloom };

@@ -2,6 +2,7 @@ import { EffectComposer } from "@react-three/postprocessing";
 import { HalfFloatType } from "three";
 import GTToneMap from "../../Effect/GTToneMap";
 import { useControls } from "leva";
+import { EffectWrapper } from "@/hoc/EffectWrapper";
 
 const GTToneMapping = () => {
   const gtProps = useControls(
@@ -50,13 +51,9 @@ const GTToneMapping = () => {
     }
   );
 
-  return (
-    <>
-      <EffectComposer disableNormalPass frameBufferType={HalfFloatType}>
-        <GTToneMap {...gtProps} />
-      </EffectComposer>
-    </>
-  );
+  const Effect = EffectWrapper(GTToneMap, gtProps);
+
+  return <Effect />
 };
 
 export { GTToneMapping };

@@ -1,7 +1,7 @@
 import { Effect } from "postprocessing";
 import fragmenrShader from "./shader/GTToneMap/fragment.glsl";
 import { Uniform } from "three";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 interface IProps {
   MaxLuminanice?: number;
@@ -40,10 +40,15 @@ export default function GTToneMap(
     Enabled: true,
   }
 ) {
-
-  
   const effect = useMemo(() => {
     return new GTToneMapEffect(props);
   }, [JSON.stringify(props)]);
-  return <primitive object={effect} dispose={null} />;
+
+  useEffect(() => {
+    return () => {
+      effect.dispose();
+    };
+  });
+
+  return <primitive object={effect} dispose={effect.dispose} />;
 }

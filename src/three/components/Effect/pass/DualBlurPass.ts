@@ -137,6 +137,9 @@ class DualBlurPass extends Pass {
   dispose() {
     downRt.forEach(rt => rt.dispose())
     upRt.forEach(rt => rt.dispose())
+    this.finRT && this.finRT.dispose()
+    this.downSampleMaterial && this.downSampleMaterial.dispose()
+    this.upSampleMaterial && this.upSampleMaterial.dispose()
   }
 }
 

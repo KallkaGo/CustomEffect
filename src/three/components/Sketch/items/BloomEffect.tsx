@@ -1,7 +1,6 @@
-import { EffectComposer } from "@react-three/postprocessing";
-import { HalfFloatType } from "three";
 import { Bloom } from "../../Effect/Bloom";
 import { useControls } from "leva";
+import { EffectWrapper } from "@/hoc/EffectWrapper";
 
 const BloomEffect = () => {
   const {
@@ -47,20 +46,16 @@ const BloomEffect = () => {
     },
   });
 
-  return (
-    <>
-      <EffectComposer disableNormalPass frameBufferType={HalfFloatType}>
-        <Bloom
-          intensity={intensity}
-          radius={radius}
-          luminanceThreshold={luminanceThreshold}
-          luminanceSmoothing={luminanceSmoothing}
-          glowColor={glowColor}
-          iteration={iteration}
-        />
-      </EffectComposer>
-    </>
-  );
+  const Effect = EffectWrapper(Bloom, {
+    intensity,
+    radius,
+    luminanceThreshold,
+    iteration,
+    luminanceSmoothing,
+    glowColor,
+  });
+
+  return <Effect />
 };
 
 export { BloomEffect };
