@@ -10,7 +10,7 @@ export default function ThreeContainer() {
   const demand = useInteractStore((state) => state.demand);
   return (
     <>
-      <Leva collapsed />
+      <Leva />
       <Canvas
         frameloop={demand ? "never" : "always"}
         className="webgl"
