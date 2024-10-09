@@ -82,9 +82,8 @@ class BloomEffect extends Effect {
         void main() {
           vec4 color = texture2D(inputBuffer, vUv);
           float luma = luminance(color.rgb);
-          // vec3 col = max(vec3(0.0), color.rgb - vec3(luminanceThreshold));
-          float v = max(0.0, luma - luminanceThreshold);
-          gl_FragColor = vec4(color.rgb * v, color.a);
+          luma *= smoothstep(luminanceThreshold, luminanceThreshold + luminanceSmoothing, luma);
+          gl_FragColor = vec4(color.rgb * luma, color.a);
         }
       `,
       uniforms: {

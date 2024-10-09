@@ -18,7 +18,6 @@ const EffectWrapper = (Component: FC, props: any) => {
 
     return (
       <EffectComposer
-        disableNormalPass
         frameBufferType={HalfFloatType}
         ref={composerRef}
       >
