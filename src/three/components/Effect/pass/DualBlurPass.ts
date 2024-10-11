@@ -65,18 +65,15 @@ class DualBlurPass extends Pass {
 
     this.finRT = new WebGLRenderTarget(innerWidth, innerHeight, {
       type: HalfFloatType,
-      colorSpace: SRGBColorSpace
     });
 
     // initial
     for (let i = 0; i < this.loopCount; i++) {
       const rtDown = new WebGLRenderTarget(1, 1, {
         type: HalfFloatType,
-        colorSpace: SRGBColorSpace,
       });
       const rtUp = new WebGLRenderTarget(1, 1, {
         type: HalfFloatType,
-        colorSpace: SRGBColorSpace
       });
       downRt[i] = rtDown;
       upRt[i] = rtUp;

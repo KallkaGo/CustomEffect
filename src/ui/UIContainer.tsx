@@ -10,12 +10,15 @@ import { PageActionType, initialState, reducer } from "./Reducer";
 import Game from "./game/Game";
 import Load from "./load/Load";
 import { useInteractStore } from "@utils/Store";
+import { useShallow } from "zustand/react/shallow";
 export default function UIContainer() {
-  const { isMute, audioAllowed, browserHidden } = useInteractStore((state) => ({
-    isMute: state.isMute,
-    audioAllowed: state.audioAllowed,
-    browserHidden: state.browserHidden,
-  }));
+  const { isMute, audioAllowed, browserHidden } = useInteractStore(
+    useShallow((state) => ({
+      isMute: state.isMute,
+      audioAllowed: state.audioAllowed,
+      browserHidden: state.browserHidden,
+    }))
+  );
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const container = useRef<Div>(null);

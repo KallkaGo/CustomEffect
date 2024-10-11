@@ -1,7 +1,6 @@
 import { Effect } from "postprocessing";
 import { Texture, Uniform, WebGLRenderTarget, WebGLRenderer } from "three";
 import { FC, useEffect, useMemo, useRef } from "react";
-import { useFBO } from "@react-three/drei";
 import { DualBlurPass } from "./pass/DualBlurPass";
 
 interface IProps {
@@ -56,4 +55,4 @@ const DualBlur = (props: IProps) => {
   return <primitive object={effect} dispose={effect.dispose} />;
 };
 
-export { DualBlur, DualBlurEffect };
+export { DualBlur };

@@ -10,17 +10,15 @@ const EffectWrapper = (Component: FC, props: any) => {
     useEffect(() => {
       const composer = composerRef.current;
       return () => {
-        composer.copyPass.screen.geometry.dispose();
         composer.dispose();
-        composer.copyPass.dispose();
+        composer.passes.forEach((pass: any) => {
+          pass.dispose();
+        });
       };
     });
 
     return (
-      <EffectComposer
-        frameBufferType={HalfFloatType}
-        ref={composerRef}
-      >
+      <EffectComposer frameBufferType={HalfFloatType} ref={composerRef}>
         <Component {...props} />
       </EffectComposer>
     );
