@@ -3,18 +3,21 @@ import { Effect } from "postprocessing";
 import { FC, useEffect, useRef } from "react";
 import { HalfFloatType } from "three";
 import Base from "@/three/components/Sketch/items/BaseEffect";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 
 const EffectWrapper = (Component: FC, props: any) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const composerRef2 = useRef<any>(null);
+    const gl = useThree((state) => state.gl);
 
     useEffect(() => {
       const composer = composerRef.current;
 
       const composer2 = composerRef2.current;
       return () => {
+        gl.setScissorTest(false);
+
         composer.dispose();
         composer.passes.forEach((pass: any) => {
           pass.dispose();
