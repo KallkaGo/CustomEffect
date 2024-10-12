@@ -45,9 +45,6 @@ const GTToneMapping = () => {
         step: 0.25,
       },
       Enabled: true,
-    },
-    {
-      collapsed: true,
     }
   );
 

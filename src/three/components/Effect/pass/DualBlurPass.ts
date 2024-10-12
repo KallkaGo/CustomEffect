@@ -63,7 +63,7 @@ class DualBlurPass extends Pass {
     this.downSamplePass = new ShaderPass(this.downSampleMaterial);
     this.upSamplePass = new ShaderPass(this.upSampleMaterial);
 
-    this.finRT = new WebGLRenderTarget(innerWidth, innerHeight, {
+    this.finRT = new WebGLRenderTarget(1, 1, {
       type: HalfFloatType,
     });
 
