@@ -3,7 +3,7 @@ import { useControls } from "leva";
 import { useEffect, useRef } from "react";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 
-const BlurEffect = () => {
+const DualBlurEffect = () => {
   const props = useControls("DualBlur", {
     loopCount: {
       value: 5,
@@ -21,7 +21,7 @@ const BlurEffect = () => {
 
   const Effect = EffectWrapper(DualBlur, props);
 
-  return <Effect />
+  return <Effect />;
 };
 
-export { BlurEffect };
+export { DualBlurEffect };

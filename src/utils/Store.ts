@@ -23,7 +23,8 @@ const useGameStore = create(() => ({
 
 const useSceneStore = create(() => ({
     original: true,
-    blur: false,
+    dualblur: false,
+    gaussianblur: false,
     bloom: false,
     gtToneMap: false,
 }));

@@ -1,9 +1,9 @@
 import { Pass, ShaderPass } from "postprocessing";
 import { HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, SRGBColorSpace, ShaderMaterial, Texture, Uniform, UnsignedByteType, Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
-import downVertex from "../shader/Blur/downVertex.glsl";
-import downFragment from "../shader/Blur/downFragment.glsl";
-import upVertex from "../shader/Blur/upVertex.glsl";
-import upFragment from "../shader/Blur/upFragment.glsl";
+import downVertex from "../shader/DualBlur/downVertex.glsl";
+import downFragment from "../shader/DualBlur/downFragment.glsl";
+import upVertex from "../shader/DualBlur/upVertex.glsl";
+import upFragment from "../shader/DualBlur/upFragment.glsl";
 
 interface IProps {
   loopCount?: number;

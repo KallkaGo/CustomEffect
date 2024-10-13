@@ -2,12 +2,13 @@ import { OrbitControls } from "@react-three/drei";
 import { useInteractStore, useLoadedStore, useSceneStore } from "@utils/Store";
 import { useEffect, useRef } from "react";
 import { useControls } from "leva";
-import { BlurEffect } from "./items/BlurEffect";
+import { DualBlurEffect } from "./items/DualBlurEffect";
 import { BloomEffect } from "./items/BloomEffect";
 import { GTToneMapping } from "./items/GTToneMapping";
 import React from "react";
 import { Group } from "three";
 import { useFrame } from "@react-three/fiber";
+import { GaussianBlurEffect } from "./items/GaussianBlur";
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
@@ -22,7 +23,7 @@ const Sketch = () => {
   useControls("Effect", {
     effect: {
       value: "original",
-      options: ["original", "blur", "bloom", "gtToneMap"],
+      options: ["original", "dualblur", "gaussianblur", "bloom", "gtToneMap"],
       onChange: (value) => {
         const state = useSceneStore.getState();
         for (const key in state) {
@@ -37,7 +38,8 @@ const Sketch = () => {
   });
 
   const effects = [
-    { condition: sceneState.blur, component: <BlurEffect /> },
+    { condition: sceneState.dualblur, component: <DualBlurEffect /> },
+    { condition: sceneState.gaussianblur, component: <GaussianBlurEffect /> },
     { condition: sceneState.bloom, component: <BloomEffect /> },
     { condition: sceneState.gtToneMap, component: <GTToneMapping /> },
   ];
