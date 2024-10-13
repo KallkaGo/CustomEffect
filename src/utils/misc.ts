@@ -22,7 +22,67 @@ const flatModel = (gltf: GLTF & ObjectMap) => {
   return modelArr
 }
 
+// 生成二维高斯卷积核
+const generateGaussianKernel2D = (size: number, sigma: number = 0.84089642) => {
+  const kernel: Array<Array<number>> = [];
+  const mean = Math.floor(size / 2); // 中心点
+  let sum = 0;
+
+  for (let x = 0; x < size; x++) {
+    kernel[x] = [];
+    for (let y = 0; y < size; y++) {
+      const dx = x - mean;
+      const dy = y - mean;
+      // 使用高斯函数计算权重
+      const weight = Math.exp(-(dx * dx + dy * dy) / (2 * sigma * sigma)) / (2 * Math.PI * sigma * sigma);
+      kernel[x][y] = weight;
+      sum += weight;
+    }
+  }
+
+  // 归一化处理，使得卷积核的总和为1
+  for (let x = 0; x < size; x++) {
+    for (let y = 0; y < size; y++) {
+      kernel[x][y] /= sum;
+    }
+  }
+
+  return kernel;
+};
+
+function calculateGaussianKernel(size: number, sigma: number = 0.84089642) {
+  const kernel = [];
+  const center = Math.floor(size / 2);
+  let sum = 0;
+
+  // 计算每个位置的高斯权重
+  for (let i = 0; i < size; i++) {
+    const x = i - center;
+    const weight = Math.exp(-(x * x) / (2 * sigma * sigma)) / (Math.sqrt(2 * Math.PI) * sigma);
+    kernel.push(weight);
+    sum += weight;
+  }
+
+  // 归一化
+  for (let i = 0; i < size; i++) {
+    kernel[i] /= sum;
+  }
+
+  return kernel;
+}
+
+function getGaussianKernelWeights(size: number, sigma: number = 0.84089642) {
+  const kernelSize = size * 2 - 1;
+  const center = Math.floor(kernelSize / 2);
+  const kernel = calculateGaussianKernel(kernelSize, sigma);
+  const weightArr = kernel.slice(center)
+  return weightArr;
+}
+
 export {
+  getGaussianKernelWeights,
+  calculateGaussianKernel,
+  generateGaussianKernel2D,
   flatModel,
   printModel
 }
