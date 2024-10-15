@@ -1,9 +1,9 @@
-import { GaussianBlur } from "../../Effect/GaussianBlur";
+import { Diffusion } from "../../Effect/Diffusion";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 
-const GaussianBlurEffect = () => {
-  const props = useControls("GaussianBlur", {
+const DiffusionEffect = () => {
+  const props = useControls("Diffusion", {
     loopCount: {
       value: 5,
       min: 1,
@@ -11,16 +11,16 @@ const GaussianBlurEffect = () => {
       step: 1,
     },
     downsample: {
-      value: 1,
+      value: 2,
       min: 1,
       max: 10,
       step: 1,
     },
   });
 
-  const Effect = EffectWrapper(GaussianBlur, props);
+  const Effect = EffectWrapper(Diffusion, props);
 
   return <Effect />;
 };
 
-export { GaussianBlurEffect };
+export { DiffusionEffect };

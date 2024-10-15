@@ -10,6 +10,8 @@ void main() {
 
   float weight[5] = float[](0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
 
+  vec3 col = texture2D(tDiffuse, uv).rgb;
+
   if(uHorizontal) {
     for(int i = -4; i <= 4; i++) {
       sum += texture2D(tDiffuse, uv + vec2(texelSize.x * float(i), 0.0)) * weight[abs(i)];
@@ -21,4 +23,5 @@ void main() {
   }
 
   gl_FragColor = vec4(sum.rgb, 1.0);
+
 }

@@ -5,6 +5,7 @@ import fragmentShader from '../shader/GaussianBlur/fragment.glsl'
 
 interface IProps {
   loopCount?: number;
+  downsample?: number
 }
 
 class GaussianBlurPass extends Pass {
@@ -13,15 +14,15 @@ class GaussianBlurPass extends Pass {
   private blurPass: ShaderPass
   private loopCount: number
 
-  constructor({ loopCount = 5 }: IProps) {
+  constructor({ loopCount = 5, downsample = 1 }: IProps) {
     super('GaussianBlurPass')
-
+ 
     this.gaussianBlurMaterial = new ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
         tDiffuse: new Uniform(null),
-        uResolution: new Uniform(new Vector2(innerWidth, innerHeight)),
+        uResolution: new Uniform(new Vector2(innerWidth / downsample, innerHeight / downsample)),
         uHorizontal: new Uniform(null),
       }
     })
@@ -30,13 +31,12 @@ class GaussianBlurPass extends Pass {
       buffer.dispose()
     })
 
-    this.pingpongBuffer[0] = new WebGLRenderTarget(innerWidth, innerHeight)
-    this.pingpongBuffer[1] = new WebGLRenderTarget(innerWidth, innerHeight)
+    this.pingpongBuffer[0] = new WebGLRenderTarget(innerWidth / downsample, innerHeight / downsample)
+    this.pingpongBuffer[1] = new WebGLRenderTarget(innerWidth / downsample, innerHeight / downsample)
 
     this.blurPass = new ShaderPass(this.gaussianBlurMaterial)
 
     this.loopCount = loopCount
-
   }
 
   render(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
@@ -47,11 +47,10 @@ class GaussianBlurPass extends Pass {
     for (let i = 0; i < loopCount * 2; i++) {
       gaussianBlurMaterial.uniforms['tDiffuse'].value = firstIteration ? inputBuffer.texture : pingpongBuffer[horizontal ? 0 : 1].texture;
       gaussianBlurMaterial.uniforms['uHorizontal'].value = horizontal
-      this.blurPass.render(renderer, inputBuffer , pingpongBuffer[horizontal ? 1 : 0]);
+      this.blurPass.render(renderer, inputBuffer, pingpongBuffer[horizontal ? 1 : 0]);
       horizontal = !horizontal;
       if (firstIteration) firstIteration = false;
     }
-
   }
 
   get finRT() {

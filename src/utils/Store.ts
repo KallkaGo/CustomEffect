@@ -25,6 +25,7 @@ const useSceneStore = create(() => ({
     original: true,
     dualblur: false,
     gaussianblur: false,
+    diffusion: false,
     bloom: false,
     gtToneMap: false,
 }));
