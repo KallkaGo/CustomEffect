@@ -6,6 +6,7 @@ import { GaussianBlurPass } from "./pass/GaussianPass";
 interface IProps {
   loopCount?: number;
   downsample?: number;
+  threshold?: number;
 }
 
 const fragmentShader = /* glsl */ `
@@ -37,12 +38,13 @@ class DiffusionEffect extends Effect {
     props: IProps = {
       loopCount: 5,
       downsample: 2,
+      threshold: 0.5,
     }
   ) {
     super("DualBlurEffect", fragmentShader, {
       uniforms: new Map<string, any>([
         ["map", new Uniform(null)],
-        ["threshold", new Uniform(0.4)],
+        ["threshold", new Uniform(props.threshold)],
       ]),
     });
     this.gaussianBlurPass = new GaussianBlurPass(props);
@@ -55,6 +57,10 @@ class DiffusionEffect extends Effect {
   ) {
     this.gaussianBlurPass.render(renderer, inputBuffer);
     this.uniforms.get("map")!.value = this.gaussianBlurPass.finRT.texture;
+  }
+
+  dispose(): void {
+    this.gaussianBlurPass.dispose();
   }
 }
 

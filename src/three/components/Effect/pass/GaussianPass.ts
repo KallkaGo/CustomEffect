@@ -27,9 +27,6 @@ class GaussianBlurPass extends Pass {
       }
     })
 
-    this.pingpongBuffer.forEach((buffer) => {
-      buffer.dispose()
-    })
 
     this.pingpongBuffer[0] = new WebGLRenderTarget(innerWidth / downsample, innerHeight / downsample)
     this.pingpongBuffer[1] = new WebGLRenderTarget(innerWidth / downsample, innerHeight / downsample)
@@ -51,6 +48,10 @@ class GaussianBlurPass extends Pass {
       horizontal = !horizontal;
       if (firstIteration) firstIteration = false;
     }
+  }
+
+  dispose(): void {
+    this.pingpongBuffer.forEach(rt => rt.dispose())
   }
 
   get finRT() {

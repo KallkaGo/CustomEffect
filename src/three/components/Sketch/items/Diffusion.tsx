@@ -16,6 +16,12 @@ const DiffusionEffect = () => {
       max: 10,
       step: 1,
     },
+    threshold: {
+      value: 0.5,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
   });
 
   const Effect = EffectWrapper(Diffusion, props);
