@@ -3,6 +3,7 @@ import { ShaderMaterial, Uniform, Vector2, WebGLRenderer, WebGLRenderTarget } fr
 import vertexShader from '../shader/GaussianBlur/vertex.glsl'
 import fragmentShader from '../shader/GaussianBlur/fragment.glsl'
 
+
 interface IProps {
   loopCount?: number;
   downsample?: number
@@ -16,20 +17,27 @@ class GaussianBlurPass extends Pass {
 
   constructor({ loopCount = 5, downsample = 1 }: IProps) {
     super('GaussianBlurPass')
- 
+
+    const size = {
+      width: innerWidth / downsample,
+      height: innerHeight / downsample
+    }
+
+    size.width = Math.max(size.width, 1)
+    size.height = Math.max(size.height, 1)
+
     this.gaussianBlurMaterial = new ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
         tDiffuse: new Uniform(null),
-        uResolution: new Uniform(new Vector2(innerWidth / downsample, innerHeight / downsample)),
+        uResolution: new Uniform(new Vector2(size.width, size.height)),
         uHorizontal: new Uniform(null),
       }
     })
 
-
-    this.pingpongBuffer[0] = new WebGLRenderTarget(innerWidth / downsample, innerHeight / downsample)
-    this.pingpongBuffer[1] = new WebGLRenderTarget(innerWidth / downsample, innerHeight / downsample)
+    this.pingpongBuffer[0] = new WebGLRenderTarget(size.width, size.height)
+    this.pingpongBuffer[1] = new WebGLRenderTarget(size.width, size.height)
 
     this.blurPass = new ShaderPass(this.gaussianBlurMaterial)
 

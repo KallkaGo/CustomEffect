@@ -1,5 +1,5 @@
 import { Pass, ShaderPass } from "postprocessing";
-import { HalfFloatType, MeshBasicMaterial, MeshStandardMaterial, SRGBColorSpace, ShaderMaterial, Texture, Uniform, UnsignedByteType, Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
+import { HalfFloatType, ShaderMaterial, Uniform,Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
 import downVertex from "../shader/DualBlur/downVertex.glsl";
 import downFragment from "../shader/DualBlur/downFragment.glsl";
 import upVertex from "../shader/DualBlur/upVertex.glsl";
