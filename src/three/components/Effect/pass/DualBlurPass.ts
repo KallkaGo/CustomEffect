@@ -1,5 +1,5 @@
 import { Pass, ShaderPass } from "postprocessing";
-import { HalfFloatType, ShaderMaterial, Uniform,Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
+import { HalfFloatType, ShaderMaterial, Uniform, Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
 import downVertex from "../shader/DualBlur/downVertex.glsl";
 import downFragment from "../shader/DualBlur/downFragment.glsl";
 import upVertex from "../shader/DualBlur/upVertex.glsl";
@@ -11,9 +11,6 @@ interface IProps {
   additive?: boolean;
 }
 
-
-let downRt: WebGLRenderTarget[] = [];
-let upRt: WebGLRenderTarget[] = [];
 
 class DualBlurPass extends Pass {
   private downSampleMaterial!: ShaderMaterial;
@@ -28,6 +25,10 @@ class DualBlurPass extends Pass {
   public additive: boolean;
 
   public finRT!: WebGLRenderTarget;
+
+  public downRt: WebGLRenderTarget[] = []
+
+  public upRt: WebGLRenderTarget[] = []
 
   constructor({ loopCount = 4, blurRange = 0, additive = false }: IProps) {
     super('DualBlurPass');
@@ -75,8 +76,8 @@ class DualBlurPass extends Pass {
       const rtUp = new WebGLRenderTarget(1, 1, {
         type: HalfFloatType,
       });
-      downRt[i] = rtDown;
-      upRt[i] = rtUp;
+      this.downRt[i] = rtDown;
+      this.upRt[i] = rtUp;
     }
   }
 
@@ -86,6 +87,7 @@ class DualBlurPass extends Pass {
     const count = this.loopCount;
     let width = inputBuffer.width;
     let height = inputBuffer.height;
+    const { downRt, upRt } = this;
 
     // down sample 
     for (let i = 0; i < count; i++) {
@@ -132,6 +134,7 @@ class DualBlurPass extends Pass {
   }
 
   dispose() {
+    const { downRt, upRt } = this;
     downRt.forEach(rt => rt.dispose())
     upRt.forEach(rt => rt.dispose())
     this.finRT && this.finRT.dispose()

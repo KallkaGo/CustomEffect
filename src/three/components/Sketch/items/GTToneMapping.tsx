@@ -1,5 +1,3 @@
-import { EffectComposer } from "@react-three/postprocessing";
-import { HalfFloatType } from "three";
 import GTToneMap from "../../Effect/GTToneMap";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";

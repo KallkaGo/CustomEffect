@@ -19,13 +19,7 @@ export default function Base() {
     return new BaseEffect();
   }, []);
 
-  useEffect(() => {
-    return () => {
-      effect.dispose();
-    };
-  });
-
-  return <primitive object={effect} dispose={effect.dispose} />;
+  return <primitive object={effect} />;
 }
 
 
