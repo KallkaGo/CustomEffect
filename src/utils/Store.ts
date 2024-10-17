@@ -12,6 +12,7 @@ const useInteractStore = create(() => ({
     begin: false,
     controlDom: document.createElement("div"),  //控制器的dom
     end: false,
+    sliderPos: innerWidth / 2 ,
 }));
 
 const useGameStore = create(() => ({

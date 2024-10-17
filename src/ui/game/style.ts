@@ -32,4 +32,38 @@ export const GameWrapper = styled.div`
     border-radius:50%;
     border:2px solid #fff;
    }
+
+   .slider-line{
+    height:100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events:none;
+   }
+   .line{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:4px;
+    height:100%;
+    background-color:whitesmoke
+   }
+
+   .slider-container{
+    width:48px;
+    height:48px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color:whitesmoke;
+    border-radius:12px;
+    border:3px solid #efebec;
+    cursor: pointer;
+    pointer-events:auto;
+   }
 `;
