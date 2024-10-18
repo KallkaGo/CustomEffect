@@ -1,4 +1,10 @@
-import { PointerEvent, useEffect, useRef, useState } from "react";
+import {
+  PointerEvent as IPointerEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
 import { useGameStore, useInteractStore, useSceneStore } from "@utils/Store";
 import { GameWrapper } from "./style";
 import { useGSAP } from "@gsap/react";
@@ -33,18 +39,25 @@ const Game = () => {
     useInteractStore.setState({ controlDom: controlRef.current! });
   }, []);
 
-  const handlePointerEvent = (e: PointerEvent, flag: boolean) => {
+  const handlePointerEvent = (e: IPointerEvent, flag: boolean) => {
     console.log(e.type, flag);
     useInteractStore.setState({ touch: flag });
   };
 
-  const handlePointerDown = (e: PointerEvent) => {
+  const handlePointerDown = (e: IPointerEvent) => {
     baseParam.current.down = true;
     baseParam.current.startPos = e.clientX;
+    document.body.addEventListener("pointermove", handlePointerMove);
+    document.body.addEventListener("pointerup", handlePointerUp);
+    document.body.addEventListener("pointerleave", handlePointerUp);
   };
 
   const handlePointerUp = (e: PointerEvent) => {
+    console.log('up');
     baseParam.current.down = false;
+    document.body.removeEventListener("pointermove", handlePointerMove);
+    document.body.removeEventListener("pointerup", handlePointerUp);
+    document.body.removeEventListener("pointerleave", handlePointerUp);
   };
 
   const handlePointerMove = (e: PointerEvent) => {
@@ -70,13 +83,7 @@ const Game = () => {
           style={{ display: `${original ? "none" : "flex"}` }}
         >
           <div className="line"></div>
-          <div
-            className="slider-container"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerLeave={handlePointerUp}
-          >
+          <div className="slider-container" onPointerDown={handlePointerDown}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
