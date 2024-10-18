@@ -53,7 +53,6 @@ const Game = () => {
   };
 
   const handlePointerUp = (e: PointerEvent) => {
-    console.log('up');
     baseParam.current.down = false;
     document.body.removeEventListener("pointermove", handlePointerMove);
     document.body.removeEventListener("pointerup", handlePointerUp);
