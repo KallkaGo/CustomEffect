@@ -2,7 +2,6 @@ import { EffectComposer } from "@react-three/postprocessing";
 import { Effect } from "postprocessing";
 import { FC, useEffect, useRef } from "react";
 import { HalfFloatType } from "three";
-import Base from "@/three/components/Sketch/items/BaseEffect";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useInteractStore } from "@utils/Store";
 
@@ -14,18 +13,11 @@ const EffectWrapper = (Component: FC, props: any) => {
 
     useEffect(() => {
       const composer = composerRef.current;
-
-      const composer2 = composerRef2.current;
       return () => {
         gl.setScissorTest(false);
 
         composer.dispose();
         composer.passes.forEach((pass: any) => {
-          pass.dispose();
-        });
-
-        composer2.dispose();
-        composer2.passes.forEach((pass: any) => {
           pass.dispose();
         });
       };
@@ -42,16 +34,13 @@ const EffectWrapper = (Component: FC, props: any) => {
       gl.setScissor(0, 0, sliderPos - 2, innerHeight);
       composer.render(delta);
       gl.setScissor(sliderPos + 2, 0, innerWidth - sliderPos + 2, innerHeight);
-      composer2.render(delta);
-    }, 2);
+      gl.render(state.scene, state.camera);
+    },1);
 
     return (
       <>
-        <EffectComposer frameBufferType={HalfFloatType} ref={composerRef}>
+        <EffectComposer frameBufferType={HalfFloatType} ref={composerRef} disableNormalPass >
           <Component {...props} />
-        </EffectComposer>
-        <EffectComposer frameBufferType={HalfFloatType} ref={composerRef2}>
-          <Base />
         </EffectComposer>
       </>
     );
