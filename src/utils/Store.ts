@@ -12,7 +12,7 @@ const useInteractStore = create(() => ({
     begin: false,
     controlDom: document.createElement("div"),  //控制器的dom
     end: false,
-    sliderPos: innerWidth / 2 ,
+    sliderPos: innerWidth / 2,
 }));
 
 const useGameStore = create(() => ({
@@ -29,6 +29,7 @@ const useSceneStore = create(() => ({
     diffusion: false,
     bloom: false,
     gtToneMap: false,
+    dithering: false
 }));
 
 const useLoadedStore = create(() => ({

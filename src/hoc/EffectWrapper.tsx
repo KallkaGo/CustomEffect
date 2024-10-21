@@ -1,5 +1,4 @@
 import { EffectComposer } from "@react-three/postprocessing";
-import { Effect } from "postprocessing";
 import { FC, useEffect, useRef } from "react";
 import { HalfFloatType } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -8,7 +7,6 @@ import { useInteractStore } from "@utils/Store";
 const EffectWrapper = (Component: FC, props: any) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
-    const composerRef2 = useRef<any>(null);
     const gl = useThree((state) => state.gl);
 
     useEffect(() => {
@@ -26,8 +24,6 @@ const EffectWrapper = (Component: FC, props: any) => {
     useFrame((state, delta) => {
       const { gl } = state;
       const composer = composerRef.current;
-      const composer2 = composerRef2.current;
-      const halfWidth = innerWidth / 2;
       const sliderPos = useInteractStore.getState().sliderPos;
       gl.autoClear = true;
       gl.setScissorTest(true);

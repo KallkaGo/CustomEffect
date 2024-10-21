@@ -10,6 +10,7 @@ import { Group } from "three";
 import { useFrame } from "@react-three/fiber";
 import { GaussianBlurEffect } from "./items/GaussianBlur";
 import { DiffusionEffect } from "./items/Diffusion";
+import { OrderedDitheringEffect } from "./items/OrderedDitheringEffect";
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
@@ -31,6 +32,7 @@ const Sketch = () => {
         "diffusion",
         "bloom",
         "gtToneMap",
+        "dithering",
       ],
       onChange: (value) => {
         const state = useSceneStore.getState();
@@ -51,6 +53,7 @@ const Sketch = () => {
     { condition: sceneState.diffusion, component: <DiffusionEffect /> },
     { condition: sceneState.bloom, component: <BloomEffect /> },
     { condition: sceneState.gtToneMap, component: <GTToneMapping /> },
+    { condition: sceneState.dithering, component: <OrderedDitheringEffect /> },
   ];
 
   useFrame((state, delta) => {
