@@ -10,7 +10,7 @@ import { Group } from "three";
 import { useFrame } from "@react-three/fiber";
 import { GaussianBlurEffect } from "./items/GaussianBlur";
 import { DiffusionEffect } from "./items/Diffusion";
-import { OrderedDitheringEffect } from "./items/OrderedDitheringEffect";
+import { RetroEffect } from "./items/RetroEffect";
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
@@ -32,7 +32,7 @@ const Sketch = () => {
         "diffusion",
         "bloom",
         "gtToneMap",
-        "dithering",
+        "retro",
       ],
       onChange: (value) => {
         const state = useSceneStore.getState();
@@ -53,7 +53,7 @@ const Sketch = () => {
     { condition: sceneState.diffusion, component: <DiffusionEffect /> },
     { condition: sceneState.bloom, component: <BloomEffect /> },
     { condition: sceneState.gtToneMap, component: <GTToneMapping /> },
-    { condition: sceneState.dithering, component: <OrderedDitheringEffect /> },
+    { condition: sceneState.retro, component: <RetroEffect /> },
   ];
 
   useFrame((state, delta) => {
@@ -76,7 +76,6 @@ const Sketch = () => {
           <sphereGeometry args={[0.3, 32, 32]} />
           <meshBasicMaterial color="#61ee61" />
         </mesh>
-
         <mesh position={[0, -0.4, 0]} rotation-x={-Math.PI / 2}>
           <planeGeometry args={[4, 4]} />
           <meshBasicMaterial color="orange" />
