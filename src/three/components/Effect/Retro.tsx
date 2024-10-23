@@ -1,5 +1,5 @@
 import { Effect } from "postprocessing";
-import fragmentShader from "./shader/OrderredDithering/fragment.glsl";
+import fragmentShader from "./shader/Retro/fragment.glsl";
 import { Uniform, Vector2, WebGLRenderer, WebGLRenderTarget } from "three";
 import { useEffect, useMemo } from "react";
 import { useInteractStore } from "@utils/Store";
@@ -8,6 +8,7 @@ interface IProps {
   colorNum?: number;
   pixelSize?: number;
   maskIntensity?: number;
+  curveIntensity?: number;
 }
 
 class RetroEffect extends Effect {
@@ -18,6 +19,7 @@ class RetroEffect extends Effect {
         ["uPixelSize", new Uniform(props.pixelSize)],
         ["uMaskIntensity", new Uniform(props.maskIntensity)],
         ["uResolution", new Uniform(new Vector2())],
+        ["uCurveIntensity", new Uniform(props.curveIntensity)],
       ]),
     });
   }

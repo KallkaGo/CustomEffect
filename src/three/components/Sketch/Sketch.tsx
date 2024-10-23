@@ -64,7 +64,8 @@ const Sketch = () => {
   return (
     <>
       <OrbitControls domElement={controlDom} />
-      <color attach={"background"} args={["black"]} />
+      <color attach={"background"} args={["#3386E0"]} />
+      
 
       <group ref={groupRef}>
         <mesh position={[-1, 0, 0]}>

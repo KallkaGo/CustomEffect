@@ -17,6 +17,11 @@ const RetroEffect = () => {
       value: "4.0",
       options: ["4.0", "8.0", "16.0", "32.0"],
     },
+    curveIntensity: {
+      value: 0.3,
+      min: 0.0,
+      max: 0.5,
+    },
   });
 
   const Effect = EffectWrapper(Retro, props);
