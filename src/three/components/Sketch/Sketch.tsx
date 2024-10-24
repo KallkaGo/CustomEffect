@@ -64,7 +64,7 @@ const Sketch = () => {
   return (
     <>
       <OrbitControls domElement={controlDom} />
-      <color attach={"background"} args={["#3386E0"]} />
+      <color attach={"background"} args={["black"]} />
       
 
       <group ref={groupRef}>

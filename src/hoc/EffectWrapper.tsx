@@ -1,6 +1,6 @@
 import { EffectComposer } from "@react-three/postprocessing";
 import { FC, useEffect, useRef } from "react";
-import { HalfFloatType } from "three";
+import { Color, HalfFloatType } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useInteractStore } from "@utils/Store";
 
@@ -8,9 +8,12 @@ const EffectWrapper = (Component: FC, props: any) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const gl = useThree((state) => state.gl);
+    const scene = useThree((state) => state.scene);
 
     useEffect(() => {
       const composer = composerRef.current;
+      const bgColor = props.background;
+      bgColor && (scene.background = new Color(bgColor));
       return () => {
         gl.setScissorTest(false);
 
@@ -31,11 +34,15 @@ const EffectWrapper = (Component: FC, props: any) => {
       composer.render(delta);
       gl.setScissor(sliderPos + 2, 0, innerWidth - sliderPos + 2, innerHeight);
       gl.render(state.scene, state.camera);
-    },1);
+    }, 1);
 
     return (
       <>
-        <EffectComposer frameBufferType={HalfFloatType} ref={composerRef} disableNormalPass >
+        <EffectComposer
+          frameBufferType={HalfFloatType}
+          ref={composerRef}
+          disableNormalPass
+        >
           <Component {...props} />
         </EffectComposer>
       </>
