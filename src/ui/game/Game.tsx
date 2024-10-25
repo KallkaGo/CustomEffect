@@ -63,8 +63,9 @@ const Game = () => {
     const { down } = baseParam.current;
     if (!down) return;
     baseParam.current.curPos = e.clientX;
-    sliderRef.current!.style.left = `${e.clientX}px`;
-    useInteractStore.setState({ sliderPos: e.clientX });
+    const left = e.clientX / innerWidth;
+    sliderRef.current!.style.left = `${left * 100}%`;
+    useInteractStore.setState({ sliderPos: left});
   };
 
   return (

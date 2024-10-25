@@ -30,9 +30,14 @@ const EffectWrapper = (Component: FC, props: any) => {
       const sliderPos = useInteractStore.getState().sliderPos;
       gl.autoClear = true;
       gl.setScissorTest(true);
-      gl.setScissor(0, 0, sliderPos - 2, innerHeight);
+      gl.setScissor(0, 0, sliderPos * innerWidth - 2, innerHeight);
       composer.render(delta);
-      gl.setScissor(sliderPos + 2, 0, innerWidth - sliderPos + 2, innerHeight);
+      gl.setScissor(
+        sliderPos * innerWidth + 2,
+        0,
+        innerWidth - sliderPos * innerWidth + 2,
+        innerHeight
+      );
       gl.render(state.scene, state.camera);
     }, 1);
 
