@@ -31,7 +31,9 @@ class RetroEffect extends Effect {
   ): void {
     const slidePos = useInteractStore.getState().sliderPos;
 
-    this.uniforms.get("uResolution")!.value.set(slidePos, innerHeight);
+    this.uniforms
+      .get("uResolution")!
+      .value.set(slidePos * innerWidth, innerHeight);
   }
 }
 

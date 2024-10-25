@@ -13,7 +13,12 @@ const EffectWrapper = (Component: FC, props: any) => {
     useEffect(() => {
       const composer = composerRef.current;
       const bgColor = props.background;
-      bgColor && (scene.background = new Color(bgColor));
+
+      if (bgColor) {
+        scene.background = new Color(bgColor);
+      } else {
+        scene.background = new Color("black");
+      }
       return () => {
         gl.setScissorTest(false);
 
