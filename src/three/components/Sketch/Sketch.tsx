@@ -6,8 +6,8 @@ import { DualBlurEffect } from "./items/DualBlurEffect";
 import { BloomEffect } from "./items/BloomEffect";
 import { GTToneMapping } from "./items/GTToneMapping";
 import React from "react";
-import { Group } from "three";
-import { useFrame } from "@react-three/fiber";
+import { Color, Group } from "three";
+import { useFrame, useThree } from "@react-three/fiber";
 import { GaussianBlurEffect } from "./items/GaussianBlur";
 import { DiffusionEffect } from "./items/Diffusion";
 import { RetroEffect } from "./items/RetroEffect";
@@ -15,10 +15,12 @@ import { RetroEffect } from "./items/RetroEffect";
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
   const sceneState = useSceneStore();
+  const scene = useThree((state) => state.scene);
 
   const groupRef = useRef<Group>(null);
 
   useEffect(() => {
+    
     useLoadedStore.setState({ ready: true });
   }, []);
 
@@ -39,6 +41,11 @@ const Sketch = () => {
         for (const key in state) {
           if (key === value) {
             useSceneStore.setState({ [key]: true });
+            if(key === 'retro'){
+              scene.background = new Color("#3386E0");
+            }else{
+              scene.background = new Color("#000");
+            }
           } else {
             useSceneStore.setState({ [key]: false });
           }
@@ -66,7 +73,6 @@ const Sketch = () => {
       <OrbitControls domElement={controlDom} />
       <color attach={"background"} args={["black"]} />
       
-
       <group ref={groupRef}>
         <mesh position={[-1, 0, 0]}>
           <boxGeometry args={[0.5, 0.5, 0.5]} />

@@ -8,17 +8,9 @@ const EffectWrapper = (Component: FC, props: any) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const gl = useThree((state) => state.gl);
-    const scene = useThree((state) => state.scene);
 
     useEffect(() => {
       const composer = composerRef.current;
-      const bgColor = props.background;
-
-      if (bgColor) {
-        scene.background = new Color(bgColor);
-      } else {
-        scene.background = new Color("black");
-      }
       return () => {
         gl.setScissorTest(false);
 

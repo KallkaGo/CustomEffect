@@ -21,8 +21,7 @@ const RetroEffect = () => {
       value: 0.3,
       min: 0.0,
       max: 0.5,
-    },
-    background: "#3386E0",
+    }
   });
 
   const Effect = EffectWrapper(Retro, props);
