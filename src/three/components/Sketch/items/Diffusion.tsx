@@ -1,6 +1,7 @@
 import { Diffusion } from "../../Effect/Diffusion";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
+import { BaseScene } from "../base/BaseScene";
 
 const DiffusionEffect = () => {
   const props = useControls("Diffusion", {
@@ -26,7 +27,12 @@ const DiffusionEffect = () => {
 
   const Effect = EffectWrapper(Diffusion, props);
 
-  return <Effect />;
+  return (
+    <>
+      <BaseScene />
+      <Effect />
+    </>
+  );
 };
 
 export { DiffusionEffect };

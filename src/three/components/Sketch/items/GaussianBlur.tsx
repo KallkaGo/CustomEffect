@@ -1,6 +1,7 @@
 import { GaussianBlur } from "../../Effect/GaussianBlur";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
+import { BaseScene } from "../base/BaseScene";
 
 const GaussianBlurEffect = () => {
   const props = useControls("GaussianBlur", {
@@ -20,7 +21,12 @@ const GaussianBlurEffect = () => {
 
   const Effect = EffectWrapper(GaussianBlur, props);
 
-  return <Effect />;
+  return (
+    <>
+      <BaseScene />
+      <Effect />
+    </>
+  );
 };
 
 export { GaussianBlurEffect };

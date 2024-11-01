@@ -3,6 +3,7 @@ import Kuwahara from "../../Effect/Kuwahara";
 import { useControls } from "leva";
 import { useGLTF } from "@react-three/drei";
 import modelSrc from "@models/plant-optimized.glb";
+import { BaseScene } from "../base/BaseScene";
 
 const Plant = () => {
   const { scene } = useGLTF(modelSrc);
@@ -29,9 +30,14 @@ const KuwaharaEffect = () => {
     },
   });
 
-  const Effect = EffectWrapper(Kuwahara, props, Plant);
+  const Effect = EffectWrapper(Kuwahara, props);
 
-  return <Effect />;
+  return (
+    <>
+      <Plant />
+      <Effect />
+    </>
+  );
 };
 
 export { KuwaharaEffect };

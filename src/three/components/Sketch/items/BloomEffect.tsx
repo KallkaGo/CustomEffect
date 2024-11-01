@@ -1,6 +1,7 @@
 import { Bloom } from "../../Effect/Bloom";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
+import { BaseScene } from "../base/BaseScene";
 
 const BloomEffect = () => {
   const {
@@ -55,7 +56,12 @@ const BloomEffect = () => {
     glowColor,
   });
 
-  return <Effect />
+  return (
+    <>
+      <BaseScene />
+      <Effect />
+    </>
+  );
 };
 
 export { BloomEffect };

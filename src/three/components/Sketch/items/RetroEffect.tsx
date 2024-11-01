@@ -1,6 +1,7 @@
 import Retro from "../../Effect/Retro";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
+import { BaseScene } from "../base/BaseScene";
 
 const RetroEffect = () => {
   const props = useControls("Retro", {
@@ -29,6 +30,7 @@ const RetroEffect = () => {
   return (
     <>
       <color attach="background" args={["#3386E0"]} />
+      <BaseScene />
       <Effect />
     </>
   );

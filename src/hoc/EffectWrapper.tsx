@@ -6,7 +6,7 @@ import { useInteractStore } from "@utils/Store";
 import { BaseScene } from "@/three/components/Sketch/base/BaseScene";
 import React from "react";
 
-const EffectWrapper = (Component: FC, props: any, sketch:FC = BaseScene) => {
+const EffectWrapper = (Component: FC, props: any) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const gl = useThree((state) => state.gl);
@@ -42,7 +42,6 @@ const EffectWrapper = (Component: FC, props: any, sketch:FC = BaseScene) => {
 
     return (
       <>
-        {React.createElement(sketch)}
         <EffectComposer
           frameBufferType={HalfFloatType}
           ref={composerRef}

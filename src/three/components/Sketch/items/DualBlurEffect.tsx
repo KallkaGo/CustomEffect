@@ -2,6 +2,7 @@ import { DualBlur } from "../../Effect/DualBlur";
 import { useControls } from "leva";
 import { useEffect, useRef } from "react";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
+import { BaseScene } from "../base/BaseScene";
 
 const DualBlurEffect = () => {
   const props = useControls("DualBlur", {
@@ -21,7 +22,12 @@ const DualBlurEffect = () => {
 
   const Effect = EffectWrapper(DualBlur, props);
 
-  return <Effect />;
+  return (
+    <>
+      <BaseScene />
+      <Effect />
+    </>
+  )
 };
 
 export { DualBlurEffect };
