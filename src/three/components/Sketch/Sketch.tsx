@@ -1,4 +1,4 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import { useInteractStore, useLoadedStore, useSceneStore } from "@utils/Store";
 import { useEffect, useRef } from "react";
 import { useControls } from "leva";
@@ -13,6 +13,9 @@ import { DiffusionEffect } from "./items/Diffusion";
 import { RetroEffect } from "./items/RetroEffect";
 import { KuwaharaEffect } from "./items/KuwaharaEffect";
 import { BaseScene } from "./base/BaseScene";
+import plantSrc from "@models/plant-optimized.glb";
+
+useGLTF.preload(plantSrc);
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
