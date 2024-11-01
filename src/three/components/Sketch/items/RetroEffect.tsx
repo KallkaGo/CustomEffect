@@ -21,12 +21,17 @@ const RetroEffect = () => {
       value: 0.3,
       min: 0.0,
       max: 0.5,
-    }
+    },
   });
 
   const Effect = EffectWrapper(Retro, props);
 
-  return <Effect />;
+  return (
+    <>
+      <color attach="background" args={["#3386E0"]} />
+      <Effect />
+    </>
+  );
 };
 
 export { RetroEffect };

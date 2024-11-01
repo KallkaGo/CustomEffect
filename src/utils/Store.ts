@@ -29,7 +29,8 @@ const useSceneStore = create(() => ({
     diffusion: false,
     bloom: false,
     gtToneMap: false,
-    retro: false
+    retro: false,
+    kuwahara:false
 }));
 
 const useLoadedStore = create(() => ({
