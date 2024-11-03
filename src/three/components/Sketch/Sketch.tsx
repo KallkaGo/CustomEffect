@@ -1,4 +1,4 @@
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF, useTexture } from "@react-three/drei";
 import { useInteractStore, useLoadedStore, useSceneStore } from "@utils/Store";
 import { useEffect, useRef } from "react";
 import { useControls } from "leva";
@@ -14,8 +14,10 @@ import { RetroEffect } from "./items/RetroEffect";
 import { PaintEffect } from "./items/PaintEffect";
 import { BaseScene } from "./base/BaseScene";
 import plantSrc from "@models/plant-optimized.glb";
+import textureSrc from "@textures/waterColor.png";
 
 useGLTF.preload(plantSrc);
+useTexture.preload(textureSrc);
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
