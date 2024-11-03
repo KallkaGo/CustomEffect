@@ -1,9 +1,10 @@
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 import Kuwahara from "../../Effect/Kuwahara";
 import { useControls } from "leva";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import modelSrc from "@models/plant-optimized.glb";
-import { BaseScene } from "../base/BaseScene";
+import textureSrc from "@textures/waterColor.png";
+import QuantizationAndToneMap from "../../Effect/QuantizationAndToneMap";
 
 const Plant = () => {
   const { scene } = useGLTF(modelSrc);
@@ -20,8 +21,10 @@ const Plant = () => {
   );
 };
 
-const KuwaharaEffect = () => {
-  const props = useControls("Kuwahara", {
+const PaintEffect = () => {
+  const tex = useTexture(textureSrc);
+
+  const kuawaharaProps = useControls("Kuwahara", {
     radius: {
       value: 8,
       min: 1,
@@ -30,7 +33,28 @@ const KuwaharaEffect = () => {
     },
   });
 
-  const Effect = EffectWrapper(Kuwahara, props);
+  const qtProps = useControls("QuantizationAndToneMap", {
+    adjustment: {
+      value: 1.5,
+      min: 0,
+      max: 5,
+      step: 0.1,
+    }
+  });
+
+  const Effect = EffectWrapper([
+    {
+      component: Kuwahara,
+      props: kuawaharaProps,
+    },
+    {
+      component: QuantizationAndToneMap,
+      props: {
+        ...qtProps,
+        tex,
+      },
+    },
+  ]);
 
   return (
     <>
@@ -40,4 +64,4 @@ const KuwaharaEffect = () => {
   );
 };
 
-export { KuwaharaEffect };
+export { PaintEffect };

@@ -25,7 +25,12 @@ const RetroEffect = () => {
     },
   });
 
-  const Effect = EffectWrapper(Retro, props);
+  const Effect = EffectWrapper([
+    {
+      component: Retro,
+      props,
+    },
+  ]);
 
   return (
     <>

@@ -20,7 +20,10 @@ const DualBlurEffect = () => {
     },
   });
 
-  const Effect = EffectWrapper(DualBlur, props);
+  const Effect = EffectWrapper([{
+    component: DualBlur,
+    props,
+  }]);
 
   return (
     <>

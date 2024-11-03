@@ -12,6 +12,7 @@ class KuwaharaEffect extends Effect {
     super("GTToneMap", fragmenrShader, {
       uniforms: new Map([
         ["uRadius", new Uniform(props.radius)],
+        
       ]),
     });
   }
@@ -20,6 +21,7 @@ class KuwaharaEffect extends Effect {
 export default function Kuwahara(
   props: IProps = {
     radius: 8,
+
   }
 ) {
   const effect = useMemo(() => {

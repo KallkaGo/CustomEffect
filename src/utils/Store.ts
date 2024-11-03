@@ -30,7 +30,7 @@ const useSceneStore = create(() => ({
     bloom: false,
     gtToneMap: false,
     retro: false,
-    kuwahara:false
+    paint:false
 }));
 
 const useLoadedStore = create(() => ({

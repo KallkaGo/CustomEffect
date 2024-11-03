@@ -44,7 +44,12 @@ const GTToneMapping = () => {
     Enabled: true,
   });
 
-  const Effect = EffectWrapper(GTToneMap, gtProps);
+  const Effect = EffectWrapper([
+    {
+      component: GTToneMap,
+      props: gtProps,
+    },
+  ]);
 
   return (
     <>

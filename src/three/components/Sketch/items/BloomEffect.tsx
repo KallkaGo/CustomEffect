@@ -4,14 +4,7 @@ import { EffectWrapper } from "@/hoc/EffectWrapper";
 import { BaseScene } from "../base/BaseScene";
 
 const BloomEffect = () => {
-  const {
-    intensity,
-    radius,
-    luminanceThreshold,
-    iteration,
-    luminanceSmoothing,
-    glowColor,
-  } = useControls("Bloom", {
+  const props = useControls("Bloom", {
     intensity: {
       value: 1,
       min: 0,
@@ -47,14 +40,10 @@ const BloomEffect = () => {
     },
   });
 
-  const Effect = EffectWrapper(Bloom, {
-    intensity,
-    radius,
-    luminanceThreshold,
-    iteration,
-    luminanceSmoothing,
-    glowColor,
-  });
+  const Effect = EffectWrapper([{
+    component: Bloom,
+    props,
+  }]);
 
   return (
     <>

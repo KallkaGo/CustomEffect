@@ -3,10 +3,13 @@ import { FC, useEffect, useRef } from "react";
 import { Color, HalfFloatType } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useInteractStore } from "@utils/Store";
-import { BaseScene } from "@/three/components/Sketch/base/BaseScene";
-import React from "react";
 
-const EffectWrapper = (Component: FC, props: any) => {
+interface IComponents {
+  component: FC;
+  props: any;
+}
+
+const EffectWrapper = (components: IComponents[]) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const gl = useThree((state) => state.gl);
@@ -47,7 +50,9 @@ const EffectWrapper = (Component: FC, props: any) => {
           ref={composerRef}
           disableNormalPass
         >
-          <Component {...props} />
+          {components.map((item, index) => (
+            <item.component key={`Effect_${index}`} index={index} {...item.props} />
+          ))}
         </EffectComposer>
       </>
     );

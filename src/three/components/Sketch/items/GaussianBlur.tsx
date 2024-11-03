@@ -19,7 +19,10 @@ const GaussianBlurEffect = () => {
     },
   });
 
-  const Effect = EffectWrapper(GaussianBlur, props);
+  const Effect = EffectWrapper([{
+    component: GaussianBlur,
+    props,
+  }]);
 
   return (
     <>

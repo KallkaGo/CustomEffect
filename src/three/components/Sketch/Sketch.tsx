@@ -11,7 +11,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { GaussianBlurEffect } from "./items/GaussianBlur";
 import { DiffusionEffect } from "./items/Diffusion";
 import { RetroEffect } from "./items/RetroEffect";
-import { KuwaharaEffect } from "./items/KuwaharaEffect";
+import { PaintEffect } from "./items/PaintEffect";
 import { BaseScene } from "./base/BaseScene";
 import plantSrc from "@models/plant-optimized.glb";
 
@@ -37,7 +37,7 @@ const Sketch = () => {
         "bloom",
         "gtToneMap",
         "retro",
-        "kuwahara",
+        "paint",
       ],
       onChange: (value) => {
         const state = useSceneStore.getState();
@@ -59,7 +59,7 @@ const Sketch = () => {
     { condition: sceneState.bloom, component: <BloomEffect /> },
     { condition: sceneState.gtToneMap, component: <GTToneMapping /> },
     { condition: sceneState.retro, component: <RetroEffect /> },
-    { condition: sceneState.kuwahara, component: <KuwaharaEffect /> },
+    { condition: sceneState.paint, component: <PaintEffect /> },
   ];
 
   return (

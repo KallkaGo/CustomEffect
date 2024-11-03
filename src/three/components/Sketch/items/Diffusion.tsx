@@ -25,7 +25,10 @@ const DiffusionEffect = () => {
     },
   });
 
-  const Effect = EffectWrapper(Diffusion, props);
+  const Effect = EffectWrapper([{
+    component: Diffusion,
+    props,
+  }]);
 
   return (
     <>
