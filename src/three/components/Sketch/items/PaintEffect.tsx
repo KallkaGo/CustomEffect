@@ -5,6 +5,8 @@ import { useGLTF, useTexture } from "@react-three/drei";
 import modelSrc from "@models/plant-optimized.glb";
 import textureSrc from "@textures/waterColor.png";
 import QuantizationAndToneMap from "../../Effect/QuantizationAndToneMap";
+import { SMAA } from "@react-three/postprocessing";
+import { EdgeDetectionMode, SMAAPreset } from "postprocessing";
 
 const Plant = () => {
   const { scene } = useGLTF(modelSrc);
@@ -26,7 +28,7 @@ const PaintEffect = () => {
 
   const kuawaharaProps = useControls("Kuwahara", {
     radius: {
-      value: 8,
+      value: 5,
       min: 1,
       max: 25,
       step: 1,
@@ -39,7 +41,18 @@ const PaintEffect = () => {
       min: 0,
       max: 5,
       step: 0.1,
-    }
+    },
+  });
+
+  const antiAliasingprops = useControls("SMAA", {
+    preset: {
+      value: SMAAPreset.MEDIUM,
+      options: SMAAPreset,
+    },
+    edgeDetectionMode: {
+      value: EdgeDetectionMode.COLOR,
+      options: EdgeDetectionMode,
+    },
   });
 
   const Effect = EffectWrapper([
@@ -53,6 +66,10 @@ const PaintEffect = () => {
         ...qtProps,
         tex,
       },
+    },
+    {
+      component: SMAA,
+      props: antiAliasingprops,
     },
   ]);
 
