@@ -24,6 +24,7 @@ const useGameStore = create(() => ({
 
 const useSceneStore = create(() => ({
     original: true,
+    ditheredTransparency: false,
     dualblur: false,
     gaussianblur: false,
     diffusion: false,

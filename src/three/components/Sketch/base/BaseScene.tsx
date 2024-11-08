@@ -20,7 +20,10 @@ const BaseScene = () => {
 
         <mesh position={[1, 0, 0]}>
           <sphereGeometry args={[0.3, 32, 32]} />
-          <meshBasicMaterial color="#61ee61" />
+          <meshBasicMaterial 
+          color="#61ee61"
+          
+          />
         </mesh>
         <mesh position={[0, -0.4, 0]} rotation-x={-Math.PI / 2}>
           <planeGeometry args={[4, 4]} />

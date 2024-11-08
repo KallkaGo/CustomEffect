@@ -6,13 +6,13 @@ import { DualBlurEffect } from "./items/DualBlurEffect";
 import { BloomEffect } from "./items/BloomEffect";
 import { GTToneMapping } from "./items/GTToneMapping";
 import React from "react";
-import { Color, Group } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { GaussianBlurEffect } from "./items/GaussianBlur";
 import { DiffusionEffect } from "./items/Diffusion";
 import { RetroEffect } from "./items/RetroEffect";
 import { PaintEffect } from "./items/PaintEffect";
 import { BaseScene } from "./base/BaseScene";
+import { DitheredTranparency } from "./base/DitheredTranparency";
 import plantSrc from "@models/plant-optimized.glb";
 import textureSrc from "@textures/waterColor.png";
 
@@ -33,6 +33,7 @@ const Sketch = () => {
       value: "original",
       options: [
         "original",
+        "ditheredTransparency",
         "dualblur",
         "gaussianblur",
         "diffusion",
@@ -70,6 +71,7 @@ const Sketch = () => {
       <color attach={"background"} args={["black"]} />
 
       {sceneState.original && <BaseScene />}
+      {sceneState.ditheredTransparency && <DitheredTranparency />}
 
       {effects.map(({ condition, component }, index) => {
         return condition ? (

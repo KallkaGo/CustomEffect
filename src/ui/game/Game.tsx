@@ -22,6 +22,9 @@ const Game = () => {
   });
   const [activeIndex, setActiveIndex] = useState(0);
   const original = useSceneStore((state) => state.original);
+  const ditheredTransparency = useSceneStore(
+    (state) => state.ditheredTransparency
+  );
 
   useGSAP(() => {
     gsap.set(gameRef.current, { opacity: 0 });
@@ -65,7 +68,7 @@ const Game = () => {
     baseParam.current.curPos = e.clientX;
     const left = e.clientX / innerWidth;
     sliderRef.current!.style.left = `${left * 100}%`;
-    useInteractStore.setState({ sliderPos: left});
+    useInteractStore.setState({ sliderPos: left });
   };
 
   return (
@@ -80,7 +83,9 @@ const Game = () => {
         <div
           className="slider-line"
           ref={sliderRef}
-          style={{ display: `${original ? "none" : "flex"}` }}
+          style={{
+            display: `${original || ditheredTransparency ? "none" : "flex"}`,
+          }}
         >
           <div className="line"></div>
           <div className="slider-container" onPointerDown={handlePointerDown}>
