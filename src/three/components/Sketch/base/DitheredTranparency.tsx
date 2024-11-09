@@ -4,6 +4,7 @@ import {
   Group,
   MeshBasicMaterial,
   MeshStandardMaterial,
+  MeshToonMaterial,
   RepeatWrapping,
   Uniform,
   Vector2,
@@ -34,7 +35,7 @@ const DitheredTranparency = () => {
   );
 
   useControls("Dither", {
-    factor: {
+    alphaThreshold: {
       value: 1,
       min: 0,
       max: 1,
@@ -56,9 +57,9 @@ const DitheredTranparency = () => {
       gsap.killTweensOf(uniforms.uFactor);
       gsap.set(uniforms.uFactor, {
         value: 1,
-      })
+      });
       if (!isAni) return;
-      
+
       gsap.to(uniforms.uFactor, {
         keyframes: [
           { value: 0, duration: 0.9, ease: "power1.inOut" },
@@ -74,8 +75,10 @@ const DitheredTranparency = () => {
     <>
       <mesh position={[-1, 0, 0]}>
         <sphereGeometry args={[0.5, 64, 64]} />
+        <ambientLight  />
+        <directionalLight position={[6, 4, 5]} />
         <CustomShaderMaterial
-          baseMaterial={MeshBasicMaterial}
+          baseMaterial={MeshToonMaterial}
           color={"#ebcc4b"}
           uniforms={uniforms}
           vertexShader={commonVeretx}
@@ -87,7 +90,7 @@ const DitheredTranparency = () => {
       <mesh position={[1, 0, 0]}>
         <sphereGeometry args={[0.5, 64, 64]} />
         <CustomShaderMaterial
-          baseMaterial={MeshBasicMaterial}
+          baseMaterial={MeshToonMaterial}
           color={"#61ee61"}
           silent
           uniforms={uniforms}
