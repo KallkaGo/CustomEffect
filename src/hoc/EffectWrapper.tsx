@@ -2,7 +2,7 @@ import { EffectComposer } from "@react-three/postprocessing";
 import { FC, useEffect, useRef } from "react";
 import { Color, HalfFloatType } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useInteractStore } from "@utils/Store";
+import { useInteractStore, useLoadedStore } from "@utils/Store";
 
 interface IComponents {
   component: FC;
@@ -13,6 +13,10 @@ const EffectWrapper = (components: IComponents[]) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const gl = useThree((state) => state.gl);
+
+    useEffect(() => {
+      useLoadedStore.setState({ ready: true });
+    }, []);
 
     useEffect(() => {
       const composer = composerRef.current;
@@ -51,7 +55,11 @@ const EffectWrapper = (components: IComponents[]) => {
           disableNormalPass
         >
           {components.map((item, index) => (
-            <item.component key={`Effect_${index}`} index={index} {...item.props} />
+            <item.component
+              key={`Effect_${index}`}
+              index={index}
+              {...item.props}
+            />
           ))}
         </EffectComposer>
       </>

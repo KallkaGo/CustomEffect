@@ -1,9 +1,14 @@
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useLoadedStore } from "@utils/Store";
+import { useEffect, useRef } from "react";
 import { Group } from "three";
 
 const BaseScene = () => {
   const groupRef = useRef<Group>(null);
+
+  useEffect(() => {
+    useLoadedStore.setState({ ready: true });
+  }, []);
 
   useFrame((state, delta) => {
     delta %= 1;
@@ -20,10 +25,7 @@ const BaseScene = () => {
 
         <mesh position={[1, 0, 0]}>
           <sphereGeometry args={[0.3, 32, 32]} />
-          <meshBasicMaterial 
-          color="#61ee61"
-          
-          />
+          <meshBasicMaterial color="#61ee61" />
         </mesh>
         <mesh position={[0, -0.4, 0]} rotation-x={-Math.PI / 2}>
           <planeGeometry args={[4, 4]} />

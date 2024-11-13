@@ -1,16 +1,18 @@
 import {
+  FC,
   PointerEvent as IPointerEvent,
   useEffect,
   useRef,
   useState,
 } from "react";
+import { IProps } from "../types";
 
 import { useGameStore, useInteractStore, useSceneStore } from "@utils/Store";
 import { GameWrapper } from "./style";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-const Game = () => {
+const Game: FC<IProps> = ({ emit }) => {
   const controlRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -20,8 +22,9 @@ const Game = () => {
     startPos: 0,
     curPos: 0,
   });
-  const [activeIndex, setActiveIndex] = useState(0);
+
   const original = useSceneStore((state) => state.original);
+  const transfer = useGameStore((state) => state.transfer);
   const ditheredTransparency = useSceneStore(
     (state) => state.ditheredTransparency
   );
@@ -41,6 +44,14 @@ const Game = () => {
   useEffect(() => {
     useInteractStore.setState({ controlDom: controlRef.current! });
   }, []);
+
+  useEffect(() => {
+    if (transfer) {
+      useGameStore.setState({ transfer: false });
+      emit("show-load");
+      emit("hide-game");
+    }
+  }, [transfer]);
 
   const handlePointerEvent = (e: IPointerEvent, flag: boolean) => {
     console.log(e.type, flag);
@@ -84,7 +95,7 @@ const Game = () => {
           className="slider-line"
           ref={sliderRef}
           style={{
-            display: `${original || ditheredTransparency ? "none" : "flex"}`,
+            display: `${original || ditheredTransparency ? "none" : "flex"}`
           }}
         >
           <div className="line"></div>

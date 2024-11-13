@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Group,
   MeshBasicMaterial,
@@ -18,6 +18,7 @@ import noDitherTextureFragment from "./shader/noDitherTexture.glsl";
 import { useControls } from "leva";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useLoadedStore } from "@utils/Store";
 
 const DitheredTranparency = () => {
   const ditherTexture = useTexture(textureSrc);
@@ -33,6 +34,10 @@ const DitheredTranparency = () => {
     }),
     []
   );
+
+  useEffect(() => {
+    useLoadedStore.setState({ ready: true });
+  }, []);
 
   useControls("Dither", {
     alphaThreshold: {
@@ -75,7 +80,7 @@ const DitheredTranparency = () => {
     <>
       <mesh position={[-1, 0, 0]}>
         <sphereGeometry args={[0.5, 64, 64]} />
-        <ambientLight  />
+        <ambientLight />
         <directionalLight position={[6, 4, 5]} />
         <CustomShaderMaterial
           baseMaterial={MeshToonMaterial}

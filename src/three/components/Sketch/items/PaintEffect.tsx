@@ -2,22 +2,21 @@ import { EffectWrapper } from "@/hoc/EffectWrapper";
 import Kuwahara from "../../Effect/Kuwahara";
 import { useControls } from "leva";
 import { useGLTF, useTexture } from "@react-three/drei";
-import modelSrc from "@models/plant-optimized.glb";
+import modelSrc from "@models/greenhouse_opt.glb";
 import textureSrc from "@textures/waterColor.png";
 import QuantizationAndToneMap from "../../Effect/QuantizationAndToneMap";
 import { SMAA } from "@react-three/postprocessing";
 import { EdgeDetectionMode, SMAAPreset } from "postprocessing";
+import useKTX2Loader from "@utils/useKTX2Loader";
 
 const Plant = () => {
-  const { scene } = useGLTF(modelSrc);
+  const { scene } = useKTX2Loader(modelSrc, false, true);
 
   return (
     <>
       <color attach="background" args={["#3386E0"]} />
-      <group rotation={[0, 0, 0]} position={[0, -1.5, 0]} scale={1.5}>
+      <group rotation={[0, 0, 0]} scale={0.2}>
         <primitive object={scene} />
-        <ambientLight intensity={1.25} />
-        <directionalLight position={[15, 10, -5.95]} intensity={5.0} />
       </group>
     </>
   );

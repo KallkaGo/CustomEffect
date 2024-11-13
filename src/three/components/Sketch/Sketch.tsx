@@ -1,6 +1,11 @@
 import { OrbitControls, useGLTF, useTexture } from "@react-three/drei";
-import { useInteractStore, useLoadedStore, useSceneStore } from "@utils/Store";
-import { useEffect, useRef } from "react";
+import {
+  useGameStore,
+  useInteractStore,
+  useLoadedStore,
+  useSceneStore,
+} from "@utils/Store";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useControls } from "leva";
 import { DualBlurEffect } from "./items/DualBlurEffect";
 import { BloomEffect } from "./items/BloomEffect";
@@ -22,11 +27,7 @@ useTexture.preload(textureSrc);
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
   const sceneState = useSceneStore();
-  const scene = useThree((state) => state.scene);
-
-  useEffect(() => {
-    useLoadedStore.setState({ ready: true });
-  }, []);
+  const initiale = useRef(true);
 
   useControls("Effect", {
     effect: {
@@ -43,6 +44,12 @@ const Sketch = () => {
         "paint",
       ],
       onChange: (value) => {
+        if (initiale.current) {
+          initiale.current = false;
+          return;
+        }
+        useGameStore.setState({ transfer: true });
+        useInteractStore.setState({ sliderPos: 0.5 });
         const state = useSceneStore.getState();
         for (const key in state) {
           if (key === value) {

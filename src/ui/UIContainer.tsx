@@ -43,7 +43,7 @@ export default function UIContainer() {
   return (
     <>
       <UIWrapper id="panel" ref={container} onPointerUp={handlePointerUp}>
-        {state.game && <Game />}
+        {state.game && <Game emit={handleEmit} />}
         {state.load && <Load emit={handleEmit} />}
       </UIWrapper>
     </>
