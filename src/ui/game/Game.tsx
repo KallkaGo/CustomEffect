@@ -23,6 +23,7 @@ const Game: FC<IProps> = ({ emit }) => {
     curPos: 0,
   });
 
+  const sliderPos = useInteractStore((state) => state.sliderPos);
   const original = useSceneStore((state) => state.original);
   const transfer = useGameStore((state) => state.transfer);
   const ditheredTransparency = useSceneStore(
@@ -94,7 +95,8 @@ const Game: FC<IProps> = ({ emit }) => {
           className="slider-line"
           ref={sliderRef}
           style={{
-            display: `${original || ditheredTransparency ? "none" : "flex"}`
+            display: `${original || ditheredTransparency ? "none" : "flex"}`,
+            left: `${sliderPos * 100}%`,
           }}
         >
           <div className="line"></div>
