@@ -17,17 +17,12 @@ float getBrightness(vec3 color) {
   return dot(color, vec3(0.299, 0.587, 0.114));
 }
 
+// UFSH 2024 Tower of Fantasy share
  void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     { 
         vec4 blendcolor = texture2D(map, uv);
         vec4 baseColor = inputColor;
-
-        // 从模糊后的图像中提取暗部区域
-        float brightness = getBrightness(blendcolor.rgb);
-        vec3 resultColor = baseColor.rgb;
-        if(brightness < threshold) {
-          resultColor = mix(baseColor, blendcolor, 0.5).rgb;
-        }
+        vec3 resultColor = max(baseColor.rgb, blendcolor.rgb);
         outputColor = vec4(resultColor, baseColor.a);
     }
 `;

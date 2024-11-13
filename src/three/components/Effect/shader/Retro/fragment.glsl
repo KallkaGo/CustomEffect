@@ -74,6 +74,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   vec2 cellOffset = vec2(0, mod(floor(coord.x), 3.0) * 0.5);
 
   float ind = mod(floor(subcoord.x), 3.0);
+  //通过将遮罩颜色乘以任意因子使结果>1来增加遮罩颜色的强度
   vec3 maskColor = vec3(ind == 0.0, ind == 1.0, ind == 2.0) * 2.0;
 
   vec2 cellUv = fract(subcoord + cellOffset) * 2.0 - 1.0;

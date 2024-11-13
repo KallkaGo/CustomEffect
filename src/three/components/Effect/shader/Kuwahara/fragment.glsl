@@ -2,6 +2,10 @@ uniform int uRadius;
 
 #define SECTOR_COUNT 8
 
+#define _PI 3.14159
+
+const float perAngle = 2.0 * _PI / float(SECTOR_COUNT);
+
 vec3 sampleColor(vec2 offset) {
   vec2 coord = (gl_FragCoord.xy + offset) / resolution.xy;
   return texture2D(inputBuffer, coord).rgb;
@@ -21,12 +25,12 @@ void getSectorVarianceAndAverageColor(float angle, float radius, out vec3 avgCol
 
   for(float r = 1.0; r <= radius; r += 1.0) {
     // -8/π to 8/π
-    for(float a = -0.392699; a <= 0.392699; a += 0.196349) {
+    for(float a = -perAngle * .5; a <= perAngle * .5; a += 0.196349) {
       vec2 sampleOffset = r * vec2(cos(angle + a), sin(angle + a));
       vec3 color = sampleColor(sampleOffset);
       float weight = polynomialWeight(sampleOffset.x, sampleOffset.y, eta, lambda);
       colorSum += color * weight;
-      squaredColorSum += color * color *weight;
+      squaredColorSum += color * color * weight;
       totalWeight += weight;
     }
   }
@@ -43,7 +47,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   float sectorVariances[SECTOR_COUNT];
 
   for(int i = 0; i < SECTOR_COUNT; i++) {
-    float angle = float(i) * 6.28318 / float(SECTOR_COUNT);
+    float angle = float(i) * 2. * _PI / float(SECTOR_COUNT);
     getSectorVarianceAndAverageColor(angle, float(uRadius), sectorAvgColors[i], sectorVariances[i]);
   }
 
