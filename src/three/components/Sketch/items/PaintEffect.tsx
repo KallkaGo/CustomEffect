@@ -27,7 +27,7 @@ const PaintEffect = () => {
 
   const kuawaharaProps = useControls("Kuwahara", {
     radius: {
-      value: 3,
+      value: 2,
       min: 1,
       max: 25,
       step: 1,
