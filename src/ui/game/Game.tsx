@@ -49,7 +49,6 @@ const Game: FC<IProps> = ({ emit }) => {
     if (transfer) {
       useGameStore.setState({ transfer: false });
       emit("show-load");
-      emit("hide-game");
     }
   }, [transfer]);
 
