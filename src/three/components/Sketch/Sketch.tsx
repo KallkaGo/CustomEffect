@@ -18,11 +18,7 @@ import { RetroEffect } from "./items/RetroEffect";
 import { PaintEffect } from "./items/PaintEffect";
 import { BaseScene } from "./base/BaseScene";
 import { DitheredTranparency } from "./base/DitheredTranparency";
-import plantSrc from "@models/plant-optimized.glb";
-import textureSrc from "@textures/waterColor.png";
 
-useGLTF.preload(plantSrc);
-useTexture.preload(textureSrc);
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
