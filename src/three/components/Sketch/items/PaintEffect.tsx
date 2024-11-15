@@ -1,14 +1,16 @@
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 import Kuwahara from "../../Effect/Kuwahara";
 import { useControls } from "leva";
-import { useTexture } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import Assets from "../../RES";
 import textureSrc from "@textures/waterColor.png";
 import QuantizationAndToneMap from "../../Effect/QuantizationAndToneMap";
 import { SMAA } from "@react-three/postprocessing";
 import { EdgeDetectionMode, SMAAPreset } from "postprocessing";
-import useKTX2Loader from "@utils/useKTX2Loader";
+import { useKTX2Loader } from "@utils/useKTX2Loader";
 import { useMemo } from "react";
+
+
 
 const Model = ({ modelSrc }: { modelSrc: string }) => {
   const gltf = useKTX2Loader(modelSrc, false, true);

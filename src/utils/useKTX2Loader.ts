@@ -1,6 +1,8 @@
 import { useGLTF } from "@react-three/drei"
-import { useThree } from "@react-three/fiber";
-import { KTX2Loader } from "three-stdlib";
+import { useLoader, useThree } from "@react-three/fiber";
+import { WebGLRenderer } from "three";
+import { KTX2Loader} from "three-stdlib";
+
 
 
 const ktx2Loader = new KTX2Loader();
@@ -16,4 +18,17 @@ const useKTX2Loader = (url: string, isDraco: boolean = false, isMeshOpt: boolean
   return gltf;
 }
 
-export default useKTX2Loader; 
+
+const useKXT2PreLoad = (path: string) => {
+
+  useLoader.preload(KTX2Loader, path, (loader) => {
+    loader.setTranscoderPath("https://cdn.jsdelivr.net/gh/pmndrs/drei-assets/basis/");
+    loader.detectSupport(new WebGLRenderer());
+  });
+}
+
+
+export {
+  useKXT2PreLoad,
+  useKTX2Loader
+}; 
