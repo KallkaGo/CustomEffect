@@ -33,7 +33,10 @@ class RetroEffect extends Effect {
 
     this.uniforms
       .get("uResolution")!
-      .value.set(slidePos * innerWidth, innerHeight);
+      .value.set(
+        slidePos * innerWidth * devicePixelRatio,
+        innerHeight * devicePixelRatio
+      );
   }
 }
 
