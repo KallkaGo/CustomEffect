@@ -10,8 +10,6 @@ import { EdgeDetectionMode, SMAAPreset } from "postprocessing";
 import { useKTX2Loader } from "@utils/useKTX2Loader";
 import { useMemo } from "react";
 
-
-
 const Model = ({ modelSrc }: { modelSrc: string }) => {
   const gltf = useKTX2Loader(modelSrc, false, true);
 
@@ -51,8 +49,6 @@ const PaintEffect = () => {
     },
   });
 
-  console.log("object", modelProps);
-
   const kuawaharaProps = useControls("Kuwahara", {
     radius: {
       value: 2,
@@ -68,6 +64,7 @@ const PaintEffect = () => {
       min: 0,
       max: 5,
       step: 0.1,
+      labelL: "saturating",
     },
   });
 
