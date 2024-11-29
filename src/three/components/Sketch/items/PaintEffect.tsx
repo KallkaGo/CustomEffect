@@ -9,28 +9,31 @@ import { SMAA } from "@react-three/postprocessing";
 import { EdgeDetectionMode, SMAAPreset } from "postprocessing";
 import { useKTX2Loader } from "@utils/useKTX2Loader";
 import { useMemo } from "react";
+import { GLTF } from "three-stdlib";
+import RES from "../../RES";
 
-const Model = ({ modelSrc }: { modelSrc: string }) => {
-  const gltf = useKTX2Loader(modelSrc, false, true);
+const url = [RES.models.plant, RES.models.greenHouse];
 
-  const modelName = useMemo(() => {
-    if (modelSrc === Assets.models.plant) {
-      return "plant";
+const Model = ({ modelName }: { modelName: string }) => {
+  const [plant, greenHouse] = useKTX2Loader(url, false, true) as GLTF[];
+
+  const scene = useMemo(() => {
+    if (modelName === "plant") {
+      return plant.scene;
+    } else {
+      return greenHouse.scene;
     }
-    return "greenHouse";
-  }, [modelSrc]);
+  }, [modelName]);
 
   return (
     <>
       <color attach="background" args={["#3386E0"]} />
-      <ambientLight />
-      <directionalLight position={[6, 4, 5]} />
       <group
         rotation={[0, 0, 0]}
         position={modelName === "plant" ? [0, -1, 0] : [0, -0.5, 0]}
         scale={modelName === "plant" ? 0.7 : 0.2}
       >
-        <primitive object={gltf.scene} />
+        <primitive object={scene} />
       </group>
     </>
   );
@@ -41,10 +44,10 @@ const PaintEffect = () => {
 
   const modelProps = useControls("model", {
     url: {
-      value: Assets.models.greenHouse,
+      value: "plant",
       options: {
-        plant: Assets.models.plant,
-        greenHouse: Assets.models.greenHouse,
+        plant: "plant",
+        greenHouse: "greenHouse",
       },
     },
   });
@@ -99,7 +102,7 @@ const PaintEffect = () => {
 
   return (
     <>
-      <Model modelSrc={modelProps.url} />
+      <Model modelName={modelProps.url} />
       <Effect />
     </>
   );

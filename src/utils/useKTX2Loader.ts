@@ -1,12 +1,12 @@
 import { useGLTF } from "@react-three/drei"
 import { useLoader, useThree } from "@react-three/fiber";
 import { WebGLRenderer } from "three";
-import { KTX2Loader} from "three-stdlib";
+import { KTX2Loader } from "three-stdlib";
 
 
 
 const ktx2Loader = new KTX2Loader();
-const useKTX2Loader = (url: string, isDraco: boolean = false, isMeshOpt: boolean = false) => {
+const useKTX2Loader = (url: string | string[], isDraco: boolean = false, isMeshOpt: boolean = false) => {
   const gl = useThree((state) => state.gl);
   const useDraco = isDraco ? './libs/draco/' : false;
   const gltf = useGLTF(url, useDraco, isMeshOpt, (loader) => {
