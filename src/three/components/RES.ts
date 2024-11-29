@@ -1,4 +1,4 @@
-import plant from '@models/plant_opt.glb'
+import plant from '@models/banana_plant_opt.glb'
 import greenHouse from '@models/greenhouse_opt.glb'
 
 

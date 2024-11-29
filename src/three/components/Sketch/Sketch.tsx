@@ -18,11 +18,8 @@ import { RetroEffect } from "./items/RetroEffect";
 import { PaintEffect } from "./items/PaintEffect";
 import { BaseScene } from "./base/BaseScene";
 import { DitheredTranparency } from "./base/DitheredTranparency";
-import { useKXT2PreLoad } from "@utils/useKTX2Loader";
-import Assets from "../RES";
 
-useKXT2PreLoad(Assets.models.greenHouse);
-useGLTF.preload(Assets.models.plant);
+
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);

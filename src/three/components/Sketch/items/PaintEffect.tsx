@@ -28,7 +28,7 @@ const Model = ({ modelSrc }: { modelSrc: string }) => {
       <group
         rotation={[0, 0, 0]}
         position={modelName === "plant" ? [0, -1, 0] : [0, -0.5, 0]}
-        scale={modelName === "plant" ? 1.5 : 0.2}
+        scale={modelName === "plant" ? 0.7 : 0.2}
       >
         <primitive object={gltf.scene} />
       </group>
