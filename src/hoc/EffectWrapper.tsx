@@ -1,21 +1,22 @@
 import { EffectComposer } from "@react-three/postprocessing";
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useLayoutEffect, useRef } from "react";
 import { Color, HalfFloatType } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useInteractStore, useLoadedStore } from "@utils/Store";
+import { useGameStore, useInteractStore, useLoadedStore } from "@utils/Store";
 
 interface IComponents {
   component: FC;
   props: any;
 }
 
-const EffectWrapper = (components: IComponents[]) => {
+const EffectWrapper = (components: IComponents[], scissor = true) => {
   return function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const gl = useThree((state) => state.gl);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       useLoadedStore.setState({ ready: true });
+      useGameStore.setState({ showSlider: scissor });
     }, []);
 
     useEffect(() => {
@@ -35,16 +36,20 @@ const EffectWrapper = (components: IComponents[]) => {
       const composer = composerRef.current;
       const sliderPos = useInteractStore.getState().sliderPos;
       gl.autoClear = true;
-      gl.setScissorTest(true);
-      gl.setScissor(0, 0, sliderPos * innerWidth - 2, innerHeight);
-      composer.render(delta);
-      gl.setScissor(
-        sliderPos * innerWidth + 2,
-        0,
-        innerWidth - sliderPos * innerWidth + 2,
-        innerHeight
-      );
-      gl.render(state.scene, state.camera);
+      if (scissor) {
+        gl.setScissorTest(true);
+        gl.setScissor(0, 0, sliderPos * innerWidth - 2, innerHeight);
+        composer.render(delta);
+        gl.setScissor(
+          sliderPos * innerWidth + 2,
+          0,
+          innerWidth - sliderPos * innerWidth + 2,
+          innerHeight
+        );
+        gl.render(state.scene, state.camera);
+      } else {
+        composer.render(delta);
+      }
     }, 1);
 
     return (

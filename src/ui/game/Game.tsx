@@ -24,11 +24,8 @@ const Game: FC<IProps> = ({ emit }) => {
   });
 
   const sliderPos = useInteractStore((state) => state.sliderPos);
-  const original = useSceneStore((state) => state.original);
+  const showSlider = useGameStore((state) => state.showSlider);
   const transfer = useGameStore((state) => state.transfer);
-  const ditheredTransparency = useSceneStore(
-    (state) => state.ditheredTransparency
-  );
 
   useGSAP(() => {
     gsap.set(gameRef.current, { opacity: 0 });
@@ -95,7 +92,7 @@ const Game: FC<IProps> = ({ emit }) => {
           className="slider-line"
           ref={sliderRef}
           style={{
-            display: `${original || ditheredTransparency ? "none" : "flex"}`,
+            display: `${showSlider ? "flex" : "none"}`,
             left: `${sliderPos * 100}%`,
           }}
         >

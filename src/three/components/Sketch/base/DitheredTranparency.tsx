@@ -20,7 +20,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useLoadedStore } from "@utils/Store";
 
-const DitheredTranparency = () => {
+const DitheredTransparency = () => {
   const ditherTexture = useTexture(textureSrc);
   ditherTexture.wrapS = ditherTexture.wrapT = RepeatWrapping;
 
@@ -44,7 +44,7 @@ const DitheredTranparency = () => {
       value: 1,
       min: 0,
       max: 1,
-      step: 0.1,
+      step: 0.01,
       onChange: (value) => {
         uniforms.uFactor.value = value;
       },
@@ -99,12 +99,12 @@ const DitheredTranparency = () => {
           color={"#61ee61"}
           silent
           uniforms={uniforms}
-          vertexShader={commonVeretx}
-          fragmentShader={ditherTextureFragment}
+          // vertexShader={commonVeretx}
+          // fragmentShader={ditherTextureFragment}
         />
       </mesh>
     </>
   );
 };
 
-export { DitheredTranparency };
+export { DitheredTransparency };

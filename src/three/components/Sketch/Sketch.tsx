@@ -1,25 +1,23 @@
-import { OrbitControls, useGLTF, useTexture } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import {
   useGameStore,
   useInteractStore,
   useLoadedStore,
   useSceneStore,
 } from "@utils/Store";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import {  useRef } from "react";
 import { useControls } from "leva";
 import { DualBlurEffect } from "./items/DualBlurEffect";
 import { BloomEffect } from "./items/BloomEffect";
 import { GTToneMapping } from "./items/GTToneMapping";
 import React from "react";
-import { useFrame, useThree } from "@react-three/fiber";
 import { GaussianBlurEffect } from "./items/GaussianBlur";
 import { DiffusionEffect } from "./items/Diffusion";
 import { RetroEffect } from "./items/RetroEffect";
 import { PaintEffect } from "./items/PaintEffect";
 import { BaseScene } from "./base/BaseScene";
-import { DitheredTranparency } from "./base/DitheredTranparency";
-
-
+import { DitheredTransparency } from "./base/DitheredTranparency";
+import { DistortionEffect } from "./items/Distortion";
 
 const Sketch = () => {
   const controlDom = useInteractStore((state) => state.controlDom);
@@ -39,6 +37,7 @@ const Sketch = () => {
         "gtToneMap",
         "retro",
         "paint",
+        "distortion",
       ],
       onChange: (value) => {
         if (initiale.current) {
@@ -67,6 +66,7 @@ const Sketch = () => {
     { condition: sceneState.gtToneMap, component: <GTToneMapping /> },
     { condition: sceneState.retro, component: <RetroEffect /> },
     { condition: sceneState.paint, component: <PaintEffect /> },
+    { condition: sceneState.distortion, component: <DistortionEffect /> },
   ];
 
   return (
@@ -75,7 +75,7 @@ const Sketch = () => {
       <color attach={"background"} args={["black"]} />
 
       {sceneState.original && <BaseScene />}
-      {sceneState.ditheredTransparency && <DitheredTranparency />}
+      {sceneState.ditheredTransparency && <DitheredTransparency />}
 
       {effects.map(({ condition, component }, index) => {
         return condition ? (
