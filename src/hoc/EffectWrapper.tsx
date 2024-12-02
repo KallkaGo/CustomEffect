@@ -17,6 +17,11 @@ const EffectWrapper = (components: IComponents[], scissor = true) => {
     useLayoutEffect(() => {
       useLoadedStore.setState({ ready: true });
       useGameStore.setState({ showSlider: scissor });
+
+      return () => {
+        useGameStore.setState({ showSlider: false });
+      };
+
     }, []);
 
     useEffect(() => {

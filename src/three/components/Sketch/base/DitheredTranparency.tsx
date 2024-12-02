@@ -18,7 +18,7 @@ import noDitherTextureFragment from "./shader/noDitherTexture.glsl";
 import { useControls } from "leva";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useLoadedStore } from "@utils/Store";
+import { useGameStore, useLoadedStore } from "@utils/Store";
 
 const DitheredTransparency = () => {
   const ditherTexture = useTexture(textureSrc);
@@ -37,6 +37,8 @@ const DitheredTransparency = () => {
 
   useEffect(() => {
     useLoadedStore.setState({ ready: true });
+    useGameStore.setState({ showSlider: false });
+
   }, []);
 
   useControls("Dither", {
@@ -99,8 +101,8 @@ const DitheredTransparency = () => {
           color={"#61ee61"}
           silent
           uniforms={uniforms}
-          // vertexShader={commonVeretx}
-          // fragmentShader={ditherTextureFragment}
+          vertexShader={commonVeretx}
+          fragmentShader={ditherTextureFragment}
         />
       </mesh>
     </>
