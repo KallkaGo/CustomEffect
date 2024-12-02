@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import { useInteractStore, useSceneStore } from "@utils/Store";
+import { useInteractStore} from "@utils/Store";
 import { Perf } from "r3f-perf";
 import { Leva } from "leva";
 import Sketch from "./components/Sketch/Sketch";
@@ -10,7 +10,13 @@ export default function ThreeContainer() {
   const demand = useInteractStore((state) => state.demand);
   return (
     <>
-      <Leva />
+      <Leva
+        theme={{
+          sizes: {
+            rootWidth: "350px",
+          },
+        }}
+      />
       <Canvas
         frameloop={demand ? "never" : "always"}
         className="webgl"
