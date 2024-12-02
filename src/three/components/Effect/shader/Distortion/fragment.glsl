@@ -10,7 +10,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 
   float edge = .4;
 
-  #ifdef BLEND_WIDTH_DIFFUSE
+  #ifdef BLEND_WITH_DIFFUSE
 
   edge = .3;
 

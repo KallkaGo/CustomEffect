@@ -23,7 +23,7 @@ const DistortionEffect = () => {
     animation: {
       value: true,
     },
-    blendWidthDiffuse: false,
+    blendWithDiffuse: false,
   });
 
   const Effect = EffectWrapper(

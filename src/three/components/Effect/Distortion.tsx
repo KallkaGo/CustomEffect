@@ -17,15 +17,15 @@ interface IProps {
   highLight?: Color;
   diffuse?: Texture;
   animation?: boolean;
-  blendWidthDiffuse?: boolean;
+  blendWithDiffuse?: boolean;
 }
 
 class DistortionEffect extends Effect {
   private animation: boolean;
   constructor(props: IProps) {
     super("Distortion", fragmenrShader, {
-      defines: props.blendWidthDiffuse
-        ? new Map([["BLEND_WIDTH_DIFFUSE", ""]])
+      defines: props.blendWithDiffuse
+        ? new Map([["BLEND_WITH_DIFFUSE", ""]])
         : undefined,
       uniforms: new Map<string, any>([
         ["uPorgress", new Uniform(props.porgress)],
