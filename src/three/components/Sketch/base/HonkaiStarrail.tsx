@@ -17,7 +17,6 @@ import {
 import vertexShader from "./shader/points/vertex.glsl";
 import fragmentShader from "./shader/points/fragment.glsl";
 import RES from "../../RES";
-import { time } from "console";
 import { randFloat } from "three/src/math/MathUtils.js";
 
 const NUM_POINTS = 1000;
@@ -47,6 +46,8 @@ const HonkaiStarrailScene = () => {
 
   const leftRef = useRef<Mesh>(null);
   const rightRef = useRef<Mesh>(null);
+
+  const camera = useThree((state) => state.camera);
 
   const geo = useMemo(() => {
     const indices: number[] = [];
@@ -135,6 +136,10 @@ const HonkaiStarrailScene = () => {
     leftMat.defines.NUM_SEGMENT = leftMat.uniforms.bezierPos.value.length;
     rightMat.defines.NUM_SEGMENT = rightMat.uniforms.bezierPos.value.length;
 
+    camera.position.set(0, 0, 5);
+
+    camera.lookAt(0, 0, 0);
+    
     useLoadedStore.setState({ ready: true });
     useInteractStore.setState({ controlEnable: false });
   }, []);
