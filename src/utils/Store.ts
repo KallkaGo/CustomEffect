@@ -13,6 +13,7 @@ const useInteractStore = create(() => ({
     controlDom: document.createElement("div"),  //控制器的dom
     end: false,
     sliderPos: 0.5,
+    controlEnable: true
 }));
 
 const useGameStore = create(() => ({
@@ -34,7 +35,8 @@ const useSceneStore = create(() => ({
     gtToneMap: false,
     retro: false,
     paint: false,
-    distortion: false
+    distortion: false,
+    honkaiStarrail: false
 }));
 
 const useLoadedStore = create(() => ({

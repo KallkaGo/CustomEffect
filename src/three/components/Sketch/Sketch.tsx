@@ -5,7 +5,7 @@ import {
   useLoadedStore,
   useSceneStore,
 } from "@utils/Store";
-import {  useRef } from "react";
+import { useRef } from "react";
 import { useControls } from "leva";
 import { DualBlurEffect } from "./items/DualBlurEffect";
 import { BloomEffect } from "./items/BloomEffect";
@@ -18,9 +18,16 @@ import { PaintEffect } from "./items/PaintEffect";
 import { BaseScene } from "./base/BaseScene";
 import { DitheredTransparency } from "./base/DitheredTranparency";
 import { DistortionEffect } from "./items/Distortion";
+import { useShallow } from "zustand/react/shallow";
+import { HonkaiStarrailScene } from "./base/HonkaiStarrail";
 
 const Sketch = () => {
-  const controlDom = useInteractStore((state) => state.controlDom);
+  const { controlDom, controlEnable } = useInteractStore(
+    useShallow((state) => ({
+      controlEnable: state.controlEnable,
+      controlDom: state.controlDom,
+    }))
+  );
   const sceneState = useSceneStore();
   const initiale = useRef(true);
 
@@ -38,6 +45,7 @@ const Sketch = () => {
         "retro",
         "paint",
         "distortion",
+        "honkaiStarrail",
       ],
       onChange: (value) => {
         if (initiale.current) {
@@ -71,11 +79,12 @@ const Sketch = () => {
 
   return (
     <>
-      <OrbitControls domElement={controlDom} />
+      <OrbitControls domElement={controlDom} enabled={controlEnable} />
       <color attach={"background"} args={["black"]} />
 
       {sceneState.original && <BaseScene />}
       {sceneState.ditheredTransparency && <DitheredTransparency />}
+      {sceneState.honkaiStarrail && <HonkaiStarrailScene />}
 
       {effects.map(({ condition, component }, index) => {
         return condition ? (

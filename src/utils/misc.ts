@@ -1,6 +1,6 @@
 import { type ObjectMap } from "@react-three/fiber";
 import { type GLTF } from 'three-stdlib';
-import { Mesh, Object3D } from 'three';
+import {  Mesh, Object3D } from 'three';
 
 // 打印扁平模型的所有部分
 const printModel = (modelParts: Object3D[], modelName = "modelParts") => {
@@ -79,7 +79,10 @@ function getGaussianKernelWeights(size: number, sigma: number = 0.84089642) {
   return weightArr;
 }
 
+
+
 export {
+
   getGaussianKernelWeights,
   calculateGaussianKernel,
   generateGaussianKernel2D,
