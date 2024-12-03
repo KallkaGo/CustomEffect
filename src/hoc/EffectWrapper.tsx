@@ -16,6 +16,7 @@ const EffectWrapper = (components: IComponents[], scissor = true) => {
 
     useLayoutEffect(() => {
       useLoadedStore.setState({ ready: true });
+      useInteractStore.setState({ controlEnable: true });
       useGameStore.setState({ showSlider: scissor });
 
       return () => {
