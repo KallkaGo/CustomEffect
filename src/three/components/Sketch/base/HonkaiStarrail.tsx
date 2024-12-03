@@ -144,7 +144,6 @@ const HonkaiStarrailScene = () => {
     commonuniforms.time.value += delta;
     commonuniforms.progress.value +=
       0.03 * (0.8 - commonuniforms.progress.value);
-    console.log("commonuniforms.progress.value", commonuniforms.progress.value);
   });
 
   return (
