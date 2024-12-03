@@ -2,7 +2,6 @@ import { OrbitControls } from "@react-three/drei";
 import {
   useGameStore,
   useInteractStore,
-  useLoadedStore,
   useSceneStore,
 } from "@utils/Store";
 import { useRef } from "react";
@@ -20,6 +19,7 @@ import { DitheredTransparency } from "./base/DitheredTranparency";
 import { DistortionEffect } from "./items/Distortion";
 import { useShallow } from "zustand/react/shallow";
 import { HonkaiStarrailScene } from "./base/HonkaiStarrail";
+import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 const Sketch = () => {
   const { controlDom, controlEnable } = useInteractStore(
@@ -30,6 +30,8 @@ const Sketch = () => {
   );
   const sceneState = useSceneStore();
   const initiale = useRef(true);
+
+  const OrbitControlsRef = useRef<OrbitControlsImpl>(null);
 
   useControls("Effect", {
     effect: {
@@ -62,6 +64,7 @@ const Sketch = () => {
             useSceneStore.setState({ [key]: false });
           }
         }
+        OrbitControlsRef.current?.reset();
       },
     },
   });
@@ -79,7 +82,11 @@ const Sketch = () => {
 
   return (
     <>
-      <OrbitControls domElement={controlDom} enabled={controlEnable} />
+      <OrbitControls
+        domElement={controlDom}
+        enabled={controlEnable}
+        ref={OrbitControlsRef}
+      />
       <color attach={"background"} args={["black"]} />
 
       {sceneState.original && <BaseScene />}
