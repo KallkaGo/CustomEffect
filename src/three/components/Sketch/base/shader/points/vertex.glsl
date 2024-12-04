@@ -25,7 +25,7 @@ void main() {
   // Because we need to take two points later
   const float numSegment = float(NUM_SEGMENT) - 2.;
 
-  float nowTime = fract(time * rnd.x + start.y * 5.);
+  float nowTime = fract(time * rnd.x + start.y * 4.);
 
   int i0 = int(nowTime * numSegment);
   int i1 = i0 + 1;
@@ -38,7 +38,7 @@ void main() {
   int vertex_ID = vertexFB_ID % POINTS_VERTICES;
 
   int xTest = vertex_ID & 0x1;
-  int zTest = (vertexFB_ID >= POINTS_VERTICES) ? 1 : -1;
+  int zTest = (vertexFB_ID >= POINTS_VERTICES) ? -1 : 1;
 
   float xSide = float(xTest);
   float zSide = float(zTest);

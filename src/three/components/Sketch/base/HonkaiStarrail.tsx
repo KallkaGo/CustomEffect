@@ -3,11 +3,9 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useInteractStore, useLoadedStore } from "@utils/Store";
 import { useEffect, useMemo, useRef } from "react";
 import {
-  Group,
   InstancedBufferAttribute,
   InstancedBufferGeometry,
   Mesh,
-  PlaneGeometry,
   ShaderMaterial,
   SRGBColorSpace,
   Uniform,
@@ -18,6 +16,9 @@ import vertexShader from "./shader/points/vertex.glsl";
 import fragmentShader from "./shader/points/fragment.glsl";
 import RES from "../../RES";
 import { randFloat } from "three/src/math/MathUtils.js";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { useShallow } from "zustand/react/shallow";
 
 const NUM_POINTS = 1000;
 const POINTS_SEGEMNTS = 1;
@@ -46,8 +47,17 @@ const HonkaiStarrailScene = () => {
 
   const leftRef = useRef<Mesh>(null);
   const rightRef = useRef<Mesh>(null);
+  const logoRef = useRef<Mesh>(null);
+  const baseParams = useRef({
+    time: 0,
+  });
 
-  const camera = useThree((state) => state.camera);
+  const { camera, gl } = useThree(
+    useShallow((state) => ({
+      camera: state.camera,
+      gl: state.gl,
+    }))
+  );
 
   const geo = useMemo(() => {
     const indices: number[] = [];
@@ -126,6 +136,50 @@ const HonkaiStarrailScene = () => {
     []
   );
 
+  useGSAP(
+    () => {
+      const tl = gsap.timeline();
+
+      tl.set(logoRef.current!.material, { opacity: 0 }).set(
+        logoRef.current!.position,
+        { x: 0, y: 0, z: -50 }
+      );
+
+      tl.to(logoRef.current!.material, {
+        opacity: 1,
+        duration: 0.5,
+        ease: "power1.inOut",
+        delay: 1.5,
+      })
+        .to(
+          logoRef.current!.position,
+          {
+            z: -1,
+            duration: 0.5,
+            ease: "back.inOut",
+            delay: 1.5,
+          },
+          0
+        )
+        .fromTo(
+          logoRef.current!.rotation,
+          {
+            x: 1,
+            y: 1,
+          },
+          {
+            x: 0,
+            y: 0,
+            duration: 1,
+            ease: "back.inOut",
+            delay: 1.5,
+          },
+          0
+        );
+    },
+    { dependencies: [] }
+  );
+
   useEffect(() => {
     const leftPoints = leftRef.current;
     const rightPoints = rightRef.current;
@@ -139,21 +193,30 @@ const HonkaiStarrailScene = () => {
     camera.position.set(0, 0, 5);
 
     camera.lookAt(0, 0, 0);
-    
+
+    gl.setPixelRatio(2);
+
     useLoadedStore.setState({ ready: true });
     useInteractStore.setState({ controlEnable: false });
+
+    return () => {
+      gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    };
   }, []);
 
   useFrame((state, delta) => {
     delta %= 1;
-    commonuniforms.time.value += delta;
-    commonuniforms.progress.value +=
-      0.03 * (0.8 - commonuniforms.progress.value);
+    baseParams.current.time += delta;
+    if (baseParams.current.time > 2) {
+      commonuniforms.time.value += delta;
+      commonuniforms.progress.value +=
+        0.03 * (0.8 - commonuniforms.progress.value);
+    }
   });
 
   return (
     <>
-      <mesh visible={true}>
+      <mesh visible={true} ref={logoRef}>
         <planeGeometry args={[2, 2]} />
         <meshBasicMaterial map={diffuseTex} transparent depthWrite={false} />
       </mesh>
