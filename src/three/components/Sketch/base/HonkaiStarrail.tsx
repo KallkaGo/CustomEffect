@@ -142,7 +142,7 @@ const HonkaiStarrailScene = () => {
 
       tl.set(logoRef.current!.material, { opacity: 0 }).set(
         logoRef.current!.position,
-        { x: 0, y: 0, z: -50 }
+        { x: 0, y: 0, z: -2 }
       );
 
       tl.to(logoRef.current!.material, {
