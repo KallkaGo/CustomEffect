@@ -149,7 +149,7 @@ const HonkaiStarrailScene = () => {
         opacity: 1,
         duration: 0.5,
         ease: "power1.inOut",
-        delay: 1.5,
+        delay: 1.34,
       })
         .to(
           logoRef.current!.position,
@@ -157,7 +157,7 @@ const HonkaiStarrailScene = () => {
             z: -1,
             duration: 0.5,
             ease: "back.inOut",
-            delay: 1.5,
+            delay: 1.34,
           },
           0
         )
@@ -172,7 +172,7 @@ const HonkaiStarrailScene = () => {
             y: 0,
             duration: 1,
             ease: "back.inOut",
-            delay: 1.5,
+            delay: 1.34,
           },
           0
         );
