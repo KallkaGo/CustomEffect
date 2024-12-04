@@ -1,7 +1,7 @@
 import { useTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useInteractStore, useLoadedStore } from "@utils/Store";
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import {
   InstancedBufferAttribute,
   InstancedBufferGeometry,
@@ -24,19 +24,18 @@ const NUM_POINTS = 1000;
 const POINTS_SEGEMNTS = 1;
 const POINTS_VERTICES = (POINTS_SEGEMNTS + 1) * 2;
 
-const createUniforms = (dir: number) =>
-  new Uniform([
-    new Vector3(7 * dir, 0, 0),
-    new Vector3(5.5 * dir, 0, 0),
-    new Vector3(3.5 * dir, 0, 0),
-    new Vector3(2.5 * dir, 0, 0),
-    new Vector3(1.3 * dir, 0 * dir, 0),
-    new Vector3(0.7 * dir, 0.7 * dir, 0),
-    new Vector3(0, 1 * dir, 0),
-    new Vector3(-0.7 * dir, 0.7 * dir, 0),
-    new Vector3(-1 * dir, 0, 0),
-    new Vector3(-1 * dir, 0, 0),
-  ]);
+const getBezierPos = (dir: number) => [
+  new Vector3(7 * dir, 0, 0),
+  new Vector3(5.5 * dir, 0, 0),
+  new Vector3(3.5 * dir, 0, 0),
+  new Vector3(2.5 * dir, 0, 0),
+  new Vector3(1.3 * dir, 0 * dir, 0),
+  new Vector3(0.7 * dir, 0.7 * dir, 0),
+  new Vector3(0, 1 * dir, 0),
+  new Vector3(-0.7 * dir, 0.7 * dir, 0),
+  new Vector3(-1 * dir, 0, 0),
+  new Vector3(-1 * dir, 0, 0),
+];
 
 const HonkaiStarrailScene = () => {
   const [diffuseTex, particleTex] = useTexture([
@@ -89,11 +88,11 @@ const HonkaiStarrailScene = () => {
 
     for (let i = 0; i < NUM_POINTS; i++) {
       startArr[3 * i] = (Math.random() - 0.5) * 0.5;
-      startArr[3 * i + 1] = (Math.random() - 0.5) * 0.25;
+      startArr[3 * i + 1] = (Math.random() - 0.5) * 0.3;
       startArr[3 * i + 2] = (Math.random() - 0.5) * 0.25;
 
       endArr[3 * i] = (Math.random() - 0.5) * 0.5;
-      endArr[3 * i + 1] = (Math.random() - 0.5) * 0.25;
+      endArr[3 * i + 1] = (Math.random() - 0.5) * 0.3;
       endArr[3 * i + 2] = (Math.random() - 0.5) * 0.25;
 
       rndArr[3 * i] = 0.15 * Math.random() + 0.1;
@@ -123,7 +122,7 @@ const HonkaiStarrailScene = () => {
   const leftuniforms = useMemo(
     () => ({
       ...commonuniforms,
-      bezierPos: createUniforms(-1),
+      bezierPos: new Uniform(getBezierPos(-1)),
     }),
     []
   );
@@ -131,7 +130,7 @@ const HonkaiStarrailScene = () => {
   const rightuniforms = useMemo(
     () => ({
       ...commonuniforms,
-      bezierPos: createUniforms(1),
+      bezierPos: new Uniform(getBezierPos(1)),
     }),
     []
   );
@@ -140,19 +139,24 @@ const HonkaiStarrailScene = () => {
     () => {
       const tl = gsap.timeline();
 
-      tl.set(logoRef.current!.material, { opacity: 0 }).set(
-        logoRef.current!.position,
-        { x: 0, y: 0, z: -2 }
-      );
+      const material = logoRef.current!.material;
+      const position = logoRef.current!.position;
+      const rotation = logoRef.current!.rotation;
 
-      tl.to(logoRef.current!.material, {
+      tl.set(material, { opacity: 0 }).set(position, {
+        x: 0,
+        y: 0,
+        z: -2,
+      });
+
+      tl.to(material, {
         opacity: 1,
         duration: 0.5,
         ease: "power1.inOut",
         delay: 1.34,
       })
         .to(
-          logoRef.current!.position,
+          position,
           {
             z: -1,
             duration: 0.5,
@@ -162,7 +166,7 @@ const HonkaiStarrailScene = () => {
           0
         )
         .fromTo(
-          logoRef.current!.rotation,
+          rotation,
           {
             x: 1,
             y: 1,
@@ -211,6 +215,10 @@ const HonkaiStarrailScene = () => {
       commonuniforms.time.value += delta;
       commonuniforms.progress.value +=
         0.03 * (0.8 - commonuniforms.progress.value);
+      // commonuniforms.progress.value = Math.min(
+      //   commonuniforms.progress.value + delta,
+      //   0.8
+      // );
     }
   });
 

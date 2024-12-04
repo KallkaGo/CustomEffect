@@ -63,7 +63,7 @@ void main() {
   // 4.8 - 4 = (nowTime - p0) * 8
   vec3 nextPoint = quadraticBezier(startPoint, bezierPos[i1], endPoint, (nowTime - p0) * numSegment);
 
-  vec3 newPosition = nextPoint + vec3(rotate(pointsLocalPosition.xy, nowTime * 15.) * rnd.z, 0.) + mix(start, end, sin(nowTime * 6.) * .5 + .5) * mix(.2, 1.5, smoothstep(.3, 1., nowTime + rnd.y));
+  vec3 newPosition = nextPoint + vec3(rotate(pointsLocalPosition.xy, nowTime * 15.) * rnd.z, 0.) + mix(start, end, remap(sin(nowTime * PI * 1.5), -1., 1., 0., 1.)) * mix(.2, 1.5, smoothstep(.3, 1., nowTime + rnd.y));
 
   alpha = smoothstep(0., .5, sin(nowTime * PI)) * rnd.z * (1. - smoothstep(progress - .3, progress, nowTime));
 
