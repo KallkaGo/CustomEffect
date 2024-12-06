@@ -123,6 +123,7 @@ const HonkaiStarrailScene = () => {
     () => ({
       ...commonuniforms,
       bezierPos: new Uniform(getBezierPos(-1)),
+      dir: new Uniform(-1),
     }),
     []
   );
@@ -131,6 +132,7 @@ const HonkaiStarrailScene = () => {
     () => ({
       ...commonuniforms,
       bezierPos: new Uniform(getBezierPos(1)),
+      dir: new Uniform(1),
     }),
     []
   );
