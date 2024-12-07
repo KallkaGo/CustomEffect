@@ -1,5 +1,10 @@
 import { OrbitControls } from "@react-three/drei";
-import { useGameStore, useInteractStore, useSceneStore } from "@utils/Store";
+import {
+  useGameStore,
+  useInteractStore,
+  useLoadedStore,
+  useSceneStore,
+} from "@utils/Store";
 import { useRef, useMemo } from "react";
 import { useControls } from "leva";
 import DualBlurEffect from "./items/DualBlurEffect";
@@ -49,6 +54,7 @@ const Sketch = () => {
           return;
         }
         useGameStore.setState({ transfer: true });
+        useLoadedStore.setState({ ready: false });
         useInteractStore.setState({ sliderPos: 0.5 });
 
         useSceneStore.setState(

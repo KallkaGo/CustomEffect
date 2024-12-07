@@ -2,7 +2,7 @@ import { EffectComposer } from "@react-three/postprocessing";
 import { FC, memo, useEffect, useLayoutEffect, useRef } from "react";
 import { Color, HalfFloatType } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useGameStore, useInteractStore, useLoadedStore } from "@utils/Store";
+import { useGameStore, useInteractStore } from "@utils/Store";
 
 interface IComponents {
   component: FC;
