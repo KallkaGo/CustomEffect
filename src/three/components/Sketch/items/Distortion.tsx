@@ -7,6 +7,7 @@ import { SRGBColorSpace } from "three";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useGameStore } from "@utils/Store";
+import { Lifecycle } from "@/hoc/LifeCycle";
 
 const DistortionEffect = () => {
   const diffuseTex = useTexture(RES.textures.firefly);
@@ -26,18 +27,15 @@ const DistortionEffect = () => {
     blendWithDiffuse: false,
   });
 
-  const Effect = EffectWrapper(
-    [
-      {
-        component: Distortion,
-        props: {
-          ...props,
-          diffuse: diffuseTex,
-        },
+  const Effect = EffectWrapper([
+    {
+      component: Distortion,
+      props: {
+        ...props,
+        diffuse: diffuseTex,
       },
-    ],
-    false
-  );
+    },
+  ]);
 
   useGSAP(
     () => {
@@ -68,4 +66,4 @@ const DistortionEffect = () => {
   );
 };
 
-export { DistortionEffect };
+export default Lifecycle(DistortionEffect, false);

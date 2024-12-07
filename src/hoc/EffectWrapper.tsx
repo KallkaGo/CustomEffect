@@ -1,5 +1,5 @@
 import { EffectComposer } from "@react-three/postprocessing";
-import { FC, useEffect, useLayoutEffect, useRef } from "react";
+import { FC, memo, useEffect, useLayoutEffect, useRef } from "react";
 import { Color, HalfFloatType } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGameStore, useInteractStore, useLoadedStore } from "@utils/Store";
@@ -9,21 +9,10 @@ interface IComponents {
   props: any;
 }
 
-const EffectWrapper = (components: IComponents[], scissor = true) => {
-  return function HighOrderComponent() {
+const EffectWrapper = (components: IComponents[]) => {
+  return memo(function HighOrderComponent() {
     const composerRef = useRef<any>(null);
     const gl = useThree((state) => state.gl);
-
-    useLayoutEffect(() => {
-      useLoadedStore.setState({ ready: true });
-      useInteractStore.setState({ controlEnable: true });
-      useGameStore.setState({ showSlider: scissor });
-
-      return () => {
-        useGameStore.setState({ showSlider: false });
-      };
-
-    }, []);
 
     useEffect(() => {
       const composer = composerRef.current;
@@ -42,6 +31,7 @@ const EffectWrapper = (components: IComponents[], scissor = true) => {
       const composer = composerRef.current;
       const sliderPos = useInteractStore.getState().sliderPos;
       gl.autoClear = true;
+      const scissor = useGameStore.getState().showSlider;
       if (scissor) {
         gl.setScissorTest(true);
         gl.setScissor(0, 0, sliderPos * innerWidth - 2, innerHeight);
@@ -75,7 +65,7 @@ const EffectWrapper = (components: IComponents[], scissor = true) => {
         </EffectComposer>
       </>
     );
-  };
+  });
 };
 
 export { EffectWrapper };

@@ -6,6 +6,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Color, Group, Vector3 } from "three";
 import { ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
+import { Lifecycle } from "@/hoc/LifeCycle";
 
 const ROW = new Array(5).fill(0);
 const COLUMN = new Array(3).fill(0);
@@ -113,4 +114,4 @@ const BloomEffect = () => {
   );
 };
 
-export { BloomEffect };
+export default Lifecycle(BloomEffect);

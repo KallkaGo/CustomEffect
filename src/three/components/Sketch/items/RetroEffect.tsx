@@ -2,6 +2,7 @@ import Retro from "../../Effect/Retro";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 import { BaseScene } from "../base/BaseScene";
+import { Lifecycle } from "@/hoc/LifeCycle";
 
 const RetroEffect = () => {
   const props = useControls("Retro", {
@@ -41,4 +42,4 @@ const RetroEffect = () => {
   );
 };
 
-export { RetroEffect };
+export default Lifecycle(RetroEffect);

@@ -11,19 +11,14 @@ import { useKTX2Loader } from "@utils/useKTX2Loader";
 import { useMemo } from "react";
 import { GLTF } from "three-stdlib";
 import RES from "../../RES";
-
-const url = [RES.models.plant, RES.models.greenHouse];
+import { Lifecycle } from "@/hoc/LifeCycle";
 
 const Model = ({ modelName }: { modelName: string }) => {
-  const [plant, greenHouse] = useKTX2Loader(url, false, true) as GLTF[];
-
-  const scene = useMemo(() => {
-    if (modelName === "plant") {
-      return plant.scene;
-    } else {
-      return greenHouse.scene;
-    }
-  }, [modelName]);
+  const [plant, greenHouse] = useKTX2Loader(
+    [RES.models.plant, RES.models.greenHouse],
+    false,
+    true
+  ) as GLTF[];
 
   return (
     <>
@@ -33,7 +28,9 @@ const Model = ({ modelName }: { modelName: string }) => {
         position={modelName === "plant" ? [0, -1, 0] : [0, -0.5, 0]}
         scale={modelName === "plant" ? 0.7 : 0.2}
       >
-        <primitive object={scene} />
+        <primitive
+          object={modelName === "plant" ? plant.scene : greenHouse.scene}
+        />
       </group>
     </>
   );
@@ -108,4 +105,4 @@ const PaintEffect = () => {
   );
 };
 
-export { PaintEffect };
+export default Lifecycle(PaintEffect);

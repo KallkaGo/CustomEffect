@@ -2,6 +2,7 @@ import { Diffusion } from "../../Effect/Diffusion";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 import { BaseScene } from "../base/BaseScene";
+import { Lifecycle } from "@/hoc/LifeCycle";
 
 const DiffusionEffect = () => {
   const props = useControls("Diffusion", {
@@ -16,7 +17,7 @@ const DiffusionEffect = () => {
       min: 1,
       max: 10,
       step: 1,
-    }
+    },
   });
 
   const Effect = EffectWrapper([
@@ -34,4 +35,4 @@ const DiffusionEffect = () => {
   );
 };
 
-export { DiffusionEffect };
+export default Lifecycle(DiffusionEffect);

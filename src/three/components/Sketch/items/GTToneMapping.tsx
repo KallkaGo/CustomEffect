@@ -2,6 +2,7 @@ import GTToneMap from "../../Effect/GTToneMap";
 import { useControls } from "leva";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 import { BaseScene } from "../base/BaseScene";
+import { Lifecycle } from "@/hoc/LifeCycle";
 
 const GTToneMapping = () => {
   const gtProps = useControls("ToneMapGT", {
@@ -59,4 +60,4 @@ const GTToneMapping = () => {
   );
 };
 
-export { GTToneMapping };
+export default Lifecycle(GTToneMapping);
