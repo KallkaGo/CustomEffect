@@ -7,7 +7,7 @@ import { SRGBColorSpace } from "three";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useGameStore } from "@utils/Store";
-import { Lifecycle } from "@/hoc/LifeCycle";
+import { SceneLifecycle } from "@/hoc/SceneLifecycle";
 
 const DistortionEffect = () => {
   const diffuseTex = useTexture(RES.textures.firefly);
@@ -66,4 +66,4 @@ const DistortionEffect = () => {
   );
 };
 
-export default Lifecycle(DistortionEffect, false);
+export default SceneLifecycle(DistortionEffect, false);

@@ -11,7 +11,7 @@ import { useKTX2Loader } from "@utils/useKTX2Loader";
 import { useMemo } from "react";
 import { GLTF } from "three-stdlib";
 import RES from "../../RES";
-import { Lifecycle } from "@/hoc/LifeCycle";
+import { SceneLifecycle } from "@/hoc/SceneLifecycle";
 
 const Model = ({ modelName }: { modelName: string }) => {
   const [plant, greenHouse] = useKTX2Loader(
@@ -105,4 +105,4 @@ const PaintEffect = () => {
   );
 };
 
-export default Lifecycle(PaintEffect);
+export default SceneLifecycle(PaintEffect);

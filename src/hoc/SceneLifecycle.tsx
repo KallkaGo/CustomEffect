@@ -1,7 +1,7 @@
 import { useGameStore, useInteractStore, useLoadedStore } from "@utils/Store";
 import { FC, useEffect } from "react";
 
-export const Lifecycle = (WrappedComponent: FC, scissor = true) => {
+export const SceneLifecycle = (WrappedComponent: FC, scissor = true) => {
   return function SceneLifecycleWrapper(props: any) {
     useEffect(() => {
       useLoadedStore.setState({ ready: true });

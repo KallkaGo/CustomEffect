@@ -3,7 +3,7 @@ import { useControls } from "leva";
 import { useEffect, useRef } from "react";
 import { EffectWrapper } from "@/hoc/EffectWrapper";
 import { BaseScene } from "../base/BaseScene";
-import { Lifecycle } from "@/hoc/LifeCycle";
+import { SceneLifecycle } from "@/hoc/SceneLifecycle";
 
 const DualBlurEffect = () => {
   const props = useControls("DualBlur", {
@@ -36,4 +36,4 @@ const DualBlurEffect = () => {
   );
 };
 
-export default Lifecycle(DualBlurEffect);
+export default SceneLifecycle(DualBlurEffect);
