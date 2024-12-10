@@ -206,7 +206,7 @@ const HonkaiStarrailScene = () => {
     useInteractStore.setState({ controlEnable: false });
 
     return () => {
-      gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.2));
     };
   }, []);
 
