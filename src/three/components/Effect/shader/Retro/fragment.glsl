@@ -1,3 +1,5 @@
+// Reference: https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/
+
 precision highp float;
 
 uniform float uColorNum;

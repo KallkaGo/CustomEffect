@@ -35,7 +35,7 @@ const RetroEffect = () => {
 
   return (
     <>
-      <color attach="background" args={["#3386E0"]} />
+      <color attach="background" args={["#335be0"]} />
       <BaseScene />
       <Effect />
     </>
