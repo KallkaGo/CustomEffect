@@ -1,38 +1,39 @@
-import { Effect } from "postprocessing";
-import fragmenrShader from "./shader/QuantizationAndToneMap/fragment.glsl";
-import { Texture, Uniform } from "three";
-import { useEffect, useMemo } from "react";
+import type { Texture } from 'three'
+import { Effect } from 'postprocessing'
+import { useEffect, useMemo } from 'react'
+import { Uniform } from 'three'
+import fragmenrShader from './shader/QuantizationAndToneMap/fragment.glsl'
 
 interface IProps {
-  adjustment?: number;
+  adjustment?: number
   tex?: Texture
 }
 
 class QuantizationAndToneMapEffect extends Effect {
   constructor(props: IProps) {
-    super("GTToneMap", fragmenrShader, {
+    super('GTToneMap', fragmenrShader, {
       uniforms: new Map<string, any>([
-        ["uAdjustment", new Uniform(props.adjustment)],
-        ["uTex", new Uniform(props.tex)],
+        ['uAdjustment', new Uniform(props.adjustment)],
+        ['uTex', new Uniform(props.tex)],
       ]),
-    });
+    })
   }
 }
 
 export default function QuantizationAndToneMap(
   props: IProps = {
     adjustment: 1.5,
-  }
+  },
 ) {
   const effect = useMemo(() => {
-    return new QuantizationAndToneMapEffect(props);
-  }, [JSON.stringify(props)]);
+    return new QuantizationAndToneMapEffect(props)
+  }, [JSON.stringify(props)])
 
   useEffect(() => {
     return () => {
-      effect.dispose();
-    };
-  });
+      effect.dispose()
+    }
+  })
 
-  return <primitive object={effect} dispose={effect.dispose} />;
+  return <primitive object={effect} dispose={effect.dispose} />
 }

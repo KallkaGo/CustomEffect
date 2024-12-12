@@ -1,31 +1,31 @@
-import { Effect } from "postprocessing";
-import fragmenrShader from "./shader/GTToneMap/fragment.glsl";
-import { Uniform } from "three";
-import { useEffect, useMemo } from "react";
+import { Effect } from 'postprocessing'
+import { useEffect, useMemo } from 'react'
+import { Uniform } from 'three'
+import fragmenrShader from './shader/GTToneMap/fragment.glsl'
 
 interface IProps {
-  MaxLuminanice?: number;
-  Contrast?: number;
-  LinearSectionStart?: number;
-  LinearSectionLength?: number;
-  BlackTightnessC?: number;
-  BlackTightnessB?: number;
-  Enabled?: boolean;
+  MaxLuminanice?: number
+  Contrast?: number
+  LinearSectionStart?: number
+  LinearSectionLength?: number
+  BlackTightnessC?: number
+  BlackTightnessB?: number
+  Enabled?: boolean
 }
 
 class GTToneMapEffect extends Effect {
   constructor(props: IProps) {
-    super("GTToneMap", fragmenrShader, {
+    super('GTToneMap', fragmenrShader, {
       uniforms: new Map([
-        ["uMaxLuminanice", new Uniform(props.MaxLuminanice)],
-        ["uContrast", new Uniform(props.Contrast)],
-        ["uLinearSectionStart", new Uniform(props.LinearSectionStart)],
-        ["uLinearSectionLength", new Uniform(props.LinearSectionLength)],
-        ["uBlackTightnessC", new Uniform(props.BlackTightnessC)],
-        ["uBlackTightnessB", new Uniform(props.BlackTightnessB)],
-        ["uEnabled", new Uniform(props.Enabled ? 1 : 0)],
+        ['uMaxLuminanice', new Uniform(props.MaxLuminanice)],
+        ['uContrast', new Uniform(props.Contrast)],
+        ['uLinearSectionStart', new Uniform(props.LinearSectionStart)],
+        ['uLinearSectionLength', new Uniform(props.LinearSectionLength)],
+        ['uBlackTightnessC', new Uniform(props.BlackTightnessC)],
+        ['uBlackTightnessB', new Uniform(props.BlackTightnessB)],
+        ['uEnabled', new Uniform(props.Enabled ? 1 : 0)],
       ]),
-    });
+    })
   }
 }
 
@@ -38,17 +38,17 @@ export default function GTToneMap(
     BlackTightnessC: 1.33,
     BlackTightnessB: 0.0,
     Enabled: true,
-  }
+  },
 ) {
   const effect = useMemo(() => {
-    return new GTToneMapEffect(props);
-  }, [JSON.stringify(props)]);
+    return new GTToneMapEffect(props)
+  }, [JSON.stringify(props)])
 
   useEffect(() => {
     return () => {
-      effect.dispose();
-    };
-  });
+      effect.dispose()
+    }
+  })
 
-  return <primitive object={effect} dispose={effect.dispose} />;
+  return <primitive object={effect} dispose={effect.dispose} />
 }

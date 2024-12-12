@@ -1,11 +1,11 @@
-import GTToneMap from "../../Effect/GTToneMap";
-import { useControls } from "leva";
-import { EffectWrapper } from "@/hoc/EffectWrapper";
-import { BaseScene } from "../base/BaseScene";
-import { SceneLifecycle } from "@/hoc/SceneLifecycle";
+import { EffectWrapper } from '@/hoc/EffectWrapper'
+import { SceneLifecycle } from '@/hoc/SceneLifecycle'
+import { useControls } from 'leva'
+import GTToneMap from '../../Effect/GTToneMap'
+import { BaseScene } from '../base/BaseScene'
 
-const GTToneMapping = () => {
-  const gtProps = useControls("ToneMapGT", {
+function GTToneMapping() {
+  const gtProps = useControls('ToneMapGT', {
     MaxLuminanice: {
       value: 2,
       min: 1,
@@ -43,21 +43,21 @@ const GTToneMapping = () => {
       step: 0.25,
     },
     Enabled: true,
-  });
+  })
 
   const Effect = EffectWrapper([
     {
       component: GTToneMap,
       props: gtProps,
     },
-  ]);
+  ])
 
   return (
     <>
       <BaseScene />
       <Effect />
     </>
-  );
-};
+  )
+}
 
-export default SceneLifecycle(GTToneMapping);
+export default SceneLifecycle(GTToneMapping)

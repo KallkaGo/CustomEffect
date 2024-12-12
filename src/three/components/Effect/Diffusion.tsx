@@ -1,12 +1,13 @@
-import { Effect } from "postprocessing";
-import { Texture, Uniform, WebGLRenderTarget, WebGLRenderer } from "three";
-import { FC, useEffect, useMemo, useRef } from "react";
-import { GaussianBlurPass } from "./pass/GaussianPass";
+import type { Texture, WebGLRenderer, WebGLRenderTarget } from 'three'
+import { Effect } from 'postprocessing'
+import { useEffect, useMemo } from 'react'
+import { Uniform } from 'three'
+import { GaussianBlurPass } from './pass/GaussianPass'
 
 interface IProps {
-  loopCount?: number;
-  downsample?: number;
-  threshold?: number;
+  loopCount?: number
+  downsample?: number
+  threshold?: number
 }
 
 const fragmentShader = /* glsl */ `
@@ -25,52 +26,52 @@ float getBrightness(vec3 color) {
         vec3 resultColor = max(baseColor.rgb, blendcolor.rgb);
         outputColor = vec4(resultColor, baseColor.a);
     }
-`;
+`
 
 class DiffusionEffect extends Effect {
-  private gaussianBlurPass: GaussianBlurPass;
+  private gaussianBlurPass: GaussianBlurPass
   constructor(
     props: IProps = {
       loopCount: 5,
       downsample: 2,
       threshold: 0.5,
-    }
+    },
   ) {
-    super("DualBlurEffect", fragmentShader, {
+    super('DualBlurEffect', fragmentShader, {
       uniforms: new Map<string, any>([
-        ["map", new Uniform(null)],
-        ["threshold", new Uniform(props.threshold)],
+        ['map', new Uniform(null)],
+        ['threshold', new Uniform(props.threshold)],
       ]),
-    });
-    this.gaussianBlurPass = new GaussianBlurPass(props);
+    })
+    this.gaussianBlurPass = new GaussianBlurPass(props)
   }
 
   update(
     renderer: WebGLRenderer,
     inputBuffer: WebGLRenderTarget<Texture>,
-    deltaTime?: number | undefined
+    deltaTime?: number | undefined,
   ) {
-    this.gaussianBlurPass.render(renderer, inputBuffer);
-    this.uniforms.get("map")!.value = this.gaussianBlurPass.finRT.texture;
+    this.gaussianBlurPass.render(renderer, inputBuffer)
+    this.uniforms.get('map')!.value = this.gaussianBlurPass.finRT.texture
   }
 
   dispose(): void {
-    this.gaussianBlurPass.dispose();
+    this.gaussianBlurPass.dispose()
   }
 }
 
-const Diffusion = (props: IProps) => {
+function Diffusion(props: IProps) {
   const effect = useMemo(() => {
-    return new DiffusionEffect(props);
-  }, [props]);
+    return new DiffusionEffect(props)
+  }, [props])
 
   useEffect(() => {
     return () => {
-      effect.dispose();
-    };
-  });
+      effect.dispose()
+    }
+  })
 
-  return <primitive object={effect} dispose={effect.dispose} />;
-};
+  return <primitive object={effect} dispose={effect.dispose} />
+}
 
-export { Diffusion };
+export { Diffusion }

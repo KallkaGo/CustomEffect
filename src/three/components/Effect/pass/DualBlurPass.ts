@@ -1,41 +1,41 @@
-import { Pass, ShaderPass } from "postprocessing";
-import { HalfFloatType, ShaderMaterial, Uniform, Vector2, WebGLRenderTarget, WebGLRenderer } from "three";
-import downVertex from "../shader/DualBlur/downVertex.glsl";
-import downFragment from "../shader/DualBlur/downFragment.glsl";
-import upVertex from "../shader/DualBlur/upVertex.glsl";
-import upFragment from "../shader/DualBlur/upFragment.glsl";
+import type { WebGLRenderer } from 'three'
+import { Pass, ShaderPass } from 'postprocessing'
+import { HalfFloatType, ShaderMaterial, Uniform, Vector2, WebGLRenderTarget } from 'three'
+import downFragment from '../shader/DualBlur/downFragment.glsl'
+import downVertex from '../shader/DualBlur/downVertex.glsl'
+import upFragment from '../shader/DualBlur/upFragment.glsl'
+import upVertex from '../shader/DualBlur/upVertex.glsl'
 
 interface IProps {
-  loopCount?: number;
-  blurRange?: number;
-  additive?: boolean;
+  loopCount?: number
+  blurRange?: number
+  additive?: boolean
 }
 
-
 class DualBlurPass extends Pass {
-  private downSampleMaterial!: ShaderMaterial;
-  private upSampleMaterial!: ShaderMaterial;
+  private downSampleMaterial!: ShaderMaterial
+  private upSampleMaterial!: ShaderMaterial
 
-  private downSamplePass!: ShaderPass;
+  private downSamplePass!: ShaderPass
 
-  private upSamplePass!: ShaderPass;
+  private upSamplePass!: ShaderPass
 
-  public loopCount: number = 0;
+  public loopCount: number = 0
 
-  public additive: boolean;
+  public additive: boolean
 
-  public finRT!: WebGLRenderTarget;
+  public finRT!: WebGLRenderTarget
 
   public downRt: WebGLRenderTarget[] = []
 
   public upRt: WebGLRenderTarget[] = []
 
   constructor({ loopCount = 4, blurRange = 0, additive = false }: IProps) {
-    super('DualBlurPass');
+    super('DualBlurPass')
 
-    this.dispose();
+    this.dispose()
 
-    this.loopCount = loopCount;
+    this.loopCount = loopCount
 
     this.additive = additive
 
@@ -48,8 +48,8 @@ class DualBlurPass extends Pass {
         u_blurRange: new Uniform(blurRange),
         uFirst: new Uniform(false),
         uLuminanceThreshold: new Uniform(0),
-      }
-    });
+      },
+    })
     this.upSampleMaterial = new ShaderMaterial({
       vertexShader: upVertex,
       fragmentShader: upFragment,
@@ -58,83 +58,80 @@ class DualBlurPass extends Pass {
         uSize: new Uniform(new Vector2(1 / innerWidth, 1 / innerHeight)),
         u_blurRange: new Uniform(blurRange),
         uCurDownSample: new Uniform(null),
-      }
-    });
+      },
+    })
 
-    this.downSamplePass = new ShaderPass(this.downSampleMaterial);
-    this.upSamplePass = new ShaderPass(this.upSampleMaterial);
+    this.downSamplePass = new ShaderPass(this.downSampleMaterial)
+    this.upSamplePass = new ShaderPass(this.upSampleMaterial)
 
     this.finRT = new WebGLRenderTarget(1, 1, {
       type: HalfFloatType,
-    });
+    })
 
     // initial
     for (let i = 0; i < this.loopCount; i++) {
       const rtDown = new WebGLRenderTarget(1, 1, {
         type: HalfFloatType,
-      });
+      })
       const rtUp = new WebGLRenderTarget(1, 1, {
         type: HalfFloatType,
-      });
-      this.downRt[i] = rtDown;
-      this.upRt[i] = rtUp;
+      })
+      this.downRt[i] = rtDown
+      this.upRt[i] = rtUp
     }
   }
 
-  render(renderer: WebGLRenderer,
-    inputBuffer: WebGLRenderTarget,
-  ) {
-    const count = this.loopCount;
-    let width = inputBuffer.width;
-    let height = inputBuffer.height;
-    const { downRt, upRt } = this;
+  render(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
+    const count = this.loopCount
+    let width = inputBuffer.width
+    let height = inputBuffer.height
+    const { downRt, upRt } = this
 
-    // down sample 
+    // down sample
     for (let i = 0; i < count; i++) {
-      downRt[i].setSize(width, height);
-      upRt[i].setSize(width, height);
-      this.finRT.setSize(width, height);
-      this.downSampleMaterial.uniforms["uSize"].value.set(
+      downRt[i].setSize(width, height)
+      upRt[i].setSize(width, height)
+      this.finRT.setSize(width, height)
+      this.downSampleMaterial.uniforms.uSize.value.set(
         1 / downRt[i].width,
-        1 / downRt[i].height
-      );
+        1 / downRt[i].height,
+      )
 
-      width = Math.max(width / 2, 1);
-      height = Math.max(height / 2, 1);
+      width = Math.max(width / 2, 1)
+      height = Math.max(height / 2, 1)
 
-      this.downSampleMaterial.uniforms["uFirst"].value = false;
+      this.downSampleMaterial.uniforms.uFirst.value = false
 
       if (i === 0) {
-        this.finRT.texture = inputBuffer.texture;
-        this.additive && (this.downSampleMaterial.uniforms["uFirst"].value = true);
+        this.finRT.texture = inputBuffer.texture
+        this.additive && (this.downSampleMaterial.uniforms.uFirst.value = true)
       }
-      this.downSamplePass.render(renderer, this.finRT, downRt[i]);
-      this.finRT.texture = downRt[i].texture;
+      this.downSamplePass.render(renderer, this.finRT, downRt[i])
+      this.finRT.texture = downRt[i].texture
     }
-    upRt[count - 1].texture = downRt[count - 1].texture;
-    this.upSampleMaterial.uniforms["uSize"].value.set(1 / upRt[count - 1].width, 1 / upRt[count - 1].height);
+    upRt[count - 1].texture = downRt[count - 1].texture
+    this.upSampleMaterial.uniforms.uSize.value.set(1 / upRt[count - 1].width, 1 / upRt[count - 1].height)
     // up sample
     for (let i = count - 2; i >= 0; i--) {
-      this.finRT.setSize(upRt[i].width, upRt[i].height);
-      this.upSampleMaterial.uniforms["uSize"].value.set(1 / upRt[i].width, 1 / upRt[i].height);
-      this.additive && (this.upSampleMaterial.uniforms.uCurDownSample.value = downRt[i].texture);
-      this.upSamplePass.render(renderer, this.finRT, upRt[i]);
-      this.finRT.texture = upRt[i].texture;
+      this.finRT.setSize(upRt[i].width, upRt[i].height)
+      this.upSampleMaterial.uniforms.uSize.value.set(1 / upRt[i].width, 1 / upRt[i].height)
+      this.additive && (this.upSampleMaterial.uniforms.uCurDownSample.value = downRt[i].texture)
+      this.upSamplePass.render(renderer, this.finRT, upRt[i])
+      this.finRT.texture = upRt[i].texture
     }
-
   }
 
   set blurRange(value: number) {
-    this.downSampleMaterial.uniforms["u_blurRange"].value = value;
-    this.upSampleMaterial.uniforms["u_blurRange"].value = value;
+    this.downSampleMaterial.uniforms.u_blurRange.value = value
+    this.upSampleMaterial.uniforms.u_blurRange.value = value
   }
 
   set LuminanceThreshold(value: number) {
-    this.downSampleMaterial.uniforms["uLuminanceThreshold"].value = value;
+    this.downSampleMaterial.uniforms.uLuminanceThreshold.value = value
   }
 
   dispose() {
-    const { downRt, upRt } = this;
+    const { downRt, upRt } = this
     downRt.forEach(rt => rt.dispose())
     upRt.forEach(rt => rt.dispose())
     this.finRT && this.finRT.dispose()

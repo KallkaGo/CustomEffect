@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const GameWrapper = styled.div`
     width: 100%;
@@ -66,4 +66,4 @@ export const GameWrapper = styled.div`
     cursor: pointer;
     pointer-events:auto;
    }
-`;
+`

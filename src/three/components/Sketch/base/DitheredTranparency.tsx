@@ -1,30 +1,26 @@
-import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useGSAP } from '@gsap/react'
+import { useTexture } from '@react-three/drei'
+import textureSrc from '@textures/dot-dither-sample.png'
+import { useGameStore, useLoadedStore } from '@utils/Store'
+import gsap from 'gsap'
+import { useControls } from 'leva'
+import { useEffect, useMemo, useState } from 'react'
 import {
-  Group,
-  MeshBasicMaterial,
-  MeshStandardMaterial,
   MeshToonMaterial,
   RepeatWrapping,
   Uniform,
   Vector2,
-} from "three";
-import CustomShaderMaterial from "three-custom-shader-material";
-import textureSrc from "@textures/dot-dither-sample.png";
-import { useTexture } from "@react-three/drei";
-import commonVeretx from "./shader/commonVertex.glsl";
-import ditherTextureFragment from "./shader/ditherTexture.glsl";
-import noDitherTextureFragment from "./shader/noDitherTexture.glsl";
-import { useControls } from "leva";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { useGameStore, useLoadedStore } from "@utils/Store";
+} from 'three'
+import CustomShaderMaterial from 'three-custom-shader-material'
+import commonVeretx from './shader/commonVertex.glsl'
+import ditherTextureFragment from './shader/ditherTexture.glsl'
+import noDitherTextureFragment from './shader/noDitherTexture.glsl'
 
-const DitheredTransparency = () => {
-  const ditherTexture = useTexture(textureSrc);
-  ditherTexture.wrapS = ditherTexture.wrapT = RepeatWrapping;
+function DitheredTransparency() {
+  const ditherTexture = useTexture(textureSrc)
+  ditherTexture.wrapS = ditherTexture.wrapT = RepeatWrapping
 
-  const [isAni, setisAni] = useState(false);
+  const [isAni, setisAni] = useState(false)
 
   const uniforms = useMemo(
     () => ({
@@ -32,51 +28,51 @@ const DitheredTransparency = () => {
       uTexture: new Uniform(ditherTexture),
       uFactor: new Uniform(1),
     }),
-    []
-  );
+    [],
+  )
 
   useEffect(() => {
-    useLoadedStore.setState({ ready: true });
-    useGameStore.setState({ showSlider: false });
+    useLoadedStore.setState({ ready: true })
+    useGameStore.setState({ showSlider: false })
+  }, [])
 
-  }, []);
-
-  useControls("Dither", {
+  useControls('Dither', {
     alphaThreshold: {
       value: 1,
       min: 0,
       max: 1,
       step: 0.01,
       onChange: (value) => {
-        uniforms.uFactor.value = value;
+        uniforms.uFactor.value = value
       },
     },
     animation: {
       value: false,
       onChange: (value) => {
-        setisAni(value);
+        setisAni(value)
       },
     },
-  });
+  })
 
   useGSAP(
     () => {
-      gsap.killTweensOf(uniforms.uFactor);
+      gsap.killTweensOf(uniforms.uFactor)
       gsap.set(uniforms.uFactor, {
         value: 1,
-      });
-      if (!isAni) return;
+      })
+      if (!isAni)
+        return
 
       gsap.to(uniforms.uFactor, {
         keyframes: [
-          { value: 0, duration: 0.9, ease: "power1.inOut" },
-          { value: 1, duration: 0.9, ease: "power1.inOut", delay: 0.5 },
+          { value: 0, duration: 0.9, ease: 'power1.inOut' },
+          { value: 1, duration: 0.9, ease: 'power1.inOut', delay: 0.5 },
         ],
         repeat: -1,
-      });
+      })
     },
-    { dependencies: [isAni] }
-  );
+    { dependencies: [isAni] },
+  )
 
   return (
     <>
@@ -86,7 +82,7 @@ const DitheredTransparency = () => {
         <directionalLight position={[6, 4, 5]} />
         <CustomShaderMaterial
           baseMaterial={MeshToonMaterial}
-          color={"#ebcc4b"}
+          color="#ebcc4b"
           uniforms={uniforms}
           vertexShader={commonVeretx}
           fragmentShader={noDitherTextureFragment}
@@ -98,7 +94,7 @@ const DitheredTransparency = () => {
         <sphereGeometry args={[0.5, 64, 64]} />
         <CustomShaderMaterial
           baseMaterial={MeshToonMaterial}
-          color={"#61ee61"}
+          color="#61ee61"
           silent
           uniforms={uniforms}
           vertexShader={commonVeretx}
@@ -106,7 +102,7 @@ const DitheredTransparency = () => {
         />
       </mesh>
     </>
-  );
-};
+  )
+}
 
-export { DitheredTransparency };
+export { DitheredTransparency }

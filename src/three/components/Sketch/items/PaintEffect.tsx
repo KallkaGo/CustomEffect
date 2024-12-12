@@ -1,74 +1,72 @@
-import { EffectWrapper } from "@/hoc/EffectWrapper";
-import Kuwahara from "../../Effect/Kuwahara";
-import { useControls } from "leva";
-import { useGLTF, useTexture } from "@react-three/drei";
-import Assets from "../../RES";
-import textureSrc from "@textures/waterColor.png";
-import QuantizationAndToneMap from "../../Effect/QuantizationAndToneMap";
-import { SMAA } from "@react-three/postprocessing";
-import { EdgeDetectionMode, SMAAPreset } from "postprocessing";
-import { useKTX2Loader } from "@utils/useKTX2Loader";
-import { useMemo } from "react";
-import { GLTF } from "three-stdlib";
-import RES from "../../RES";
-import { SceneLifecycle } from "@/hoc/SceneLifecycle";
+import type { GLTF } from 'three-stdlib'
+import { EffectWrapper } from '@/hoc/EffectWrapper'
+import { SceneLifecycle } from '@/hoc/SceneLifecycle'
+import { useTexture } from '@react-three/drei'
+import { SMAA } from '@react-three/postprocessing'
+import textureSrc from '@textures/waterColor.png'
+import { useKTX2Loader } from '@utils/useKTX2Loader'
+import { useControls } from 'leva'
+import { EdgeDetectionMode, SMAAPreset } from 'postprocessing'
+import Kuwahara from '../../Effect/Kuwahara'
+import QuantizationAndToneMap from '../../Effect/QuantizationAndToneMap'
+import RES from '../../RES'
 
-const Model = ({ modelName }: { modelName: string }) => {
+function Model({ modelName }: { modelName: string }) {
   const [plant, greenHouse] = useKTX2Loader(
     [RES.models.plant, RES.models.greenHouse],
     false,
-    true
-  ) as GLTF[];
+    true,
+  ) as GLTF[]
 
   return (
     <>
-      <color attach="background" args={["#3386E0"]} />
+      <color attach="background" args={['#3386E0']} />
       <group
         rotation={[0, 0, 0]}
-        position={modelName === "plant" ? [0, -1, 0] : [0, -0.5, 0]}
-        scale={modelName === "plant" ? 0.7 : 0.2}
+        position={modelName === 'plant' ? [0, -1, 0] : [0, -0.5, 0]}
+        scale={modelName === 'plant' ? 0.7 : 0.2}
       >
         <primitive
-          object={modelName === "plant" ? plant.scene : greenHouse.scene}
+          object={modelName === 'plant' ? plant.scene : greenHouse.scene}
         />
       </group>
     </>
-  );
-};
+  )
+}
 
-const PaintEffect = () => {
-  const tex = useTexture(textureSrc);
+function PaintEffect() {
+  const tex = useTexture(textureSrc)
 
-  const modelProps = useControls("model", {
+  const modelProps = useControls('model', {
     url: {
-      value: "plant",
+      value: 'plant',
       options: {
-        plant: "plant",
-        greenHouse: "greenHouse",
+        plant: 'plant',
+        greenHouse: 'greenHouse',
       },
     },
-  });
+  })
 
-  const kuawaharaProps = useControls("Kuwahara", {
+  const kuawaharaProps = useControls('Kuwahara', {
     radius: {
       value: 2,
       min: 1,
       max: 25,
       step: 1,
     },
-  });
+  })
 
-  const qtProps = useControls("QuantizationAndToneMap", {
+  const qtProps = useControls('QuantizationAndToneMap', {
     adjustment: {
       value: 1.5,
       min: 0,
       max: 5,
       step: 0.1,
-      labelL: "saturating",
+      labelL: 'saturating',
     },
-  });
+  })
 
-  const antiAliasingprops = useControls("SMAA", {
+  const antiAliasingprops = useControls('SMAA', {
     preset: {
       value: SMAAPreset.MEDIUM,
       options: SMAAPreset,
@@ -77,7 +75,7 @@ const PaintEffect = () => {
       value: EdgeDetectionMode.COLOR,
       options: EdgeDetectionMode,
     },
-  });
+  })
 
   const Effect = EffectWrapper([
     {
@@ -95,14 +93,14 @@ const PaintEffect = () => {
       component: SMAA,
       props: antiAliasingprops,
     },
-  ]);
+  ])
 
   return (
     <>
       <Model modelName={modelProps.url} />
       <Effect />
     </>
-  );
-};
+  )
+}
 
-export default SceneLifecycle(PaintEffect);
+export default SceneLifecycle(PaintEffect)

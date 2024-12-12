@@ -4,15 +4,14 @@ import firefly from '@textures/bg.png'
 import HonkaiStarrailLogo from '@textures/loadingLogo.png'
 import particle from '@textures/trainParticle.png'
 
-
 export default {
   models: {
     plant,
-    greenHouse
+    greenHouse,
   },
   textures: {
     firefly,
     HonkaiStarrailLogo,
-    particle
-  }
+    particle,
+  },
 }

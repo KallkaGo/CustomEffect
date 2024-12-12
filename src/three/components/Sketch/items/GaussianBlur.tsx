@@ -1,11 +1,11 @@
-import { GaussianBlur } from "../../Effect/GaussianBlur";
-import { useControls } from "leva";
-import { EffectWrapper } from "@/hoc/EffectWrapper";
-import { BaseScene } from "../base/BaseScene";
-import { SceneLifecycle } from "@/hoc/SceneLifecycle";
+import { EffectWrapper } from '@/hoc/EffectWrapper'
+import { SceneLifecycle } from '@/hoc/SceneLifecycle'
+import { useControls } from 'leva'
+import { GaussianBlur } from '../../Effect/GaussianBlur'
+import { BaseScene } from '../base/BaseScene'
 
-const GaussianBlurEffect = () => {
-  const props = useControls("GaussianBlur", {
+function GaussianBlurEffect() {
+  const props = useControls('GaussianBlur', {
     loopCount: {
       value: 5,
       min: 1,
@@ -18,21 +18,21 @@ const GaussianBlurEffect = () => {
       max: 10,
       step: 1,
     },
-  });
+  })
 
   const Effect = EffectWrapper([
     {
       component: GaussianBlur,
       props,
     },
-  ]);
+  ])
 
   return (
     <>
       <BaseScene />
       <Effect />
     </>
-  );
-};
+  )
+}
 
-export default SceneLifecycle(GaussianBlurEffect);
+export default SceneLifecycle(GaussianBlurEffect)

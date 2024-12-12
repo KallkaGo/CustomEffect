@@ -1,11 +1,11 @@
-import { Pass, ShaderPass } from "postprocessing";
-import { ShaderMaterial, Uniform, Vector2, WebGLRenderer, WebGLRenderTarget } from "three";
-import vertexShader from '../shader/GaussianBlur/vertex.glsl'
+import type { WebGLRenderer } from 'three'
+import { Pass, ShaderPass } from 'postprocessing'
+import { ShaderMaterial, Uniform, Vector2, WebGLRenderTarget } from 'three'
 import fragmentShader from '../shader/GaussianBlur/fragment.glsl'
-
+import vertexShader from '../shader/GaussianBlur/vertex.glsl'
 
 interface IProps {
-  loopCount?: number;
+  loopCount?: number
   downsample?: number
 }
 
@@ -20,7 +20,7 @@ class GaussianBlurPass extends Pass {
 
     const size = {
       width: innerWidth / downsample,
-      height: innerHeight / downsample
+      height: innerHeight / downsample,
     }
 
     size.width = Math.max(size.width, 1)
@@ -33,7 +33,7 @@ class GaussianBlurPass extends Pass {
         tDiffuse: new Uniform(null),
         uResolution: new Uniform(new Vector2(size.width, size.height)),
         uHorizontal: new Uniform(null),
-      }
+      },
     })
 
     this.pingpongBuffer[0] = new WebGLRenderTarget(size.width, size.height)
@@ -46,15 +46,16 @@ class GaussianBlurPass extends Pass {
 
   render(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
     const { loopCount, pingpongBuffer, gaussianBlurMaterial } = this
-    let horizontal = true;
-    let firstIteration = true;
+    let horizontal = true
+    let firstIteration = true
 
     for (let i = 0; i < loopCount * 2; i++) {
-      gaussianBlurMaterial.uniforms['tDiffuse'].value = firstIteration ? inputBuffer.texture : pingpongBuffer[horizontal ? 0 : 1].texture;
-      gaussianBlurMaterial.uniforms['uHorizontal'].value = horizontal
-      this.blurPass.render(renderer, inputBuffer, pingpongBuffer[horizontal ? 1 : 0]);
-      horizontal = !horizontal;
-      if (firstIteration) firstIteration = false;
+      gaussianBlurMaterial.uniforms.tDiffuse.value = firstIteration ? inputBuffer.texture : pingpongBuffer[horizontal ? 0 : 1].texture
+      gaussianBlurMaterial.uniforms.uHorizontal.value = horizontal
+      this.blurPass.render(renderer, inputBuffer, pingpongBuffer[horizontal ? 1 : 0])
+      horizontal = !horizontal
+      if (firstIteration)
+        firstIteration = false
     }
   }
 
@@ -65,7 +66,6 @@ class GaussianBlurPass extends Pass {
   get finRT() {
     return this.pingpongBuffer[0]
   }
-
 }
 
 export { GaussianBlurPass }

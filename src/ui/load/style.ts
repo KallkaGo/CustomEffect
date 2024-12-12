@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const LoadWrapper = styled.div`
   width: 100%;
@@ -129,4 +129,4 @@ export const LoadWrapper = styled.div`
       opacity: 1;
     }
   }
-`;
+`

@@ -1,25 +1,27 @@
-import { Effect, ShaderPass } from "postprocessing";
+import type { FC } from 'react'
+import type {
+  Texture,
+  WebGLRenderer,
+} from 'three'
+import { Effect, ShaderPass } from 'postprocessing'
+import { forwardRef, useEffect, useMemo } from 'react'
 import {
   Color,
   HalfFloatType,
-  SRGBColorSpace,
   ShaderMaterial,
-  Texture,
+  SRGBColorSpace,
   Uniform,
-  UnsignedByteType,
   WebGLRenderTarget,
-  WebGLRenderer,
-} from "three";
-import { DualBlurPass } from "./pass/DualBlurPass";
-import { FC, forwardRef, useEffect, useMemo } from "react";
+} from 'three'
+import { DualBlurPass } from './pass/DualBlurPass'
 
 interface IProps {
-  luminanceThreshold?: number;
-  luminanceSmoothing?: number;
-  radius?: number;
-  intensity?: number;
-  iteration?: number;
-  glowColor?: string;
+  luminanceThreshold?: number
+  luminanceSmoothing?: number
+  radius?: number
+  intensity?: number
+  iteration?: number
+  glowColor?: string
 }
 
 const fragmentShader = /* glsl */ `
@@ -31,35 +33,35 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     vec4 color = texture2D(blurMap, uv);
     outputColor = vec4(inputColor.rgb + glowColor * intensity * color.rgb, inputColor.a); ;
 }
-`;
+`
 
-let tempRt: WebGLRenderTarget;
+let tempRt: WebGLRenderTarget
 
 class BloomEffect extends Effect {
-  private luminancePass!: ShaderPass;
-  private luminanceMaterial!: ShaderMaterial;
-  private dulaBlurPass!: DualBlurPass;
+  private luminancePass!: ShaderPass
+  private luminanceMaterial!: ShaderMaterial
+  private dulaBlurPass!: DualBlurPass
 
   constructor({
     luminanceThreshold = 0.1,
     radius = 1,
     intensity = 1,
     luminanceSmoothing = 0.1,
-    glowColor = "white",
+    glowColor = 'white',
     iteration = 4,
   }: IProps) {
-    super("Bloom", fragmentShader, {
+    super('Bloom', fragmentShader, {
       uniforms: new Map<string, Uniform>([
-        ["blurMap", new Uniform(null)],
-        ["intensity", new Uniform(intensity)],
-        ["glowColor", new Uniform(new Color(glowColor))],
+        ['blurMap', new Uniform(null)],
+        ['intensity', new Uniform(intensity)],
+        ['glowColor', new Uniform(new Color(glowColor))],
       ]),
-    });
-    tempRt?.dispose();
+    })
+    tempRt?.dispose()
     tempRt = new WebGLRenderTarget(innerWidth, innerHeight, {
       type: HalfFloatType,
       colorSpace: SRGBColorSpace,
-    });
+    })
 
     this.luminanceMaterial = new ShaderMaterial({
       vertexShader: /* glsl */ `
@@ -91,46 +93,47 @@ class BloomEffect extends Effect {
         luminanceThreshold: new Uniform(luminanceThreshold),
         luminanceSmoothing: new Uniform(luminanceSmoothing),
       },
-    });
-    this.luminancePass = new ShaderPass(this.luminanceMaterial);
+    })
+    this.luminancePass = new ShaderPass(this.luminanceMaterial)
 
     this.dulaBlurPass = new DualBlurPass({
       loopCount: iteration,
       blurRange: radius,
       additive: true,
-    });
+    })
   }
+
   update(
     renderer: WebGLRenderer,
     inputBuffer: WebGLRenderTarget<Texture>,
-    deltaTime?: number | undefined
+    deltaTime?: number | undefined,
   ) {
-    tempRt.setSize(inputBuffer.width, inputBuffer.height);
-    this.luminancePass.render(renderer, inputBuffer, tempRt);
-    this.dulaBlurPass.LuminanceThreshold =
-      this.luminanceMaterial.uniforms.luminanceThreshold.value;
-    this.dulaBlurPass.render(renderer, tempRt);
-    this.uniforms.get("blurMap")!.value = this.dulaBlurPass.finRT.texture;
+    tempRt.setSize(inputBuffer.width, inputBuffer.height)
+    this.luminancePass.render(renderer, inputBuffer, tempRt)
+    this.dulaBlurPass.LuminanceThreshold
+      = this.luminanceMaterial.uniforms.luminanceThreshold.value
+    this.dulaBlurPass.render(renderer, tempRt)
+    this.uniforms.get('blurMap')!.value = this.dulaBlurPass.finRT.texture
   }
 
   dispose(): void {
-    this.luminanceMaterial.dispose();
-    this.luminancePass.dispose();
-    this.dulaBlurPass.dispose();
-    tempRt.dispose();
+    this.luminanceMaterial.dispose()
+    this.luminancePass.dispose()
+    this.dulaBlurPass.dispose()
+    tempRt.dispose()
   }
 }
 
 const Bloom: FC<IProps> = forwardRef((props, ref) => {
-  const effect = useMemo(() => new BloomEffect(props), [JSON.stringify(props)]);
+  const effect = useMemo(() => new BloomEffect(props), [JSON.stringify(props)])
 
   useEffect(() => {
     return () => {
-      effect.dispose();
-    };
-  });
+      effect.dispose()
+    }
+  })
 
-  return <primitive object={effect} dispose={effect.dispose} ref={ref} />;
-});
+  return <primitive object={effect} dispose={effect.dispose} ref={ref} />
+})
 
-export { Bloom };
+export { Bloom }

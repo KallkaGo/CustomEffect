@@ -1,20 +1,20 @@
-import { Effect } from "postprocessing";
-import fragmenrShader from "./shader/Kuwahara/fragment.glsl";
-import { Uniform } from "three";
-import { useEffect, useMemo } from "react";
+import { Effect } from 'postprocessing'
+import { useEffect, useMemo } from 'react'
+import { Uniform } from 'three'
+import fragmenrShader from './shader/Kuwahara/fragment.glsl'
 
 interface IProps {
-  radius?: number;
+  radius?: number
 }
 
 class KuwaharaEffect extends Effect {
   constructor(props: IProps) {
-    super("GTToneMap", fragmenrShader, {
+    super('GTToneMap', fragmenrShader, {
       uniforms: new Map([
-        ["uRadius", new Uniform(props.radius)],
-        
+        ['uRadius', new Uniform(props.radius)],
+
       ]),
-    });
+    })
   }
 }
 
@@ -22,17 +22,17 @@ export default function Kuwahara(
   props: IProps = {
     radius: 8,
 
-  }
+  },
 ) {
   const effect = useMemo(() => {
-    return new KuwaharaEffect(props);
-  }, [JSON.stringify(props)]);
+    return new KuwaharaEffect(props)
+  }, [JSON.stringify(props)])
 
   useEffect(() => {
     return () => {
-      effect.dispose();
-    };
-  });
+      effect.dispose()
+    }
+  })
 
-  return <primitive object={effect} dispose={effect.dispose} />;
+  return <primitive object={effect} dispose={effect.dispose} />
 }

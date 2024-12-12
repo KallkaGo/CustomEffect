@@ -1,19 +1,19 @@
-import { useFrame } from "@react-three/fiber";
-import { useLoadedStore } from "@utils/Store";
-import { useEffect, useRef } from "react";
-import { Group } from "three";
+import type { Group } from 'three'
+import { useFrame } from '@react-three/fiber'
+import { useLoadedStore } from '@utils/Store'
+import { useEffect, useRef } from 'react'
 
-const BaseScene = () => {
-  const groupRef = useRef<Group>(null);
+function BaseScene() {
+  const groupRef = useRef<Group>(null)
 
   useEffect(() => {
-    useLoadedStore.setState({ ready: true });
-  }, []);
+    useLoadedStore.setState({ ready: true })
+  }, [])
 
   useFrame((state, delta) => {
-    delta %= 1;
-    groupRef.current!.rotation.y += delta * 0.5;
-  });
+    delta %= 1
+    groupRef.current!.rotation.y += delta * 0.5
+  })
 
   return (
     <>
@@ -33,7 +33,7 @@ const BaseScene = () => {
         </mesh>
       </group>
     </>
-  );
-};
+  )
+}
 
-export { BaseScene };
+export { BaseScene }
