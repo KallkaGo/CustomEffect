@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { ObjectMap } from '@react-three/fiber'
 import type { Mesh, Object3D } from 'three'
 import type { GLTF } from 'three-stdlib'

@@ -71,7 +71,7 @@ function Sketch() {
   const activeEffects = useMemo(() => {
     return EFFECT_MAP.filter(
       ({ key }) => sceneState[key as keyof typeof sceneState],
-    ).map(({ Component }, index) => <Component key={index} />)
+    ).map(({ Component, key }) => <Component key={key} />)
   }, [sceneState])
 
   return (

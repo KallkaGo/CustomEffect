@@ -21,7 +21,10 @@ export default antfu({
     markdown: 'prettier',
   },
   rules: {
-    'no-unused-imports/no-unused-imports': 'warn',
+    'react-refresh/only-export-components': 'off',
+    'unused-imports/no-unused-imports': 'warn',
+    'unused-imports/no-unused-vars': 'warn',
+    'no-debugger': 'warn',
     'no-console': 'warn',
     'no-unused-vars': 'warn',
     '@typescript-eslint/no-use-before-define': [
@@ -29,13 +32,13 @@ export default antfu({
       {
         functions: false,
         classes: false,
-        variables: true,
+        variables: true,  
       },
     ],
   },
-  overrides: [  
-    {  
+  overrides: [
+    {
       files: ['public/**/*'],
-    },  
-  ],  
+    },
+  ],
 })

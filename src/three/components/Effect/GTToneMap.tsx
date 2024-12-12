@@ -42,7 +42,7 @@ export default function GTToneMap(
 ) {
   const effect = useMemo(() => {
     return new GTToneMapEffect(props)
-  }, [JSON.stringify(props)])
+  }, [props])
 
   useEffect(() => {
     return () => {

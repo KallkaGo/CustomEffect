@@ -27,7 +27,7 @@ export default function QuantizationAndToneMap(
 ) {
   const effect = useMemo(() => {
     return new QuantizationAndToneMapEffect(props)
-  }, [JSON.stringify(props)])
+  }, [props])
 
   useEffect(() => {
     return () => {

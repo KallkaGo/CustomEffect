@@ -61,9 +61,7 @@ function DistortionEffect() {
   )
 
   return (
-    <>
       <Effect />
-    </>
   )
 }
 

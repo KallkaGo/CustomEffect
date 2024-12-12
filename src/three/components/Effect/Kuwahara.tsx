@@ -26,7 +26,7 @@ export default function Kuwahara(
 ) {
   const effect = useMemo(() => {
     return new KuwaharaEffect(props)
-  }, [JSON.stringify(props)])
+  }, [props])
 
   useEffect(() => {
     return () => {
