@@ -5,7 +5,7 @@ const Sys = {
    */
   getSystem: () => {
     const ua = navigator.userAgent.toLowerCase()
-    if (/(iphone|ipad|ipod|ios)/i.test(ua)) {
+    if (/iphone|ipad|ipod|ios/i.test(ua)) {
       // return 'ios';
       return 'mobile'
     }

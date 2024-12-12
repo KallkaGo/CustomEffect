@@ -32,13 +32,12 @@ export default antfu({
       {
         functions: false,
         classes: false,
-        variables: true,  
+        variables: true,
       },
     ],
   },
-  overrides: [
-    {
-      files: ['public/**/*'],
-    },
+  ignores: [
+    'public/**/*',
+    'static/**/*',
   ],
 })

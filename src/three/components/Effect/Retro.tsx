@@ -45,7 +45,7 @@ class RetroEffect extends Effect {
 export default function Retro(props: IProps = { colorNum: 4 }) {
   const effect = useMemo(() => {
     return new RetroEffect(props)
-  }, [JSON.stringify(props)])
+  }, [props])
 
   useEffect(() => {
     return () => {

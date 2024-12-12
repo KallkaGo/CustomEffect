@@ -125,7 +125,7 @@ class BloomEffect extends Effect {
 }
 
 const Bloom: FC<IProps> = forwardRef((props, ref) => {
-  const effect = useMemo(() => new BloomEffect(props), [JSON.stringify(props)])
+  const effect = useMemo(() => new BloomEffect(props), [props])
 
   useEffect(() => {
     return () => {
