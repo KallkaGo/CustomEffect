@@ -45,13 +45,13 @@ export default function UIContainer() {
   }
 
   return (
-    <>
-      <UIWrapper id="panel" ref={container} onPointerUp={handlePointerUp}>
-        {state.game && <Game emit={handleEmit} />}
-        {state.load && <Load emit={handleEmit} />}
-      </UIWrapper>
-    </>
-    /*
+
+    <UIWrapper id="panel" ref={container} onPointerUp={handlePointerUp}>
+      {state.game && <Game emit={handleEmit} />}
+      {state.load && <Load emit={handleEmit} />}
+    </UIWrapper>
+
+  /*
         音乐示例
          <audio
                 ref={musicRef}

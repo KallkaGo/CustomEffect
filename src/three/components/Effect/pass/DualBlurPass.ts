@@ -1,4 +1,5 @@
 import type { WebGLRenderer } from 'three'
+import type { Uniforms } from 'three-stdlib'
 import { Pass, ShaderPass } from 'postprocessing'
 import { HalfFloatType, ShaderMaterial, Uniform, Vector2, WebGLRenderTarget } from 'three'
 import downFragment from '../shader/DualBlur/downFragment.glsl'
@@ -121,13 +122,12 @@ class DualBlurPass extends Pass {
     }
   }
 
-  set blurRange(value: number) {
-    this.downSampleMaterial.uniforms.u_blurRange.value = value
-    this.upSampleMaterial.uniforms.u_blurRange.value = value
+  get LuminanceThreshold(): Uniforms {
+    return this.downSampleMaterial.uniforms
   }
 
   set LuminanceThreshold(value: number) {
-    this.downSampleMaterial.uniforms.uLuminanceThreshold.value = value
+    this.LuminanceThreshold.uLuminanceThreshold.value = value
   }
 
   dispose() {

@@ -16,7 +16,7 @@ function BaseScene() {
   })
 
   return (
-    <>
+  
       <group ref={groupRef}>
         <mesh position={[-1, 0, 0]}>
           <boxGeometry args={[0.5, 0.5, 0.5]} />
@@ -32,7 +32,7 @@ function BaseScene() {
           <meshBasicMaterial color="orange" />
         </mesh>
       </group>
-    </>
+    
   )
 }
 

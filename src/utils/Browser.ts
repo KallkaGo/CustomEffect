@@ -6,7 +6,7 @@ let key = 'hidden'
 // const showListeners: (() => void)[] = [];
 function onWinChange(e: any) {
   // console.log(e.type, dom[key])
-  if (dom[key] || e.type == 'focusout' || e.type == 'blur') {
+  if (dom[key] || e.type === 'focusout' || e.type === 'blur') {
     useInteractStore.setState({ browserHidden: true })
   }
   else {

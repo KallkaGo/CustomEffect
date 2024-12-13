@@ -32,10 +32,6 @@ const Load: FC<IProps> = memo(({ emit }) => {
     }
   }, [])
 
-  useEffect(() => {
-    ready && close()
-  }, [ready])
-
   const close = contextSafe(() => {
     useInteractStore.setState({ demand: false })
     gsap.to(panelRef.current, {
@@ -52,6 +48,11 @@ const Load: FC<IProps> = memo(({ emit }) => {
 
     useInteractStore.setState({ begin: true })
   })
+
+  useEffect(() => {
+    ready && close()
+  }, [ready])
+
   return (
     <LoadWrapper ref={panelRef}>
       <div className="loading">
