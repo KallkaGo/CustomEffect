@@ -1,6 +1,7 @@
 import plant from '@models/banana_plant_opt.glb'
 import greenHouse from '@models/greenhouse_opt.glb'
 import firefly from '@textures/bg.png'
+import diffuse from '@textures/diffuse.png'
 import HonkaiStarrailLogo from '@textures/loadingLogo.png'
 import particle from '@textures/trainParticle.png'
 
@@ -13,5 +14,6 @@ export default {
     firefly,
     HonkaiStarrailLogo,
     particle,
+    diffuse,
   },
 }

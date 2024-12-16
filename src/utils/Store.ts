@@ -36,6 +36,7 @@ const useSceneStore = create(() => ({
   paint: false,
   distortion: false,
   honkaiStarrail: false,
+  colorCorrection: false,
 }))
 
 const useLoadedStore = create(() => ({

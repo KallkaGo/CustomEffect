@@ -6,7 +6,7 @@ import { memo, useEffect, useRef } from 'react'
 import { HalfFloatType } from 'three'
 
 interface IComponents {
-  component: FC
+  component: FC<any>
   props: any
 }
 
@@ -51,21 +51,21 @@ function EffectWrapper(components: IComponents[]) {
     }, 1)
 
     return (
-      <>
-        <EffectComposer
-          frameBufferType={HalfFloatType}
-          ref={composerRef}
-          disableNormalPass
-        >
-          {components.map((item, index) => (
-            <item.component
-              key={`Effect_${index}`}
-              index={index}
-              {...item.props}
-            />
-          ))}
-        </EffectComposer>
-      </>
+
+      <EffectComposer
+        frameBufferType={HalfFloatType}
+        ref={composerRef}
+        disableNormalPass
+      >
+        {components.map((item, index) => (
+          <item.component
+            key={`Effect_${index}`}
+            index={index}
+            {...item.props}
+          />
+        ))}
+      </EffectComposer>
+
     )
   })
 }

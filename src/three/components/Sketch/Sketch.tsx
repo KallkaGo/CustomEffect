@@ -13,6 +13,7 @@ import { BaseScene } from './base/BaseScene'
 import { DitheredTransparency } from './base/DitheredTranparency'
 import { HonkaiStarrailScene } from './base/HonkaiStarrail'
 import BloomEffect from './items/BloomEffect'
+import ColorCorrection from './items/ColorCorrection'
 import DiffusionEffect from './items/Diffusion'
 import DistortionEffect from './items/Distortion'
 import DualBlurEffect from './items/DualBlurEffect'
@@ -30,6 +31,7 @@ const EFFECT_MAP = [
   { key: 'retro', Component: RetroEffect },
   { key: 'paint', Component: PaintEffect },
   { key: 'distortion', Component: DistortionEffect },
+  { key: 'colorCorrection', Component: ColorCorrection },
 ]
 
 function Sketch() {
