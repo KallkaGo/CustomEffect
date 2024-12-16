@@ -2,15 +2,58 @@ import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'
 import { useTexture } from '@react-three/drei'
 import { useControls } from 'leva'
+import React from 'react'
 import { SRGBColorSpace } from 'three'
 import { ColorCorrection } from '../../Effect/ColorCorrection'
 import RES from '../../RES'
+
+const CONTROL_MAP = [
+  { key: 'saturation', debug: {
+    saturationAmount: {
+      value: 1.0,
+      min: 0.0,
+      max: 5.0,
+      step: 0.01,
+    },
+  } },
+  { key: 'contrast', debug: {
+    contrastAmount: {
+      value: 1.0,
+      min: 1.0,
+      max: 10.0,
+      step: 0.01,
+    },
+  } },
+  { key: 'vignette', debug: {
+    vignetteAmount: {
+      value: 0.25,
+      min: 0.0,
+      max: 1.0,
+      step: 0.01,
+    },
+  } },
+  { key: 'colorboost', debug: {
+    refColor: {
+      value: '#3284c7',
+    },
+  } },
+]
+
+function Control(mode: string) {
+  const control = CONTROL_MAP.find(item => item.key.toLocaleUpperCase() === mode)
+
+  const controlProps = useControls({
+    ...control?.debug,
+  }, [mode])!
+
+  return controlProps
+}
 
 function DiffusionEffect() {
   const diffuse = useTexture(RES.textures.diffuse)
   diffuse.colorSpace = SRGBColorSpace
 
-  const props = useControls('Color', {
+  const { mode } = useControls('Color', {
     mode: {
       value: 'SATURATION',
       options: [
@@ -20,28 +63,9 @@ function DiffusionEffect() {
         'VIGNETTE',
       ],
     },
-    saturationAmount: {
-      value: 1.0,
-      min: 0.0,
-      max: 5.0,
-      step: 0.01,
-    },
-    contrastAmount: {
-      value: 1.0,
-      min: 1.0,
-      max: 10.0,
-      step: 0.01,
-    },
-    refColor: {
-      value: '#3284c7',
-    },
-    vignetteAmount: {
-      value: 0.25,
-      min: 0.0,
-      max: 1.0,
-      step: 0.01,
-    },
   })
+
+  const props = Control(mode)
 
   const Effect = EffectWrapper([
     {
@@ -49,6 +73,7 @@ function DiffusionEffect() {
       props: {
         ...props,
         diffuse,
+        mode,
       },
     },
   ])
