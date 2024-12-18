@@ -37,6 +37,15 @@ const CONTROL_MAP = [
       value: '#3284c7',
     },
   } },
+  {
+    key: 'pixelation',
+    debug: {
+      dimension: {
+        value: 128,
+        options: [64, 128, 256, 512, 1024],
+      },
+    },
+  },
 ]
 
 function Control(mode: string) {
@@ -61,6 +70,8 @@ function DiffusionEffect() {
         'CONTRAST',
         'COLORBOOST',
         'VIGNETTE',
+        'PIXELATION',
+        'DISTORTION',
       ],
     },
   })

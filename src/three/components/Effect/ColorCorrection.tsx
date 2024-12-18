@@ -15,6 +15,7 @@ interface IProps {
   contrastAmount?: number
   vignetteAmount?: number
   refColor?: string
+  dimension?: string
   mode: string
 }
 
@@ -30,6 +31,7 @@ class ColorCorrectionEffect extends Effect {
         ['uContrastAmount', new Uniform(props.contrastAmount)],
         ['uRefColor', new Uniform(new Color(props.refColor))],
         ['uVignetteAmount', new Uniform(props.vignetteAmount)],
+        ['uDimension', new Uniform(props.dimension)],
       ]),
     })
   }

@@ -3,6 +3,7 @@ uniform float uSaturationAmount;
 uniform float uContrastAmount;
 uniform float uVignetteAmount;
 uniform vec3 uRefColor;
+uniform float uDimension;
 
 float inverseLerp(float v, float minValue, float maxValue) {
   return (v - minValue) / (maxValue - minValue);
@@ -60,6 +61,31 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     vignetteAmount = remap(vignetteAmount, 0.0, 1.0, 0.5, 1.0);
 
     color *= vignetteAmount;
+
+    #endif
+
+    #ifdef MODE_PIXELATION
+
+    vec2 dims = vec2(uDimension);
+    vec2 pixelCoords = floor(coord * dims) / dims;
+    vec3 pixelColor = texture2D(uDiffuse, pixelCoords).rgb;
+    color = pixelColor;
+
+    #endif
+
+    #ifdef MODE_DISTORTION
+
+    float dis = length(coord - 0.5);
+
+    float intensity = sin(dis * 50.0 - time *.5);
+
+    vec2 dir = normalize(coord - 0.5);
+
+    coord = coord + dir * intensity * .05;
+
+    vec3 disortionTex = texture2D(uDiffuse, coord).rgb;
+
+    color = disortionTex;
 
     #endif
 
