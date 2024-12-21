@@ -2,7 +2,7 @@ import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'
 import { useTexture } from '@react-three/drei'
 import { useControls } from 'leva'
-import { SRGBColorSpace } from 'three'
+import { NearestFilter, SRGBColorSpace } from 'three'
 import { ColorCorrection } from '../../Effect/ColorCorrection'
 import RES from '../../RES'
 
@@ -60,6 +60,7 @@ function Control(mode: string) {
 function DiffusionEffect() {
   const diffuse = useTexture(RES.textures.diffuse)
   diffuse.colorSpace = SRGBColorSpace
+  diffuse.minFilter = diffuse.magFilter = NearestFilter
 
   const { mode } = useControls('Color', {
     mode: {
