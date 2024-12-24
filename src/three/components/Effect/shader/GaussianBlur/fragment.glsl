@@ -1,3 +1,9 @@
+/* 
+  Reference: 
+  https://lisyarus.github.io/blog/posts/blur-coefficients-generator.html
+  https://learnopengl.com/Advanced-Lighting/Bloom
+ */
+
 varying vec2 vUv;
 uniform sampler2D tDiffuse;
 uniform bool uHorizontal;
