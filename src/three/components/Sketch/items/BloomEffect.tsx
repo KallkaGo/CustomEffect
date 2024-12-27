@@ -1,6 +1,7 @@
 import type { Group } from 'three'
 import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'
+import { PerspectiveCamera } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import { ToneMapping } from '@react-three/postprocessing'
 import { useControls } from 'leva'
@@ -75,7 +76,6 @@ function BloomEffect() {
   ])
 
   useEffect(() => {
-    camera.position.set(-12, 12, 12)
     return () => {
       camera.position.set(0, 0, 5)
     }
@@ -90,6 +90,10 @@ function BloomEffect() {
 
   return (
     <>
+      <PerspectiveCamera
+        makeDefault
+        position={[-12, 12, 12]}
+      />
       <group ref={groupRef}>
         <group position={[-4, 0, 6]}>
           {ROW.map((_, i) =>

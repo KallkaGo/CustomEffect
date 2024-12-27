@@ -59,7 +59,7 @@ function EffectWrapper(components: IComponents[]) {
       >
         {components.map((item, index) => (
           <item.component
-            key={`Effect_${item.component.name}`}
+            key={`Effect_${item.component.name || index}`}
             index={index}
             {...item.props}
           />

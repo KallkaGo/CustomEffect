@@ -61,8 +61,8 @@ function DistortionEffect() {
   )
 
   return (
-      <Effect />
+    <Effect />
   )
 }
 
-export default SceneLifecycle(DistortionEffect, false)
+export default SceneLifecycle(DistortionEffect, { scissor: false, controlEnable: true })

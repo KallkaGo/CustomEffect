@@ -94,4 +94,4 @@ function DiffusionEffect() {
   )
 }
 
-export default SceneLifecycle(DiffusionEffect, false)
+export default SceneLifecycle(DiffusionEffect, { scissor: false, controlEnable: true })

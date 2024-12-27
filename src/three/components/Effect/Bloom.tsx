@@ -1,10 +1,9 @@
-import type { FC } from 'react'
 import type {
   Texture,
   WebGLRenderer,
 } from 'three'
 import { Effect, ShaderPass } from 'postprocessing'
-import { forwardRef, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
   Color,
   HalfFloatType,
@@ -124,7 +123,7 @@ class BloomEffect extends Effect {
   }
 }
 
-const Bloom: FC<IProps> = forwardRef((props, ref) => {
+function Bloom(props: IProps) {
   const effect = useMemo(() => new BloomEffect(props), [props])
 
   useEffect(() => {
@@ -133,7 +132,7 @@ const Bloom: FC<IProps> = forwardRef((props, ref) => {
     }
   })
 
-  return <primitive object={effect} dispose={effect.dispose} ref={ref} />
-})
+  return <primitive object={effect} dispose={effect.dispose}/>
+}
 
 export { Bloom }
