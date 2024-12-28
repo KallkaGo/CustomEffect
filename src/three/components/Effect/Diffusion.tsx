@@ -39,7 +39,7 @@ float getBrightness(vec3 color) {
   
       float mixFactor = uMixFactor; 
   
-      vec3 screenColor = 1.0 - ((1.0 - baseColor.rgb) * (1.0 - blendColor.rgb));  
+      vec3 screenColor = 1.0 - (1.0 - baseColor.rgb) * (1.0 - blendColor.rgb);  
   
       vec3 resultColor = mix(baseColor.rgb, screenColor, mixFactor);  
   
