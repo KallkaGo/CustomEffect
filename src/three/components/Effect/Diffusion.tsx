@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const fragmentShader = /* glsl */ `
-uniform sampler2D map;
+uniform sampler2D uBlurTex;
 uniform float uMixFactor;
 
 float getBrightness(vec3 color) {
@@ -34,7 +34,7 @@ float getBrightness(vec3 color) {
       Screen mix
       */
 
-      vec4 blendColor = texture2D(map, uv);  
+      vec4 blendColor = texture2D(uBlurTex, uv);  
       vec4 baseColor = inputColor;  
   
       float mixFactor = uMixFactor; 
@@ -58,7 +58,7 @@ class DiffusionEffect extends Effect {
   ) {
     super('DualBlurEffect', fragmentShader, {
       uniforms: new Map<string, any>([
-        ['map', new Uniform(null)],
+        ['uBlurTex', new Uniform(null)],
         ['uMixFactor', new Uniform(props.mixFactor)],
       ]),
     })
@@ -71,7 +71,7 @@ class DiffusionEffect extends Effect {
     deltaTime?: number | undefined,
   ) {
     this.gaussianBlurPass.render(renderer, inputBuffer)
-    this.uniforms.get('map')!.value = this.gaussianBlurPass.finRT.texture
+    this.uniforms.get('uBlurTex')!.value = this.gaussianBlurPass.finRT.texture
   }
 
   dispose(): void {

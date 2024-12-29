@@ -31,13 +31,13 @@ class RetroEffect extends Effect {
     deltaTime?: number,
   ): void {
     const slidePos = useInteractStore.getState().sliderPos
-
+    const dpr = renderer.getPixelRatio()
     this.uniforms
       .get('uResolution')!
       .value
       .set(
-        slidePos * innerWidth * devicePixelRatio,
-        innerHeight * devicePixelRatio,
+        slidePos * innerWidth * dpr,
+        innerHeight * dpr,
       )
   }
 }
