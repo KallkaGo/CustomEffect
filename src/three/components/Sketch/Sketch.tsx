@@ -32,6 +32,9 @@ const EFFECT_MAP = [
   { key: 'paint', Component: PaintEffect },
   { key: 'distortion', Component: DistortionEffect },
   { key: 'colorCorrection', Component: ColorCorrection },
+  { key: 'ditheredTransparency', Component: DitheredTransparency },
+  { key: 'original', Component: BaseScene },
+  { key: 'honkaiStarrail', Component: HonkaiStarrailScene },
 ]
 
 function Sketch() {
@@ -84,10 +87,6 @@ function Sketch() {
         ref={OrbitControlsRef}
       />
       <color attach="background" args={['black']} />
-
-      {sceneState.original && <BaseScene />}
-      {sceneState.ditheredTransparency && <DitheredTransparency />}
-      {sceneState.honkaiStarrail && <HonkaiStarrailScene />}
 
       {activeEffects}
     </>

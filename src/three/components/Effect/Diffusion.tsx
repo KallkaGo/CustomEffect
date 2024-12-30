@@ -25,7 +25,7 @@ float getBrightness(vec3 color) {
         max
       */
 
-      // vec4 blendColor = texture2D(map, uv);
+      // vec4 blendColor = texture2D(uBlurTex, uv);
       // vec4 baseColor = inputColor;
       // vec3 resultColor = max(baseColor.rgb, blendColor.rgb);
       // outputColor = vec4(resultColor, baseColor.a);
