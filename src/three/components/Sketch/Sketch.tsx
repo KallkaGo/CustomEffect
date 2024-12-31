@@ -85,6 +85,8 @@ function Sketch() {
         domElement={controlDom}
         enabled={controlEnable}
         ref={OrbitControlsRef}
+        minDistance={0.1}
+        maxDistance={10}
       />
       <color attach="background" args={['black']} />
 
