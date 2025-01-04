@@ -33,7 +33,6 @@ const EFFECT_MAP = [
   { key: 'distortion', Component: DistortionEffect },
   { key: 'colorCorrection', Component: ColorCorrection },
   { key: 'ditheredTransparency', Component: DitheredTransparency },
-  { key: 'original', Component: BaseScene },
   { key: 'honkaiStarrail', Component: HonkaiStarrailScene },
 ]
 
@@ -51,7 +50,7 @@ function Sketch() {
 
   useControls('Effect', {
     effect: {
-      value: 'original',
+      value: 'honkaiStarrail',
       options: [...Object.keys(sceneState)],
       onChange: (value) => {
         if (initiale.current) {

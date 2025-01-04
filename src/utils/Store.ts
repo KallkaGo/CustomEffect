@@ -25,7 +25,8 @@ const useGameStore = create(() => ({
 }))
 
 const useSceneStore = create(() => ({
-  original: true,
+  honkaiStarrail: true,
+  distortion: false,
   ditheredTransparency: false,
   dualblur: false,
   gaussianblur: false,
@@ -34,8 +35,6 @@ const useSceneStore = create(() => ({
   gtToneMap: false,
   retro: false,
   paint: false,
-  distortion: false,
-  honkaiStarrail: false,
   colorCorrection: false,
 }))
 
