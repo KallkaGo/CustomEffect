@@ -9,7 +9,6 @@ import {
 import { useControls } from 'leva'
 import { useMemo, useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
-import { BaseScene } from './base/BaseScene'
 import { DitheredTransparency } from './base/DitheredTranparency'
 import { HonkaiStarrailScene } from './base/HonkaiStarrail'
 import BloomEffect from './items/BloomEffect'
@@ -21,6 +20,7 @@ import GaussianBlurEffect from './items/GaussianBlur'
 import GTToneMapping from './items/GTToneMapping'
 import PaintEffect from './items/PaintEffect'
 import RetroEffect from './items/RetroEffect'
+import SdfTemplate from './items/SdfTemplate'
 
 const EFFECT_MAP = [
   { key: 'dualblur', Component: DualBlurEffect },
@@ -34,6 +34,7 @@ const EFFECT_MAP = [
   { key: 'colorCorrection', Component: ColorCorrection },
   { key: 'ditheredTransparency', Component: DitheredTransparency },
   { key: 'honkaiStarrail', Component: HonkaiStarrailScene },
+  { key: 'sdf', Component: SdfTemplate },
 ]
 
 function Sketch() {
