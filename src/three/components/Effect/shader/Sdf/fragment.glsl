@@ -49,17 +49,22 @@ float sdfBox(vec2 p, vec2 s) {
 
 // Inigo Quilez 
 // https://iquilezles.org/articles/distfunctions2d/
-float sdHexagram( in vec2 p, in float r )
-{
-    const vec4 k = vec4(-0.5,0.8660254038,0.5773502692,1.7320508076);
-    p = abs(p);
-    p -= 2.0*min(dot(k.xy,p),0.0)*k.xy;
-    p -= 2.0*min(dot(k.yx,p),0.0)*k.yx;
-    p -= vec2(clamp(p.x,r*k.z,r*k.w),r);
-    return length(p)*sign(p.y);
+float sdHexagram(in vec2 p, in float r) {
+  const vec4 k = vec4(-0.5, 0.8660254038, 0.5773502692, 1.7320508076);
+  p = abs(p);
+  p -= 2.0 * min(dot(k.xy, p), 0.0) * k.xy;
+  p -= 2.0 * min(dot(k.yx, p), 0.0) * k.yx;
+  p -= vec2(clamp(p.x, r * k.z, r * k.w), r);
+  return length(p) * sign(p.y);
 }
 
 const vec3 RED = vec3(1.0, 0.1, 0.1);
+
+mat2 rotate2D(float angle) {
+  float s = sin(angle);
+  float c = cos(angle);
+  return mat2(c, s, -s, c);
+}
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
@@ -71,11 +76,16 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 
   float d = sdfCircle(pixelCoord, 100.);
 
+  /* base to games101 first translate second rotate   */
+  vec2 bPos = pixelCoord - vec2(300., 300.);
+
+  bPos *= rotate2D(time * .25);
+
   float t = sdfLine(pixelCoord, vec2(-200., -100.), vec2(300., -200.));
 
-  float b = sdfBox(pixelCoord - vec2(300.,300.), vec2(300., 100.));
+  float b = sdfBox(bPos, vec2(300., 100.));
 
-  float s = sdHexagram(pixelCoord - vec2(-300.,300.), 100.);
+  float s = sdHexagram(pixelCoord - vec2(-300., 300.), 100.);
 
   color = mix(RED, color, step(0., d));
 
