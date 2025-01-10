@@ -87,13 +87,16 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 
   float s = sdHexagram(pixelCoord - vec2(-300., 300.), 100.);
 
-  color = mix(RED, color, step(0., d));
+  color = mix(RED * 0.2, color, smoothstep(-1., 1., d));
+  color = mix(RED, color, smoothstep(-5., 0., d));
 
-  color = mix(RED, color, step(5., t));
+  color = mix(RED, color, smoothstep(4., 6., t));
 
-  color = mix(RED, color, step(0., b));
+  color = mix(RED * 0.2, color, smoothstep(-1., 1., b));
+  color = mix(RED, color, smoothstep(-5., 0., b));
 
-  color = mix(RED, color, step(0., s));
+  color = mix(RED * 0.2, color, smoothstep(-1., 1., s));
+  color = mix(RED, color, smoothstep(-5., 0., s));
 
   outputColor = vec4(color, 1.0);
 
