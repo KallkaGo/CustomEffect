@@ -70,6 +70,7 @@ float opIntersection(float d1, float d2) {
   return max(d1, d2);
 }
 
+// https://zh.wikipedia.org/wiki/LogSumExp
 float softMax(float a, float b, float k) {
   return log(exp(k * a) + exp(k * b)) / k;
 }
