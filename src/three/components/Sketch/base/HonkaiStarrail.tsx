@@ -212,7 +212,7 @@ function HonkaiStarrailScene() {
     return () => {
       gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.2))
     }
-  }, [])
+  }, [camera, gl])
 
   useFrame((state, delta) => {
     delta %= 1
