@@ -8,31 +8,35 @@ interface IProps {
   loopCount?: number
   downsample?: number
   mixFactor?: number
+  basePow?: number
+  blurPow?: number
+  mode?: string
 }
 
 const fragmentShader = /* glsl */ `
 uniform sampler2D uBlurTex;
 uniform float uMixFactor;
+uniform float uBlurPow;
+uniform float uBasePow;
 
 float getBrightness(vec3 color) {
   return dot(color, vec3(0.299, 0.587, 0.114));
 }
 
 // UFSH 2024 Tower of Fantasy share
+/* 
+Reference：
+  https://zhuanlan.zhihu.com/p/675826591
+  https://media.colorfulpalette.co.jp/n/n51bf8818b89d
+  https://www.pixiv.net/artworks/10325142
+
+*/
  void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     { 
-      /*
-        max
-      */
-
-      // vec4 blendColor = texture2D(uBlurTex, uv);
-      // vec4 baseColor = inputColor;
-      // vec3 resultColor = max(baseColor.rgb, blendColor.rgb);
-      // outputColor = vec4(resultColor, baseColor.a);
-      
       /* 
       Screen mix
       */
+     #ifdef MODE_SCREENMIX
 
       vec4 blendColor = texture2D(uBlurTex, uv);  
       vec4 baseColor = inputColor;  
@@ -43,7 +47,28 @@ float getBrightness(vec3 color) {
   
       vec3 resultColor = mix(baseColor.rgb, screenColor, mixFactor);  
   
-      outputColor = vec4(resultColor, baseColor.a);  
+      outputColor = vec4(resultColor, baseColor.a); 
+  
+      #endif
+
+      #ifdef MODE_MAXBLEND
+
+      vec4 blurColor = texture2D(uBlurTex, uv);
+      vec4 baseColor = inputColor;
+
+      vec3 mulBlurColor = pow(blurColor.rgb, vec3(uBlurPow));
+      vec3 mulColor = pow(baseColor.rgb, vec3(uBasePow));
+
+      vec3 screenColor = mulColor.rgb + mulBlurColor - mulBlurColor * mulColor.rgb;
+
+      // vec3 screenColor = 1.0 - (1.0 - mulColor.rgb) * (1.0 - mulBlurColor.rgb);
+
+      vec3 finalColor = max(baseColor.rgb, screenColor);
+
+      outputColor = vec4(finalColor, baseColor.a);
+
+      #endif
+
     }
 `
 
@@ -54,12 +79,17 @@ class DiffusionEffect extends Effect {
       loopCount: 5,
       downsample: 2,
       mixFactor: 0.2,
+      mode: 'SCREENMIX',
     },
   ) {
+    console.log('props',props.mode);
     super('DualBlurEffect', fragmentShader, {
+      defines: new Map<string, any>([[`MODE_${props.mode}`, '']]),
       uniforms: new Map<string, any>([
         ['uBlurTex', new Uniform(null)],
         ['uMixFactor', new Uniform(props.mixFactor)],
+        ['uBlurPow', new Uniform(props.blurPow)],
+        ['uBasePow', new Uniform(props.basePow)],
       ]),
     })
     this.gaussianBlurPass = new GaussianBlurPass(props)

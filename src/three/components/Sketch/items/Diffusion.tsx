@@ -8,11 +8,47 @@ import { SRGBColorSpace } from 'three'
 import { Diffusion } from '../../Effect/Diffusion'
 import RES from '../../RES'
 
+const CONTROL_MAP = [
+  { key: 'screenMix', debug: {
+    mixFactor: {
+      value: 0.2,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+  } },
+  { key: 'maxBlend', debug: {
+    blurPow: {
+      value: 2.0,
+      min: 0.0,
+      max: 10.0,
+      step: 0.01,
+    },
+    basePow:{
+      value: 1.0,
+      min: 1.0,
+      max: 10.0,
+      step: 0.01,
+    }
+  } },
+
+]
+
+function Control(mode: string) {
+  const control = CONTROL_MAP.find(item => item.key.toLocaleUpperCase() === mode)
+
+  const controlProps = useControls({
+    ...control?.debug,
+  }, [mode])!
+
+  return controlProps
+}
+
 function DiffusionEffect() {
   const diffuseTex = useTexture(RES.textures.firefly)
   diffuseTex.colorSpace = SRGBColorSpace
 
-  const props = useControls('Diffusion', {
+  const commonProps = useControls('blur', {
     loopCount: {
       value: 5,
       min: 1,
@@ -25,25 +61,33 @@ function DiffusionEffect() {
       max: 10,
       step: 1,
     },
-    mixFactor: {
-      value: 0.2,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    }
+
   })
+
+  const { mode } = useControls('MODE', {
+    mode: {
+      value: 'SCREENMIX',
+      options: [
+        'MAXBLEND',
+      ],
+    },
+  })
+
+  const props = Control(mode)
 
   const Effect = EffectWrapper([
     {
       component: Diffusion,
-      props,
+      props: {
+        ...commonProps,
+        ...props,
+        mode,
+      },
     },
   ])
 
   useEffect(() => {
     useInteractStore.setState({ controlEnable: false })
-
-    
   }, [])
 
   return (
