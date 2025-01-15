@@ -19,10 +19,6 @@ uniform float uMixFactor;
 uniform float uBlurPow;
 uniform float uBasePow;
 
-float getBrightness(vec3 color) {
-  return dot(color, vec3(0.299, 0.587, 0.114));
-}
-
 // UFSH 2024 Tower of Fantasy share
 /* 
 Reference：
@@ -82,7 +78,6 @@ class DiffusionEffect extends Effect {
       mode: 'SCREENMIX',
     },
   ) {
-    console.log('props',props.mode);
     super('DualBlurEffect', fragmentShader, {
       defines: new Map<string, any>([[`MODE_${props.mode}`, '']]),
       uniforms: new Map<string, any>([
