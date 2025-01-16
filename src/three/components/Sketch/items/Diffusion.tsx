@@ -66,9 +66,9 @@ function DiffusionEffect() {
 
   const { mode } = useControls('MODE', {
     mode: {
-      value: 'SCREENMIX',
+      value: 'MAXBLEND',
       options: [
-        'MAXBLEND',
+        'SCREENMIX',
       ],
     },
   })
