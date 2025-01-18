@@ -25,7 +25,7 @@ const CONTROL_MAP = [
       step: 0.01,
     },
     basePow:{
-      value: 1.0,
+      value: 1.5,
       min: 1.0,
       max: 10.0,
       step: 0.01,
