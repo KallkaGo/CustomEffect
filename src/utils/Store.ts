@@ -37,6 +37,7 @@ const useSceneStore = create(() => ({
   paint: false,
   colorCorrection: false,
   sdf: false,
+  transition:false
 }))
 
 const useLoadedStore = create(() => ({

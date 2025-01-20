@@ -4,6 +4,9 @@ import firefly from '@textures/bg.png'
 import diffuse from '@textures/diffuse.png'
 import HonkaiStarrailLogo from '@textures/loadingLogo.png'
 import particle from '@textures/trainParticle.png'
+import sample1 from '@textures/wuwa_2.0.jpg'
+import sample3 from '@textures/wuwa_kelaita.jpg'
+import sample2 from '@textures/wuwa_luokeke.jpg'
 
 export default {
   models: {
@@ -15,5 +18,8 @@ export default {
     HonkaiStarrailLogo,
     particle,
     diffuse,
+    sample1,
+    sample2,
+    sample3,
   },
 }

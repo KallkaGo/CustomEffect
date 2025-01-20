@@ -21,6 +21,7 @@ import GTToneMapping from './items/GTToneMapping'
 import PaintEffect from './items/PaintEffect'
 import RetroEffect from './items/RetroEffect'
 import SdfTemplate from './items/SdfTemplate'
+import TransitionEffect from './items/Transition'
 
 const EFFECT_MAP = [
   { key: 'dualblur', Component: DualBlurEffect },
@@ -35,6 +36,7 @@ const EFFECT_MAP = [
   { key: 'ditheredTransparency', Component: DitheredTransparency },
   { key: 'honkaiStarrail', Component: HonkaiStarrailScene },
   { key: 'sdf', Component: SdfTemplate },
+  { key: 'transition', Component: TransitionEffect },
 ]
 
 function Sketch() {

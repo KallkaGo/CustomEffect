@@ -4,7 +4,7 @@ import fragmenrShader from './shader/Sdf/fragment.glsl'
 
 class SdfTemplateEffect extends Effect {
   constructor() {
-    super('GTToneMap', fragmenrShader, {
+    super('Sdf', fragmenrShader, {
       uniforms: new Map<string, any>([
         
       ]),
