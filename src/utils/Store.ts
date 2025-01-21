@@ -14,6 +14,7 @@ const useInteractStore = create(() => ({
   end: false,
   sliderPos: 0.5,
   controlEnable: true,
+  arrowState: '',
 }))
 
 const useGameStore = create(() => ({
@@ -22,6 +23,7 @@ const useGameStore = create(() => ({
   bodyColor: '#26d6e9',
   showSlider: false,
   progress: 0,
+  transitionProgress: 0,
 }))
 
 const useSceneStore = create(() => ({
@@ -37,7 +39,7 @@ const useSceneStore = create(() => ({
   paint: false,
   colorCorrection: false,
   sdf: false,
-  transition:false
+  transition: false,
 }))
 
 const useLoadedStore = create(() => ({

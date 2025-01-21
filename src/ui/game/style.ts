@@ -66,4 +66,28 @@ export const GameWrapper = styled.div`
     cursor: pointer;
     pointer-events:auto;
    }
+
+   .arrow-container{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 40px;
+    box-sizing: border-box;
+   }
+   .arrow{
+    width:48px;
+    height:48px;
+    background:url('../../../static/images/carousel-arrow-mc.png')  no-repeat center / contain;
+    cursor: pointer;
+   }
+
+   .left-arrow{
+    transform: rotate(180deg) translateY(50%);
+    transform-origin: center;
+   }
 `

@@ -5,14 +5,13 @@ import type {
 import type { IProps } from '../types'
 import { useGSAP } from '@gsap/react'
 
-import { useGameStore, useInteractStore } from '@utils/Store'
+import { useGameStore, useInteractStore, useSceneStore } from '@utils/Store'
 import gsap from 'gsap'
 import {
   useEffect,
   useRef,
 } from 'react'
 import { GameWrapper } from './style'
-
 
 const Game: FC<IProps> = ({ emit }) => {
   const controlRef = useRef<HTMLDivElement>(null)
@@ -28,6 +27,7 @@ const Game: FC<IProps> = ({ emit }) => {
   const sliderPos = useInteractStore(state => state.sliderPos)
   const showSlider = useGameStore(state => state.showSlider)
   const transfer = useGameStore(state => state.transfer)
+  const isTrans = useSceneStore(state => state.transition)
 
   useGSAP(() => {
     gsap.set(gameRef.current, { opacity: 0 })
@@ -57,12 +57,14 @@ const Game: FC<IProps> = ({ emit }) => {
     useInteractStore.setState({ touch: flag })
   }
 
-  const handlePointerDown = (e: IPointerEvent) => {
-    baseParam.current.down = true
-    baseParam.current.startPos = e.clientX
-    document.body.addEventListener('pointermove', handlePointerMove)
-    document.body.addEventListener('pointerup', handlePointerUp)
-    document.body.addEventListener('pointerleave', handlePointerUp)
+  const handlePointerMove = (e: PointerEvent) => {
+    const { down } = baseParam.current
+    if (!down)
+      return
+    baseParam.current.curPos = e.clientX
+    const left = e.clientX / innerWidth
+    sliderRef.current!.style.left = `${left * 100}%`
+    useInteractStore.setState({ sliderPos: left })
   }
 
   const handlePointerUp = (e: PointerEvent) => {
@@ -72,14 +74,18 @@ const Game: FC<IProps> = ({ emit }) => {
     document.body.removeEventListener('pointerleave', handlePointerUp)
   }
 
-  const handlePointerMove = (e: PointerEvent) => {
-    const { down } = baseParam.current
-    if (!down)
-      return
-    baseParam.current.curPos = e.clientX
-    const left = e.clientX / innerWidth
-    sliderRef.current!.style.left = `${left * 100}%`
-    useInteractStore.setState({ sliderPos: left })
+  const handlePointerDown = (e: IPointerEvent) => {
+    baseParam.current.down = true
+    baseParam.current.startPos = e.clientX
+    document.body.addEventListener('pointermove', handlePointerMove)
+    document.body.addEventListener('pointerup', handlePointerUp)
+    document.body.addEventListener('pointerleave', handlePointerUp)
+  }
+
+  // 0: left, 1: right
+  const handleArrowClick = (flag: boolean) => {
+    
+    useInteractStore.setState({ arrowState: flag ? 'right' : 'left' })
   }
 
   return (
@@ -138,6 +144,14 @@ const Game: FC<IProps> = ({ emit }) => {
           </svg>
         </div>
       </div>
+
+      {isTrans && (
+        <div className="arrow-container">
+          <div className="left-arrow arrow" onPointerDown={() => handleArrowClick(false)}></div>
+          <div className="right-arrow arrow" onPointerDown={() => handleArrowClick(true)}></div>
+        </div>
+      )}
+
     </GameWrapper>
   )
 }
