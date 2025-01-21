@@ -1,3 +1,4 @@
+import arrow from '@images/carousel-arrow-mc.png'
 import styled from 'styled-components'
 
 export const GameWrapper = styled.div`
@@ -82,7 +83,7 @@ export const GameWrapper = styled.div`
    .arrow{
     width:48px;
     height:48px;
-    background:url('../../../static/images/carousel-arrow-mc.png')  no-repeat center / contain;
+    background:url(${arrow})  no-repeat center / contain;
     cursor: pointer;
    }
 
