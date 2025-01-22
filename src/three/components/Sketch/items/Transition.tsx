@@ -27,28 +27,23 @@ function TransitionEffect() {
   const progress = useGameStore(state => state.transitionProgress)
 
   useGSAP(() => {
-    if (!baseParams.current.aniDone || !arrowState)
+    const { current } = baseParams
+
+    if (!current.aniDone || !arrowState)
       return
-    baseParams.current.aniDone = false
+
+    current.aniDone = false
 
     const isLeft = arrowState === 'left'
+    current.curIndex += isLeft ? -1 : 1
 
-    baseParams.current.curIndex += isLeft ? -1 : 1
-
-    if (baseParams.current.curIndex < 0) {
-      baseParams.current.curIndex = textureList.length - 1
-    }
-    else if (baseParams.current.curIndex >= textureList.length) {
-      baseParams.current.curIndex = 0
-    }
+    current.curIndex = (current.curIndex + textureList.length) % textureList.length
 
     if (isLeft) {
-      const tmp = baseParams.current.curTexture
-      baseParams.current.curTexture = textureList[baseParams.current.curIndex]
-      baseParams.current.nextTexture = tmp
+      [current.curTexture, current.nextTexture] = [textureList[current.curIndex], current.curTexture]
     }
     else {
-      baseParams.current.nextTexture = textureList[baseParams.current.curIndex]
+      current.nextTexture = textureList[current.curIndex]
     }
 
     const param = { progress: isLeft ? 1 : 0 }
