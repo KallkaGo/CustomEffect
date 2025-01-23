@@ -1,12 +1,13 @@
+import type { Texture, WebGLRenderer, WebGLRenderTarget } from 'three'
 import { Effect } from 'postprocessing'
 import { useEffect, useMemo } from 'react'
-import { type Texture, Uniform, Vector2 } from 'three'
+import { Uniform, Vector2 } from 'three'
 import fragmenrShader from './shader/Trans/fragment.glsl'
 
 interface IProps {
   diffuse1: Texture
   diffuse2: Texture
-  progress: number
+  progress:number
   intensity: number
 }
 
@@ -22,6 +23,10 @@ class Transition extends Effect {
         ['uIntensity', new Uniform(props.intensity)],
       ]),
     })
+  }
+
+  update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget, deltaTime?: number): void {
+    this.uniforms.get('uScreenSize')!.value.set(innerWidth, innerHeight)
   }
 }
 

@@ -11,7 +11,7 @@ import Transition from '../../Effect/Transition'
 import RES from '../../RES'
 
 function TransitionEffect() {
-  const textureList = useTexture([RES.textures.sample1, RES.textures.sample2, RES.textures.sample3])
+  const textureList = useTexture([RES.textures.sample1, RES.textures.sample2, RES.textures.sample4, RES.textures.sample3])
   textureList.forEach((texture) => {
     texture.colorSpace = SRGBColorSpace
   })
