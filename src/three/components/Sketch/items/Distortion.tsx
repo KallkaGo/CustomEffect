@@ -5,6 +5,7 @@ import { useTexture } from '@react-three/drei'
 import { useGameStore } from '@utils/Store'
 import gsap from 'gsap'
 import { useControls } from 'leva'
+import { useEffect } from 'react'
 import { SRGBColorSpace } from 'three'
 import Distortion from '../../Effect/Distortion'
 import RES from '../../RES'
@@ -59,6 +60,12 @@ function DistortionEffect() {
     },
     { dependencies: [props.animation] },
   )
+
+  useEffect(() => {
+    return () => {
+      diffuseTex.dispose()
+    }
+  }, [])
 
   return (
     <Effect />

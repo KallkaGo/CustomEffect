@@ -1,4 +1,5 @@
 import type { FC } from 'react'
+import type { Material, Mesh } from 'three'
 import { useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer } from '@react-three/postprocessing'
 import { useGameStore, useInteractStore } from '@utils/Store'
@@ -19,7 +20,8 @@ function EffectWrapper(components: IComponents[]) {
       const composer = composerRef.current
       return () => {
         gl.setScissorTest(false)
-
+        composer.inputBuffer.dispose()
+        composer.outputBuffer.dispose()
         composer.dispose()
         composer.passes.forEach((pass: any) => {
           pass.dispose()

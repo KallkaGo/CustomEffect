@@ -24,12 +24,12 @@ const CONTROL_MAP = [
       max: 10.0,
       step: 0.01,
     },
-    basePow:{
+    basePow: {
       value: 1.5,
       min: 1.0,
       max: 10.0,
       step: 0.01,
-    }
+    },
   } },
 
 ]
@@ -88,6 +88,10 @@ function DiffusionEffect() {
 
   useEffect(() => {
     useInteractStore.setState({ controlEnable: false })
+
+    return () => {
+      diffuseTex.dispose()
+    }
   }, [])
 
   return (

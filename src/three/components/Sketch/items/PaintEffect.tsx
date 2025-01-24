@@ -1,3 +1,4 @@
+import type { Material, Mesh, MeshStandardMaterial } from 'three'
 import type { GLTF } from 'three-stdlib'
 import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'
@@ -7,6 +8,7 @@ import textureSrc from '@textures/waterColor.png'
 import { useKTX2Loader } from '@utils/useKTX2Loader'
 import { useControls } from 'leva'
 import { EdgeDetectionMode, SMAAPreset } from 'postprocessing'
+import { useEffect } from 'react'
 import Kuwahara from '../../Effect/Kuwahara'
 import QuantizationAndToneMap from '../../Effect/QuantizationAndToneMap'
 import RES from '../../RES'
@@ -17,6 +19,28 @@ function Model({ modelName }: { modelName: string }) {
     false,
     true,
   ) as GLTF[]
+
+  useEffect(() => {
+    return () => {
+      plant.scene.traverse((child) => {
+        if ((child as Mesh).isMesh) {
+          const mesh = child as Mesh
+          const material = mesh.material as Material
+          material.dispose()
+          mesh.geometry.dispose()
+        }
+      })
+
+      greenHouse.scene.traverse((child) => {
+        if ((child as Mesh).isMesh) {
+          const mesh = child as Mesh
+          const material = mesh.material as Material
+          material.dispose()
+          mesh.geometry.dispose()
+        }
+      })
+    }
+  }, [plant, greenHouse])
 
   return (
     <>
@@ -94,6 +118,12 @@ function PaintEffect() {
       props: antiAliasingprops,
     },
   ])
+
+  useEffect(() => {
+    return () => {
+      tex.dispose()
+    }
+  }, [tex])
 
   return (
     <>

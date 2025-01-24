@@ -34,6 +34,10 @@ function DitheredTransparency() {
   useEffect(() => {
     useLoadedStore.setState({ ready: true })
     useGameStore.setState({ showSlider: false })
+
+    return () => {
+      ditherTexture.dispose()
+    }
   }, [])
 
   useControls('Dither', {

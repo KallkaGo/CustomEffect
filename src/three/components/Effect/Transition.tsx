@@ -7,7 +7,7 @@ import fragmenrShader from './shader/Trans/fragment.glsl'
 interface IProps {
   diffuse1: Texture
   diffuse2: Texture
-  progress:number
+  progress: number
   intensity: number
 }
 
@@ -21,12 +21,13 @@ class Transition extends Effect {
         ['uImageSize', new Uniform(new Vector2(1920, 1080))],
         ['uScreenSize', new Uniform(new Vector2(innerWidth, innerHeight))],
         ['uIntensity', new Uniform(props.intensity)],
+        ['uResolution', new Uniform(new Vector2())],
       ]),
     })
   }
 
   update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget, deltaTime?: number): void {
-    this.uniforms.get('uScreenSize')!.value.set(innerWidth, innerHeight)
+    this.uniforms.get('uScreenSize')!.value.set(innerWidth * devicePixelRatio, innerHeight * devicePixelRatio)
   }
 }
 

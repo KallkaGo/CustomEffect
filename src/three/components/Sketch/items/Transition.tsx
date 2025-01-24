@@ -5,7 +5,7 @@ import { useTexture } from '@react-three/drei'
 import { useGameStore, useInteractStore } from '@utils/Store'
 import gsap from 'gsap'
 import { useControls } from 'leva'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { SRGBColorSpace } from 'three'
 import Transition from '../../Effect/Transition'
 import RES from '../../RES'
@@ -68,6 +68,14 @@ function TransitionEffect() {
 
     intensity: { value: 0.34, min: 0, max: 1, step: 0.01 },
   })
+
+  useEffect(() => {
+    return () => {
+      textureList.forEach((texture) => {
+        texture.dispose()
+      })
+    }
+  }, [])
 
   const Effect = EffectWrapper([
     {
