@@ -33,6 +33,8 @@ class DistortionEffect extends Effect {
         ['uHighLight', new Uniform(new Color(props.highLight))],
         ['uDiffuse', new Uniform(props.diffuse)],
         ['uCenter', new Uniform(new Vector2(0.5, 0.5))],
+        ['uImageSize', new Uniform(new Vector2(1920, 1080))],
+        ['uScreenSize', new Uniform(new Vector2(innerWidth, innerHeight))],
       ]),
     })
     this.animation = props.animation!
@@ -46,6 +48,7 @@ class DistortionEffect extends Effect {
     if (this.animation) {
       this.uniforms.get('uPorgress')!.value = useGameStore.getState().progress
     }
+    this.uniforms.get('uScreenSize')!.value.set(innerWidth * devicePixelRatio, innerHeight * devicePixelRatio)
   }
 }
 

@@ -214,7 +214,7 @@ function HonkaiStarrailScene() {
       diffuseTex.dispose()
       particleTex.dispose()
     }
-  }, [camera, gl])
+  }, [camera, gl, diffuseTex, particleTex])
 
   useFrame((state, delta) => {
     delta %= 1
