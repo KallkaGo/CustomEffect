@@ -75,7 +75,7 @@ function TransitionEffect() {
         texture.dispose()
       })
     }
-  }, [])
+  }, [textureList])
 
   const Effect = EffectWrapper([
     {

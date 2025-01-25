@@ -65,7 +65,7 @@ function DistortionEffect() {
     return () => {
       diffuseTex.dispose()
     }
-  }, [])
+  }, [diffuseTex])
 
   return (
     <Effect />

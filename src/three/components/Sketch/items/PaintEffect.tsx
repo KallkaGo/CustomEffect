@@ -1,4 +1,4 @@
-import type { Material, Mesh, MeshStandardMaterial } from 'three'
+import type { Material, Mesh } from 'three'
 import type { GLTF } from 'three-stdlib'
 import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'

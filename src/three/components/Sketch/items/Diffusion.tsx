@@ -92,7 +92,7 @@ function DiffusionEffect() {
     return () => {
       diffuseTex.dispose()
     }
-  }, [])
+  }, [diffuseTex])
 
   return (
     <>
