@@ -19,15 +19,10 @@ class Transition extends Effect {
         ['uCurrentTexture', new Uniform(props.diffuse1)],
         ['uNextTexture', new Uniform(props.diffuse2)],
         ['uImageSize', new Uniform(new Vector2(1920, 1080))],
-        ['uScreenSize', new Uniform(new Vector2(innerWidth, innerHeight))],
         ['uIntensity', new Uniform(props.intensity)],
         ['uResolution', new Uniform(new Vector2())],
       ]),
     })
-  }
-
-  update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget, deltaTime?: number): void {
-    this.uniforms.get('uScreenSize')!.value.set(innerWidth * devicePixelRatio, innerHeight * devicePixelRatio)
   }
 }
 

@@ -48,7 +48,6 @@ class DistortionEffect extends Effect {
     if (this.animation) {
       this.uniforms.get('uPorgress')!.value = useGameStore.getState().progress
     }
-    this.uniforms.get('uScreenSize')!.value.set(innerWidth * devicePixelRatio, innerHeight * devicePixelRatio)
   }
 }
 
