@@ -1,4 +1,4 @@
-import type { Texture, WebGLRenderer, WebGLRenderTarget } from 'three'
+import type { Texture } from 'three'
 import { Effect } from 'postprocessing'
 import { useEffect, useMemo } from 'react'
 import { Uniform, Vector2 } from 'three'

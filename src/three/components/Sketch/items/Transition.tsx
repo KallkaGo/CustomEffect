@@ -2,6 +2,7 @@ import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'
 import { useGSAP } from '@gsap/react'
 import { useTexture } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import { useGameStore, useInteractStore } from '@utils/Store'
 import gsap from 'gsap'
 import { useControls } from 'leva'
@@ -20,6 +21,8 @@ function TransitionEffect() {
     aniDone: true,
     curTexture: textureList[0],
     nextTexture: textureList[1],
+    time: 0,
+    isAuto: true,
   })
 
   const arrowState = useInteractStore(state => state.arrowState)
@@ -35,6 +38,7 @@ function TransitionEffect() {
     current.aniDone = false
 
     const isLeft = arrowState === 'left'
+
     current.curIndex += isLeft ? -1 : 1
 
     current.curIndex = (current.curIndex + textureList.length) % textureList.length
@@ -56,13 +60,26 @@ function TransitionEffect() {
       },
       onComplete: () => {
         baseParams.current.aniDone = true
-        useInteractStore.setState({ arrowState: '' })
+        useInteractStore.setState({ arrowState: '', isAuto: true })
+        baseParams.current.time = 0
         if (!isLeft) {
           baseParams.current.curTexture = baseParams.current.nextTexture
         }
       },
     })
   }, { dependencies: [arrowState] })
+
+  useFrame((state, delta) => {
+    delta %= 1
+    baseParams.current.isAuto = useInteractStore.getState().isAuto
+    if (!baseParams.current.isAuto)
+      return
+    baseParams.current.time += delta
+    if (baseParams.current.time > 3) {
+      useInteractStore.setState({ arrowState: 'right-auto' })
+      baseParams.current.time = 0
+    }
+  })
 
   const { intensity } = useControls({
 

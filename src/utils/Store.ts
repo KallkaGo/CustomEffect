@@ -15,6 +15,7 @@ const useInteractStore = create(() => ({
   sliderPos: 0.5,
   controlEnable: true,
   arrowState: '',
+  isAuto:true
 }))
 
 const useGameStore = create(() => ({

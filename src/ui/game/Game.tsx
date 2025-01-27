@@ -85,7 +85,7 @@ const Game: FC<IProps> = ({ emit }) => {
   // 0: left, 1: right
   const handleArrowClick = (flag: boolean) => {
     
-    useInteractStore.setState({ arrowState: flag ? 'right' : 'left' })
+    useInteractStore.setState({ arrowState: flag ? 'right' : 'left', isAuto: false })
   }
 
   return (
