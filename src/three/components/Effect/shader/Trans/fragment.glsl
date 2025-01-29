@@ -1,4 +1,4 @@
-#include '../Common/tools.glsl'
+#include '../../includes/tools.glsl'
 
 uniform sampler2D uCurrentTexture;
 uniform sampler2D uNextTexture;

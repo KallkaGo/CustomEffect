@@ -1,4 +1,4 @@
-#include '../Common/tools.glsl'
+#include '../../includes/tools.glsl'
 
 uniform sampler2D uDiffuse;
 uniform vec2 uCenter;
