@@ -69,21 +69,22 @@ function TransitionEffect() {
     })
   }, { dependencies: [arrowState] })
 
+  const { intensity, carousel } = useControls({
+
+    intensity: { value: 0.34, min: 0, max: 1, step: 0.01 },
+    carousel: true,
+  })
+
   useFrame((state, delta) => {
     delta %= 1
     baseParams.current.isAuto = useInteractStore.getState().isAuto
-    if (!baseParams.current.isAuto)
+    if (!baseParams.current.isAuto || !carousel)
       return
     baseParams.current.time += delta
     if (baseParams.current.time > 3) {
       useInteractStore.setState({ arrowState: 'right-auto' })
       baseParams.current.time = 0
     }
-  })
-
-  const { intensity } = useControls({
-
-    intensity: { value: 0.34, min: 0, max: 1, step: 0.01 },
   })
 
   useEffect(() => {
