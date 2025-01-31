@@ -80,11 +80,25 @@ export const GameWrapper = styled.div`
     padding:0 40px;
     box-sizing: border-box;
    }
+
+   .arrow-container:hover .arrow{
+       display:block;
+   }
+
+
+
    .arrow{
+    display:none;
     width:48px;
     height:48px;
     background:url(${arrow})  no-repeat center / contain;
     cursor: pointer;
+   }
+   .arrow:hover{
+       opacity:0.92
+   }
+   .arrow:active{
+       opacity:0.88
    }
 
    .left-arrow{
