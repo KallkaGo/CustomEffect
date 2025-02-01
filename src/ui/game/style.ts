@@ -102,7 +102,7 @@ export const GameWrapper = styled.div`
    }
 
    .left-arrow{
-    transform: rotate(180deg) translateY(50%);
+    transform: rotate(180deg);
     transform-origin: center;
    }
 `
