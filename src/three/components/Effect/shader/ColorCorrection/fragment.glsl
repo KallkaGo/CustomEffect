@@ -1,9 +1,12 @@
+#include '../../includes/tools.glsl
+
 uniform sampler2D uDiffuse;
 uniform float uSaturationAmount;
 uniform float uContrastAmount;
 uniform float uVignetteAmount;
 uniform vec3 uRefColor;
 uniform float uDimension;
+uniform vec2 uImageSize;
 
 float inverseLerp(float v, float minValue, float maxValue) {
   return (v - minValue) / (maxValue - minValue);
@@ -16,7 +19,9 @@ float remap(float v, float inMin, float inMax, float outMin, float outMax) {
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
-  vec2 coord = fract(uv * vec2(2.0, 1.0));
+  vec2 newUV = calcCoord(uv,uImageSize, resolution);
+
+  vec2 coord = fract(newUV * vec2(2.0, 1.0));
 
   coord.x = remap(coord.x, 0., 1., 0.15, 0.85);
 

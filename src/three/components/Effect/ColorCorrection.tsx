@@ -6,6 +6,7 @@ import { useEffect, useMemo } from 'react'
 import {
   Color,
   Uniform,
+  Vector2,
 } from 'three'
 import fragmenrShader from './shader/ColorCorrection/fragment.glsl'
 
@@ -32,6 +33,7 @@ class ColorCorrectionEffect extends Effect {
         ['uRefColor', new Uniform(new Color(props.refColor))],
         ['uVignetteAmount', new Uniform(props.vignetteAmount)],
         ['uDimension', new Uniform(props.dimension)],
+        ['uImageSize', new Uniform(new Vector2(1920, 1080))],
       ]),
     })
   }
