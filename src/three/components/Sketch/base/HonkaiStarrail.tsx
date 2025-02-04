@@ -219,10 +219,10 @@ function HonkaiStarrailScene() {
   useFrame((state, delta) => {
     delta %= 1
     baseParams.current.time += delta
-    if (baseParams.current.time > 2) {
+    if (baseParams.current.time > 2.1) {
       commonuniforms.time.value += delta
       commonuniforms.progress.value
-        += 0.03 * (0.8 - commonuniforms.progress.value)
+        += 0.025 * (0.8 - commonuniforms.progress.value)
       // commonuniforms.progress.value = Math.min(
       //   commonuniforms.progress.value + delta,
       //   0.8
