@@ -9,6 +9,7 @@ import { useInteractStore, useLoadedStore } from '@utils/Store'
 import gsap from 'gsap'
 import { useEffect, useMemo, useRef } from 'react'
 import {
+  AdditiveBlending,
   InstancedBufferAttribute,
   InstancedBufferGeometry,
   SRGBColorSpace,
@@ -120,7 +121,7 @@ function HonkaiStarrailScene() {
       ending: new Uniform(0),
       diffuse: new Uniform(particleTex),
     }),
-    [],
+    [particleTex],
   )
 
   const leftuniforms = useMemo(
@@ -129,7 +130,7 @@ function HonkaiStarrailScene() {
       bezierPos: new Uniform(getBezierPos(-1)),
       dir: new Uniform(-1),
     }),
-    [],
+    [commonuniforms],
   )
 
   const rightuniforms = useMemo(
@@ -138,7 +139,7 @@ function HonkaiStarrailScene() {
       bezierPos: new Uniform(getBezierPos(1)),
       dir: new Uniform(1),
     }),
-    [],
+    [commonuniforms],
   )
 
   useGSAP(
@@ -243,6 +244,7 @@ function HonkaiStarrailScene() {
           fragmentShader={fragmentShader}
           transparent
           depthWrite={false}
+          blending={AdditiveBlending}
         />
       </mesh>
       <mesh geometry={geo} ref={rightRef}>
@@ -252,6 +254,7 @@ function HonkaiStarrailScene() {
           fragmentShader={fragmentShader}
           transparent
           depthWrite={false}
+          blending={AdditiveBlending}
         />
       </mesh>
     </>
