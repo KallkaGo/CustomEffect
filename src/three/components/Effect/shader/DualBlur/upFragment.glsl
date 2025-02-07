@@ -3,7 +3,6 @@ varying vec2 vOriUV;
 uniform sampler2D inputBuffer;
 uniform sampler2D uCurDownSample;
 
-
 void main() {
   vec4 col = texture2D(inputBuffer, vUv[0]) * 2.;
   col += texture2D(inputBuffer, vUv[1]) * 2.;
@@ -15,5 +14,12 @@ void main() {
   col += texture2D(inputBuffer, vUv[7]);
   col *= 0.0833;
   vec3 curDownSample = texture2D(uCurDownSample, vOriUV).rgb;
+  /* 
+    E’ = E
+    D’ = D + blur(E’)
+    C’ = C + blur(D’)
+    B’ = B + blur(C’)
+    A’ = A + blur(B’)
+   */
   gl_FragColor = vec4(col.rgb + curDownSample, 1.);
 }
