@@ -57,10 +57,6 @@ const Game: FC<IProps> = ({ emit }) => {
     useInteractStore.setState({ touch: flag })
   }
 
-  const handleMoveWithoutPointer = (e: IPointerEvent) => {
-    console.log(e.type);
-    useInteractStore.setState({ mousePosition: { x: e.clientX, y: innerHeight - e.clientY } })
-  }
 
   const handlePointerMove = (e: PointerEvent) => {
     const { down } = baseParam.current
@@ -99,7 +95,6 @@ const Game: FC<IProps> = ({ emit }) => {
         ref={controlRef}
         onPointerDown={e => handlePointerEvent(e, true)}
         onPointerUp={e => handlePointerEvent(e, false)}
-        onPointerMove={handleMoveWithoutPointer}
       >
       </div>
       <div

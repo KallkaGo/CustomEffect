@@ -3,7 +3,7 @@ import type {
 } from 'react'
 import type { PageActionType } from './Reducer'
 import { useInteractStore } from '@utils/Store'
-import {
+import React, {
   useCallback,
   useEffect,
   useReducer,
@@ -44,9 +44,13 @@ export default function UIContainer() {
     useInteractStore.setState({ touch: false })
   }
 
+  const handlePointerMove = (e: React.PointerEvent) => {
+    useInteractStore.setState({ mousePosition: { x: e.clientX, y: innerHeight - e.clientY } })
+  }
+
   return (
 
-    <UIWrapper id="panel" ref={container} onPointerUp={handlePointerUp}>
+    <UIWrapper id="panel" ref={container} onPointerUp={handlePointerUp} onPointerMove={handlePointerMove}>
       {state.game && <Game emit={handleEmit} />}
       {state.load && <Load emit={handleEmit} />}
     </UIWrapper>
