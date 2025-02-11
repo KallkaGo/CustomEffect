@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import type { Material, Mesh } from 'three'
 import { useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer } from '@react-three/postprocessing'
 import { useGameStore, useInteractStore } from '@utils/Store'

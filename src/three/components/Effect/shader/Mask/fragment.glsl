@@ -1,5 +1,9 @@
+#include '../../includes/tools.glsl'
+
 uniform sampler2D uChannel0;
 uniform vec2 uMousePos;
+uniform vec2 uImageSize;
+uniform vec3 uGlowColor;
 
 float luminance(vec3 color) {
   return 0.2125 * color.r + 0.7154 * color.g + 0.0721 * color.b;
@@ -62,13 +66,16 @@ float fbm(vec3 p, int octaves, float persistence, float lacunarity) {
   return total;
 }
 
+
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
+
+  vec2 newUV = calcCoord(uv, uImageSize, resolution);
 
   vec2 pixelCoords = uv * resolution;
 
   float noiseSample = fbm(vec3(pixelCoords, 0.0) * 0.005 +time *.1 , 4, 1., 2.0);
 
-  vec4 sampler1 = texture2D(uChannel0, uv);
+  vec4 sampler1 = texture2D(uChannel0, newUV);
 
   vec4 sampler2 = vec4(vec3(luminance(sampler1.rgb)), sampler1.a);
 
@@ -82,7 +89,21 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   float glowAmount = smoothstep(0., 32., abs(d));
   glowAmount = 1. - pow(glowAmount,.125);
 
-  color.rgb += glowAmount * sampler1.rgb;
+  vec3 glowColor = vec3(0.);
+
+  #ifdef MODE_CUSTOM
+
+  glowColor = uGlowColor;
+
+  #endif
+
+  #ifdef MODE_DEFAULT
+
+  glowColor = sampler1.rgb;
+
+  #endif
+
+  color.rgb += glowAmount * glowColor;
   
   outputColor = color;
 }
