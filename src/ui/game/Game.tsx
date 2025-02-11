@@ -57,6 +57,11 @@ const Game: FC<IProps> = ({ emit }) => {
     useInteractStore.setState({ touch: flag })
   }
 
+  const handleMoveWithoutPointer = (e: IPointerEvent) => {
+    console.log(e.type);
+    useInteractStore.setState({ mousePosition: { x: e.clientX, y: innerHeight - e.clientY } })
+  }
+
   const handlePointerMove = (e: PointerEvent) => {
     const { down } = baseParam.current
     if (!down)
@@ -64,7 +69,6 @@ const Game: FC<IProps> = ({ emit }) => {
     baseParam.current.curPos = e.clientX
     const left = e.clientX / innerWidth
     sliderRef.current!.style.left = `${left * 100}%`
-    useInteractStore.setState({ sliderPos: left })
   }
 
   const handlePointerUp = (e: PointerEvent) => {
@@ -84,7 +88,6 @@ const Game: FC<IProps> = ({ emit }) => {
 
   // 0: left, 1: right
   const handleArrowClick = (flag: boolean) => {
-    
     useInteractStore.setState({ arrowState: flag ? 'right' : 'left', isAuto: false })
   }
 
@@ -95,6 +98,7 @@ const Game: FC<IProps> = ({ emit }) => {
         ref={controlRef}
         onPointerDown={e => handlePointerEvent(e, true)}
         onPointerUp={e => handlePointerEvent(e, false)}
+        onPointerMove={handleMoveWithoutPointer}
       >
       </div>
       <div

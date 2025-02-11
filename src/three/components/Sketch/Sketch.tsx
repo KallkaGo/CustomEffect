@@ -18,6 +18,7 @@ import DistortionEffect from './items/Distortion'
 import DualBlurEffect from './items/DualBlurEffect'
 import GaussianBlurEffect from './items/GaussianBlur'
 import GTToneMapping from './items/GTToneMapping'
+import Mask from './items/Mask'
 import PaintEffect from './items/PaintEffect'
 import RetroEffect from './items/RetroEffect'
 import SdfTemplate from './items/SdfTemplate'
@@ -37,6 +38,7 @@ const EFFECT_MAP = [
   { key: 'honkaiStarrail', Component: HonkaiStarrailScene },
   { key: 'sdf', Component: SdfTemplate },
   { key: 'transition', Component: TransitionEffect },
+  { key: 'mask', Component: Mask },
 ]
 
 function Sketch() {

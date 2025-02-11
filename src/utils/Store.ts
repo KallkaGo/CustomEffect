@@ -15,7 +15,8 @@ const useInteractStore = create(() => ({
   sliderPos: 0.5,
   controlEnable: true,
   arrowState: '',
-  isAuto:true
+  isAuto: true,
+  mousePosition: { x: 0, y: 0 },
 }))
 
 const useGameStore = create(() => ({
@@ -41,6 +42,7 @@ const useSceneStore = create(() => ({
   colorCorrection: false,
   sdf: false,
   transition: false,
+  mask:false
 }))
 
 const useLoadedStore = create(() => ({
