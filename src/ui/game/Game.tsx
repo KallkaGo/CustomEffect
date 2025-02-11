@@ -69,6 +69,7 @@ const Game: FC<IProps> = ({ emit }) => {
     baseParam.current.curPos = e.clientX
     const left = e.clientX / innerWidth
     sliderRef.current!.style.left = `${left * 100}%`
+    useInteractStore.setState({ sliderPos: left })
   }
 
   const handlePointerUp = (e: PointerEvent) => {
