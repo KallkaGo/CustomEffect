@@ -2,6 +2,7 @@ import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'
 import { useTexture } from '@react-three/drei'
 import { useControls } from 'leva'
+import { useEffect } from 'react'
 import { NearestFilter, SRGBColorSpace } from 'three'
 import { ColorCorrection } from '../../Effect/ColorCorrection'
 import RES from '../../RES'
@@ -88,6 +89,12 @@ function DiffusionEffect() {
       },
     },
   ])
+
+  useEffect(() => {
+    return () => {
+      diffuse.dispose()
+    }
+  }, [diffuse])
 
   return (
     <Effect />

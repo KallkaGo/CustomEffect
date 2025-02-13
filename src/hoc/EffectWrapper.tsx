@@ -19,12 +19,7 @@ function EffectWrapper(components: IComponents[]) {
       const composer = composerRef.current
       return () => {
         gl.setScissorTest(false)
-        composer.inputBuffer.dispose()
-        composer.outputBuffer.dispose()
         composer.dispose()
-        composer.passes.forEach((pass: any) => {
-          pass.dispose()
-        })
       }
     })
 
