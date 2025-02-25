@@ -54,7 +54,7 @@ void mainUv(inout vec2 uv) {
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
   // resolution是根据Canvas的大小来赋值的 即会产生全屏的效果 和滑块冲突
-  vec2 newUV = gl_FragCoord.xy / (uResolution *1.2);
+  vec2 newUV = gl_FragCoord.xy / uResolution;
   vec2 curveUV = newUV * 2.0 - 1.0;
   vec2 offset = curveUV.yx * uCurveIntensity;
   curveUV += curveUV * offset * offset;
