@@ -4,6 +4,7 @@ uniform sampler2D uChannel0;
 uniform vec2 uMousePos;
 uniform vec2 uImageSize;
 uniform vec3 uGlowColor;
+uniform vec2 uResolution;
 
 float luminance(vec3 color) {
   return 0.2125 * color.r + 0.7154 * color.g + 0.0721 * color.b;
@@ -69,9 +70,9 @@ float fbm(vec3 p, int octaves, float persistence, float lacunarity) {
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
-  vec2 newUV = calcCoord(uv, uImageSize, resolution);
+  vec2 newUV = calcCoord(uv, uImageSize, uResolution);
 
-  vec2 pixelCoords = uv * resolution;
+  vec2 pixelCoords = uv * uResolution;
 
   float noiseSample = fbm(vec3(pixelCoords, 0.0) * 0.005 +time *.1 , 4, 1., 2.0);
 

@@ -37,9 +37,9 @@ Reference：
       vec3 mulBlurColor = pow(blurColor.rgb, vec3(uBlurPow));
       vec3 mulColor = pow(baseColor.rgb, vec3(uBasePow));
 
-      vec3 screenColor = mulColor.rgb + mulBlurColor - mulBlurColor * mulColor.rgb;
+      // vec3 screenColor = mulColor.rgb + mulBlurColor - mulBlurColor * mulColor.rgb;
 
-      // vec3 screenColor = 1.0 - (1.0 - mulColor.rgb) * (1.0 - mulBlurColor.rgb);
+      vec3 screenColor = 1.0 - (1.0 - mulColor.rgb) * (1.0 - mulBlurColor.rgb);
 
       vec3 finalColor = max(baseColor.rgb, screenColor);
 

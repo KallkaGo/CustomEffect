@@ -103,9 +103,7 @@ function DiffusionEffect() {
   }, [diffuseTex])
 
   useFrame((state, _) => {
-    const { gl } = state
-    const dpr = gl.getPixelRatio()
-    uniforms.uResolution.value.set(innerWidth * dpr, innerHeight * dpr)
+    uniforms.uResolution.value.set(innerWidth * devicePixelRatio, innerHeight * devicePixelRatio)
   })
 
   return (

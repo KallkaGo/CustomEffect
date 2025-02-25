@@ -23,13 +23,15 @@ class MaskEffect extends Effect {
         ['uMousePos', new Uniform(new Vector2(0, 0))],
         ['uImageSize', new Uniform(new Vector2(1920, 1080))],
         ['uGlowColor', new Uniform(new Color(props.glowColor))],
+        ['uResolution', new Uniform(new Vector2())],
       ]),
     })
   }
 
   update(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget, deltaTime?: number): void {
     const { x, y } = useInteractStore.getState().mousePosition
-    this.uniforms.get('uMousePos')!.value.set(x, y)
+    this.uniforms.get('uMousePos')!.value.set(x * devicePixelRatio, y * devicePixelRatio)
+    this.uniforms.get('uResolution')!.value.set(innerWidth * devicePixelRatio, innerHeight * devicePixelRatio)
   }
 }
 
