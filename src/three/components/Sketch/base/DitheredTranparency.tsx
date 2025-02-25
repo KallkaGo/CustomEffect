@@ -1,5 +1,6 @@
 import { useGSAP } from '@gsap/react'
 import { useTexture } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import textureSrc from '@textures/dot-dither-sample.png'
 import { useGameStore, useLoadedStore } from '@utils/Store'
 import gsap from 'gsap'
@@ -24,7 +25,7 @@ function DitheredTransparency() {
 
   const uniforms = useMemo(
     () => ({
-      uResolution: new Uniform(new Vector2(innerWidth, innerHeight)),
+      uResolution: new Uniform(new Vector2()),
       uTexture: new Uniform(ditherTexture),
       uFactor: new Uniform(1),
     }),
@@ -77,6 +78,14 @@ function DitheredTransparency() {
     },
     { dependencies: [isAni] },
   )
+
+  useFrame((state, _) => {
+    const dpr = state.gl.getPixelRatio()
+    uniforms.uResolution.value.set(
+      innerWidth * dpr,
+      innerHeight * dpr,
+    )
+  })
 
   return (
     <>

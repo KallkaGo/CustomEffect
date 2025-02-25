@@ -14,30 +14,24 @@ class GaussianBlurPass extends Pass {
   private pingpongBuffer: WebGLRenderTarget[] = []
   private blurPass: ShaderPass
   private loopCount: number
+  private downsample: number
 
   constructor({ loopCount = 5, downsample = 1 }: IProps) {
     super('GaussianBlurPass')
 
-    const size = {
-      width: innerWidth / downsample,
-      height: innerHeight / downsample,
-    }
-
-    size.width = Math.max(size.width, 1)
-    size.height = Math.max(size.height, 1)
-
+    this.downsample = downsample
     this.gaussianBlurMaterial = new ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
         tDiffuse: new Uniform(null),
-        uResolution: new Uniform(new Vector2(size.width, size.height)),
+        uResolution: new Uniform(new Vector2()),
         uHorizontal: new Uniform(null),
       },
     })
 
-    this.pingpongBuffer[0] = new WebGLRenderTarget(size.width, size.height)
-    this.pingpongBuffer[1] = new WebGLRenderTarget(size.width, size.height)
+    this.pingpongBuffer[0] = new WebGLRenderTarget()
+    this.pingpongBuffer[1] = new WebGLRenderTarget()
 
     this.blurPass = new ShaderPass(this.gaussianBlurMaterial)
 
@@ -45,9 +39,17 @@ class GaussianBlurPass extends Pass {
   }
 
   render(renderer: WebGLRenderer, inputBuffer: WebGLRenderTarget) {
-    const { loopCount, pingpongBuffer, gaussianBlurMaterial } = this
+    const { loopCount, pingpongBuffer, gaussianBlurMaterial, downsample } = this
     let horizontal = true
     let firstIteration = true
+
+    const width = Math.max(inputBuffer.width / downsample, 1)
+    const height = Math.max(inputBuffer.height / downsample, 1)
+    this.gaussianBlurMaterial.uniforms.uResolution.value.set(width, height)
+
+    pingpongBuffer.forEach((rt) => {
+      rt.setSize(width, height)
+    })
 
     for (let i = 0; i < loopCount * 2; i++) {
       gaussianBlurMaterial.uniforms.tDiffuse.value = firstIteration ? inputBuffer.texture : pingpongBuffer[horizontal ? 0 : 1].texture

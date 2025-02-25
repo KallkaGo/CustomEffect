@@ -45,7 +45,7 @@ export default function UIContainer() {
   }
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    useInteractStore.setState({ mousePosition: { x: e.clientX, y: innerHeight - e.clientY } })
+    useInteractStore.setState({ mousePosition: { x: e.clientX / innerWidth, y: (innerHeight - e.clientY) / innerHeight } })
   }
 
   return (

@@ -45,7 +45,7 @@ class DualBlurPass extends Pass {
       fragmentShader: downFragment,
       uniforms: {
         inputBuffer: new Uniform(null),
-        uSize: new Uniform(new Vector2(1 / innerWidth, 1 / innerHeight)),
+        uSize: new Uniform(new Vector2()),
         u_blurRange: new Uniform(blurRange),
         uFirst: new Uniform(false),
         uLuminanceThreshold: new Uniform(0),
@@ -56,7 +56,7 @@ class DualBlurPass extends Pass {
       fragmentShader: upFragment,
       uniforms: {
         inputBuffer: new Uniform(null),
-        uSize: new Uniform(new Vector2(1 / innerWidth, 1 / innerHeight)),
+        uSize: new Uniform(new Vector2()),
         u_blurRange: new Uniform(blurRange),
         uCurDownSample: new Uniform(null),
       },

@@ -70,9 +70,11 @@ float fbm(vec3 p, int octaves, float persistence, float lacunarity) {
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
-  vec2 newUV = calcCoord(uv, uImageSize, uResolution);
+  vec2 newUV = calcCoord(uv, uImageSize, resolution);
 
-  vec2 pixelCoords = uv * uResolution;
+  vec2 mousePos = uMousePos * resolution;
+
+  vec2 pixelCoords = uv * resolution;
 
   float noiseSample = fbm(vec3(pixelCoords, 0.0) * 0.005 +time *.1 , 4, 1., 2.0);
 
@@ -80,7 +82,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 
   vec4 sampler2 = vec4(vec3(luminance(sampler1.rgb)), sampler1.a);
 
-  float d = sdfCircle(pixelCoords - uMousePos , 50. + noiseSample * 150.);
+  float d = sdfCircle(pixelCoords - mousePos , 50. + noiseSample * 150.);
 
   vec4 color = sampler2;
 
