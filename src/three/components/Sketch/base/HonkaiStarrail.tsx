@@ -12,6 +12,7 @@ import {
   AdditiveBlending,
   InstancedBufferAttribute,
   InstancedBufferGeometry,
+  Sphere,
   SRGBColorSpace,
   Uniform,
   Vector3,
@@ -109,6 +110,7 @@ function HonkaiStarrailScene() {
     geometry.setAttribute('rnd', new InstancedBufferAttribute(rndArr, 3))
     geometry.setIndex(indices)
     geometry.instanceCount = NUM_POINTS
+    geometry.boundingSphere = new Sphere(new Vector3(0, 0, 0), 1)
 
     return geometry
   }, [])
@@ -192,6 +194,14 @@ function HonkaiStarrailScene() {
   )
 
   useEffect(() => {
+    const cb = () => {
+      camera.zoom = Math.max(1, innerWidth / innerHeight / (16 / 9))
+
+      camera.updateProjectionMatrix()
+    }
+
+    window.addEventListener('resize', cb)
+
     const leftPoints = leftRef.current
     const rightPoints = rightRef.current
 
@@ -201,7 +211,7 @@ function HonkaiStarrailScene() {
     leftMat.defines.NUM_SEGMENT = leftMat.uniforms.bezierPos.value.length
     rightMat.defines.NUM_SEGMENT = rightMat.uniforms.bezierPos.value.length
 
-    camera.position.set(0, 0, 5)
+    camera.position.set(0, 0, 6)
 
     camera.lookAt(0, 0, 0)
 
@@ -214,8 +224,9 @@ function HonkaiStarrailScene() {
       gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.2))
       diffuseTex.dispose()
       particleTex.dispose()
+      window.removeEventListener('resize', cb)
     }
-  }, [camera, gl, diffuseTex, particleTex])
+  }, [camera, gl, diffuseTex, particleTex, geo])
 
   useFrame((state, delta) => {
     delta %= 1
@@ -238,6 +249,7 @@ function HonkaiStarrailScene() {
         <meshBasicMaterial map={diffuseTex} transparent depthWrite={false} />
       </mesh>
       <mesh geometry={geo} ref={leftRef}>
+
         <shaderMaterial
           uniforms={leftuniforms}
           vertexShader={vertexShader}

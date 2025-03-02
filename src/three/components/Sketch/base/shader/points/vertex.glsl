@@ -46,9 +46,9 @@ void main() {
 
   float heightPercent = float(vertex_ID - xTest) / (float(POINTS_SEGMENTS) * 2.);
 
-  float width = .07;
+  float width = .06;
 
-  float height = .07;
+  float height = .06;
 
   float x = (xSide - 0.5) * width;
   float y = heightPercent * height - height / 2.;
