@@ -225,6 +225,7 @@ function HonkaiStarrailScene() {
       diffuseTex.dispose()
       particleTex.dispose()
       window.removeEventListener('resize', cb)
+      camera.zoom = 1
     }
   }, [camera, gl, diffuseTex, particleTex, geo])
 
