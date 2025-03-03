@@ -200,6 +200,8 @@ function HonkaiStarrailScene() {
       camera.updateProjectionMatrix()
     }
 
+    cb()
+
     window.addEventListener('resize', cb)
 
     const leftPoints = leftRef.current
