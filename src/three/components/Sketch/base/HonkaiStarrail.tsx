@@ -94,11 +94,11 @@ function HonkaiStarrailScene() {
 
     for (let i = 0; i < NUM_POINTS; i++) {
       startArr[3 * i] = (Math.random() - 0.5) * 0.5
-      startArr[3 * i + 1] = (Math.random() - 0.5) * 0.3
+      startArr[3 * i + 1] = (Math.random() - 0.5) * 0.25
       startArr[3 * i + 2] = (Math.random() - 0.5) * 0.25
 
       endArr[3 * i] = (Math.random() - 0.5) * 0.5
-      endArr[3 * i + 1] = (Math.random() - 0.5) * 0.3
+      endArr[3 * i + 1] = (Math.random() - 0.5) * 0.25
       endArr[3 * i + 2] = (Math.random() - 0.5) * 0.25
 
       rndArr[3 * i] = 0.15 * Math.random() + 0.1

@@ -26,7 +26,7 @@ void main() {
   // Because we need to take two points later
   const float numSegment = float(NUM_SEGMENT) - 2.;
 
-  float nowTime = fract(time * rnd.x + start.y * 4.);
+  float nowTime = fract(time * rnd.x + rnd.y * 4.);
 
   int i0 = int(nowTime * numSegment);
   int i1 = i0 + 1;
@@ -64,7 +64,7 @@ void main() {
   // 4.8 - 4 = (nowTime - p0) * 8
   vec3 nextPoint = quadraticBezier(startPoint, bezierPos[i1], endPoint, (nowTime - p0) * numSegment);
 
-  vec3 newPosition = nextPoint + vec3(rotate(pointsLocalPosition.xy, nowTime * 15. * dir) * rnd.z, 0.) + mix(start, end, remap(sin(nowTime * PI * 1.5), -1., 1., 0., 1.)) * mix(.2, 1.5, smoothstep(.3, 1., nowTime + rnd.y));
+  vec3 newPosition = nextPoint + vec3(rotate(pointsLocalPosition.xy, nowTime * 15. * dir) * rnd.z, 0.) + mix(start, end, remap(sin(nowTime * PI * 1.5), -1., 1., 0., 1.)) * mix(.2, 1., smoothstep(.3, 1., nowTime + rnd.y));
 
   alpha = smoothstep(0., .5, sin(nowTime * PI)) * rnd.z * (1. - smoothstep(progress - .3, progress, nowTime));
 
