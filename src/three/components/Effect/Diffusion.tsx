@@ -1,7 +1,7 @@
 import type { Texture, WebGLRenderer, WebGLRenderTarget } from 'three'
 import { Effect } from 'postprocessing'
 import { useEffect, useMemo } from 'react'
-import { Uniform} from 'three'
+import { Uniform } from 'three'
 import { GaussianBlurPass } from './pass/GaussianPass'
 import fragmentShader from './shader/Diffusion/fragment.glsl'
 
@@ -39,7 +39,7 @@ class DiffusionEffect extends Effect {
   update(
     renderer: WebGLRenderer,
     inputBuffer: WebGLRenderTarget<Texture>,
-    deltaTime?: number | undefined,
+    _: number | undefined,
   ) {
     this.gaussianBlurPass.render(renderer, inputBuffer)
     this.uniforms.get('uBlurTex')!.value = this.gaussianBlurPass.finRT.texture

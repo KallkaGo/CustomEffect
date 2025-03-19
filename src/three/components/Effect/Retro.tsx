@@ -28,7 +28,7 @@ class RetroEffect extends Effect {
   update(
     renderer: WebGLRenderer,
     inputBuffer: WebGLRenderTarget,
-    deltaTime?: number,
+    _: number,
   ): void {
     const slidePos = useInteractStore.getState().sliderPos
     const dpr = renderer.getPixelRatio()

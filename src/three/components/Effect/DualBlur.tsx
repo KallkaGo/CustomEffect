@@ -37,7 +37,7 @@ class DualBlurEffect extends Effect {
   update(
     renderer: WebGLRenderer,
     inputBuffer: WebGLRenderTarget<Texture>,
-    deltaTime?: number | undefined,
+    _: number | undefined,
   ) {
     this.dualBlurPass.render(renderer, inputBuffer)
     this.uniforms.get('map')!.value = this.dualBlurPass.finRT.texture

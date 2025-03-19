@@ -35,7 +35,7 @@ class GaussianBlurEffect extends Effect {
   update(
     renderer: WebGLRenderer,
     inputBuffer: WebGLRenderTarget<Texture>,
-    deltaTime?: number | undefined,
+    _: number | undefined,
   ) {
     this.gaussianBlurPass.render(renderer, inputBuffer)
     this.uniforms.get('map')!.value = this.gaussianBlurPass.finRT.texture

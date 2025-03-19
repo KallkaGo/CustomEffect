@@ -105,7 +105,7 @@ class BloomEffect extends Effect {
   update(
     renderer: WebGLRenderer,
     inputBuffer: WebGLRenderTarget<Texture>,
-    deltaTime?: number | undefined,
+    _: number | undefined,
   ) {
     tempRt.setSize(inputBuffer.width, inputBuffer.height)
     this.luminancePass.render(renderer, inputBuffer, tempRt)
