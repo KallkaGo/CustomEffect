@@ -76,6 +76,9 @@ function BloomEffect() {
   ])
 
   useEffect(() => {
+
+    camera.position.set(-12, 12, 12)
+
     return () => {
       camera.position.set(0, 0, 5)
     }
@@ -90,10 +93,6 @@ function BloomEffect() {
 
   return (
     <>
-      <PerspectiveCamera
-        makeDefault
-        position={[-12, 12, 12]}
-      />
       <group ref={groupRef}>
         <group position={[-4, 0, 6]}>
           {ROW.map((_, i) =>
