@@ -51,7 +51,6 @@ function EffectWrapper(components: IComponents[]) {
       <EffectComposer
         frameBufferType={HalfFloatType}
         ref={composerRef}
-        disableNormalPass
       >
         {components.map((item, index) => (
           <item.component
