@@ -47,6 +47,7 @@ const useSceneStore = create(() => ({
 
 const useLoadedStore = create(() => ({
   ready: false,
+  showComplete:false
 }))
 
 export { useGameStore, useInteractStore, useLoadedStore, useSceneStore }

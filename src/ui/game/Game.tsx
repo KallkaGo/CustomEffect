@@ -57,7 +57,6 @@ const Game: FC<IProps> = ({ emit }) => {
     useInteractStore.setState({ touch: flag })
   }
 
-
   const handlePointerMove = (e: PointerEvent) => {
     const { down } = baseParam.current
     if (!down)
