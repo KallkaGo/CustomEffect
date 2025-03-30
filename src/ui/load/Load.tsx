@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { useInteractStore, useLoadedStore } from "@utils/Store";
 import Sys from "@utils/Sys";
 import gsap from "gsap";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { LoadWrapper } from "./style";
 
 /**
@@ -21,8 +21,18 @@ const Load: FC<IProps> = memo(({ emit }) => {
 
   const [device, setDevice] = useState<"pc" | "mobile">(Sys.getSystem);
 
+  const levaDomRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     useLoadedStore.setState({ showComplete: true });
+
+    const rootNode = document.getElementById("root") as HTMLElement;
+
+    const [levaDom] = Array.from(rootNode.childNodes).filter((item) =>
+      (item as HTMLElement).className.includes("leva")
+    );
+
+    levaDomRef.current = levaDom as HTMLElement;
 
     const onResize = () => {
       const sys = Sys.getSystem() === "pc" ? "pc" : "mobile";
@@ -36,6 +46,18 @@ const Load: FC<IProps> = memo(({ emit }) => {
 
   const close = contextSafe(() => {
     useInteractStore.setState({ demand: false });
+    const levaDom = levaDomRef.current;
+
+    if (levaDom) {
+      gsap.set(levaDom, { opacity: 0 });
+      gsap.to(levaDom, {
+        opacity: 1,
+        duration: 0.75,
+        delay: 1,
+        ease: "sine.out",
+      });
+    }
+
     gsap.to(panelRef.current, {
       opacity: 0,
       duration: 0.75,
