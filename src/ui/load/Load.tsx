@@ -49,12 +49,15 @@ const Load: FC<IProps> = memo(({ emit }) => {
     const levaDom = levaDomRef.current;
 
     if (levaDom) {
-      gsap.set(levaDom, { opacity: 0 });
+      gsap.set(levaDom, { opacity: 0 ,pointerEvents:"none" });
       gsap.to(levaDom, {
         opacity: 1,
         duration: 0.75,
         delay: 1,
         ease: "sine.out",
+        onComplete: () => {
+          levaDom.style.pointerEvents = "auto";
+        }
       });
     }
 
