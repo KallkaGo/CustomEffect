@@ -42,12 +42,13 @@ const useSceneStore = create(() => ({
   colorCorrection: false,
   sdf: false,
   transition: false,
-  mask:false
+  mask: false,
+  sobelOutline:false
 }))
 
 const useLoadedStore = create(() => ({
   ready: false,
-  showComplete:false
+  showComplete: false,
 }))
 
 export { useGameStore, useInteractStore, useLoadedStore, useSceneStore }

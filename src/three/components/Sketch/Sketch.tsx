@@ -22,6 +22,7 @@ import Mask from './items/Mask'
 import PaintEffect from './items/PaintEffect'
 import RetroEffect from './items/RetroEffect'
 import SdfTemplate from './items/SdfTemplate'
+import SobelOutlineEffect from './items/SobelOutline'
 import TransitionEffect from './items/Transition'
 
 const EFFECT_MAP = [
@@ -39,6 +40,7 @@ const EFFECT_MAP = [
   { key: 'sdf', Component: SdfTemplate },
   { key: 'transition', Component: TransitionEffect },
   { key: 'mask', Component: Mask },
+  { key: 'sobelOutline', Component: SobelOutlineEffect },
 ]
 
 function Sketch() {
@@ -100,7 +102,6 @@ function Sketch() {
         minDistance={0.1}
       />
       <color attach="background" args={['black']} />
-
       {activeEffects}
     </>
   )
