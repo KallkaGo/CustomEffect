@@ -100,6 +100,7 @@ function Sketch() {
         enabled={controlEnable}
         ref={OrbitControlsRef}
         minDistance={0.1}
+        maxDistance={20}
       />
       <color attach="background" args={['black']} />
       {activeEffects}
