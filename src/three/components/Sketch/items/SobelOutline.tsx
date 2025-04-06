@@ -1,13 +1,12 @@
 import { EffectWrapper } from '@/hoc/EffectWrapper'
 import { SceneLifecycle } from '@/hoc/SceneLifecycle'
-import { useTexture } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
+import { SMAA } from '@react-three/postprocessing'
 import { useDepthBuffer } from '@utils/useDepthBuffer'
 import { useNormalBuffer } from '@utils/useNormalBuffer'
 import { useControls } from 'leva'
 import { useEffect } from 'react'
 import SobelOutlineEffect from '../../Effect/SobelOutline'
-import { DoubleSide } from 'three'
 
 function SobelOutline() {
   const camera = useThree(state => state.camera)
@@ -17,26 +16,31 @@ function SobelOutline() {
   const depthTexture = useDepthBuffer(innerWidth, innerHeight)
 
   const props = useControls('SobelOutline', {
+    thickness: {
+      value: 2,
+      min: 1,
+      max: 10,
+    },
     depthScale: {
       value: 1,
       min: 1,
-      max: 5,
+      max: 10,
     },
     depthBias: {
-      value: 1,
+      value: 2,
       min: 1,
       max: 10,
     },
     normalScale: {
       value: 1,
       min: 1,
-      max: 5,
+      max: 10,
     },
     normalBias: {
       value: 1,
       min: 1,
       max: 10,
-    }
+    },
   })
 
   const Effect = EffectWrapper([
@@ -45,16 +49,24 @@ function SobelOutline() {
       props: {
         depthTexture,
         normalTexture,
-        cameraNear: camera.near,
-        cameraFar: camera.far,
-        ...props
+        ...props,
+      },
+    },
+    {
+      component: SMAA,
+      props: {
+
       },
     },
   ])
 
   useEffect(() => {
     camera.position.set(6, 4, 10)
-  }, [camera])
+    return () => {
+      depthTexture.dispose()
+      normalTexture.dispose()
+    }
+  }, [])
 
   return (
     <>

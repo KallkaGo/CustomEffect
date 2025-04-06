@@ -1,38 +1,34 @@
 uniform sampler2D uDepthTexture;
 uniform sampler2D uNormalTexture;
 
-uniform float uCameraNear;
-uniform float uCameraFar;
+uniform float uThickness;
 uniform float uOutLineDepthMul;
 uniform float uOutLineDepthBias;
 uniform float uOutLineNormalMul;
 uniform float uOutLineNormalBias;
 
-
-float Linear01Depth(sampler2D depthTexture, vec2 coord) {
-  float depth = texture2D(depthTexture, coord).x;
-  float x = 1. - uCameraFar / uCameraNear;
-  float y = uCameraFar / uCameraNear;
-  float z = x / uCameraFar;
-  float w = y / uCameraFar;
+float Linear01Depth(float depth) {
+  float x = 1. - cameraFar / cameraNear;
+  float y = cameraFar / cameraNear;
+  float z = x / cameraFar;
+  float w = y / cameraFar;
   return 1.0 / (x * depth + y);
 }
 
-float LinearEyeDepth(float depth) {
-  float x = 1. - uCameraFar / uCameraNear;
-  float y = uCameraFar / uCameraNear;
-  float z = x / uCameraFar;
-  float w = y / uCameraFar;
+float LinnearEyeDepth(float depth) {
+  float x = 1. - cameraFar / cameraNear;
+  float y = cameraFar / cameraNear;
+  float z = x / cameraFar;
+  float w = y / cameraFar;
   return 1.0 / (z * depth + w);
 }
 
-
 float SobelSampleDepth(sampler2D s, vec2 uv, vec3 offset) {
-  float pixelCenter = LinearEyeDepth(texture2D(s, uv).r);
-  float pixelLeft = LinearEyeDepth(texture2D(s, uv - offset.xz).r);
-  float pixelRight = LinearEyeDepth(texture2D(s, uv + offset.xz).r);
-  float pixelUp = LinearEyeDepth(texture2D(s, uv + offset.zy).r);
-  float pixelDown = LinearEyeDepth(texture2D(s, uv - offset.zy).r);
+  float pixelCenter = LinnearEyeDepth(texture2D(s, uv).r);
+  float pixelLeft = LinnearEyeDepth(texture2D(s, uv - offset.xz).r);
+  float pixelRight = LinnearEyeDepth(texture2D(s, uv + offset.xz).r);
+  float pixelUp = LinnearEyeDepth(texture2D(s, uv + offset.zy).r);
+  float pixelDown = LinnearEyeDepth(texture2D(s, uv - offset.zy).r);
 
   return abs(pixelLeft - pixelCenter) +
     abs(pixelRight - pixelCenter) +
@@ -53,13 +49,11 @@ vec4 SobelSample(sampler2D t, vec2 uv, vec3 offset) {
     abs(pixelDown - pixelCenter);
 }
 
-
-
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
 
   vec4 outlineColor = vec4(0.0, 0.0, 0.0, 1.0);
 
-  vec3 texel = vec3(1. / resolution.x, 1. / resolution.y, 0.0);
+  vec3 texel = vec3(1. / resolution.x, 1. / resolution.y, 0.0) * uThickness;
 
   float sobelDepth = SobelSampleDepth(uDepthTexture, uv, texel);
 
@@ -73,12 +67,10 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 
   float sobelOutline = clamp(max(sobelDepth, sobelNormal), 0., 1.);
 
-  sobelOutline = smoothstep(0.1, 1.0, sobelOutline);
+  sobelOutline = smoothstep(0.1, 1., sobelOutline);
 
   vec4 finalColor = mix(inputColor, outlineColor, sobelOutline);
 
   outputColor = finalColor;
-
-  // outputColor = vec4(vec3(Linear01Depth(uDepthTexture, uv)), 1.0);
 
 }

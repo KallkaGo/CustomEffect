@@ -10,6 +10,7 @@ export default antfu({
     'no-debugger': 'warn',
     'no-console': 'warn',
     'no-unused-vars': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     '@typescript-eslint/no-use-before-define': [
       'error',
       {
