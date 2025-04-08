@@ -5,6 +5,7 @@ export default antfu({
   formatters: true,
   rules: {
     'react-refresh/only-export-components': 'off',
+    'react/prefer-destructuring-assignment': 'off',
     'unused-imports/no-unused-imports': 'warn',
     'unused-imports/no-unused-vars': 'warn',
     'no-debugger': 'warn',

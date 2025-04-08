@@ -49,6 +49,7 @@ function HonkaiStarrailScene() {
     RES.textures.particle,
   ])
   diffuseTex.colorSpace = SRGBColorSpace
+  particleTex.colorSpace = SRGBColorSpace
 
   const leftRef = useRef<Mesh>(null)
   const rightRef = useRef<Mesh>(null)
@@ -76,14 +77,16 @@ function HonkaiStarrailScene() {
       indices[i * 12 + 4] = vi + 1
       indices[i * 12 + 5] = vi + 3
 
-      const fi = POINTS_VERTICES + vi
-      indices[i * 12 + 6] = fi + 2
-      indices[i * 12 + 7] = fi + 1
-      indices[i * 12 + 8] = fi + 0
+      /* Back Side  */
+      // no need
+      // const fi = POINTS_VERTICES + vi
+      // indices[i * 12 + 6] = fi + 2
+      // indices[i * 12 + 7] = fi + 1
+      // indices[i * 12 + 8] = fi + 0
 
-      indices[i * 12 + 9] = fi + 3
-      indices[i * 12 + 10] = fi + 1
-      indices[i * 12 + 11] = fi + 2
+      // indices[i * 12 + 9] = fi + 3
+      // indices[i * 12 + 10] = fi + 1
+      // indices[i * 12 + 11] = fi + 2
     }
 
     const geometry = new InstancedBufferGeometry()
@@ -217,13 +220,10 @@ function HonkaiStarrailScene() {
 
     camera.lookAt(0, 0, 0)
 
-    gl.setPixelRatio(2)
-
     useLoadedStore.setState({ ready: true })
     useInteractStore.setState({ controlEnable: false })
 
     return () => {
-      gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.2))
       diffuseTex.dispose()
       particleTex.dispose()
       window.removeEventListener('resize', cb)
@@ -247,7 +247,7 @@ function HonkaiStarrailScene() {
 
   return (
     <>
-      <mesh visible ref={logoRef}>
+      <mesh ref={logoRef}>
         <planeGeometry args={[2, 2]} />
         <meshBasicMaterial map={diffuseTex} transparent depthWrite={false} />
       </mesh>

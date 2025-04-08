@@ -13,7 +13,7 @@ void main() {
   uv = rotate(uv - .5, -(pointsData.z + vNowTime) * dir) + .5;
   uv = vec2((uv.x + floor(pointsData.w * 5.)) / 5., uv.y);
 
-  vec4 color = texture2D(diffuse, uv);
-  gl_FragColor = color;
-  gl_FragColor.a *= alpha;
+  vec4 color = texture2D(diffuse, uv); color;
+  gl_FragColor.rgb =  pow(color.rgb, vec3(1.0/2.2));
+  gl_FragColor.a = color.a* alpha;
 }
