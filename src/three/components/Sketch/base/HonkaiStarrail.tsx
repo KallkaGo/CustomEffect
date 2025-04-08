@@ -43,6 +43,11 @@ function getBezierPos(dir: number) {
   ]
 }
 
+const berzierPos = {
+  left: getBezierPos(-1),
+  right: getBezierPos(1),
+}
+
 function HonkaiStarrailScene() {
   const [diffuseTex, particleTex] = useTexture([
     RES.textures.HonkaiStarrailLogo,
@@ -132,7 +137,7 @@ function HonkaiStarrailScene() {
   const leftuniforms = useMemo(
     () => ({
       ...commonuniforms,
-      bezierPos: new Uniform(getBezierPos(-1)),
+      bezierPos: new Uniform(berzierPos.left),
       dir: new Uniform(-1),
     }),
     [commonuniforms],
@@ -141,7 +146,7 @@ function HonkaiStarrailScene() {
   const rightuniforms = useMemo(
     () => ({
       ...commonuniforms,
-      bezierPos: new Uniform(getBezierPos(1)),
+      bezierPos: new Uniform(berzierPos.right),
       dir: new Uniform(1),
     }),
     [commonuniforms],
@@ -247,7 +252,7 @@ function HonkaiStarrailScene() {
 
   return (
     <>
-      <mesh ref={logoRef}>
+      <mesh ref={logoRef} >
         <planeGeometry args={[2, 2]} />
         <meshBasicMaterial map={diffuseTex} transparent depthWrite={false} />
       </mesh>
@@ -262,7 +267,7 @@ function HonkaiStarrailScene() {
           blending={AdditiveBlending}
         />
       </mesh>
-      <mesh geometry={geo} ref={rightRef}>
+      <mesh geometry={geo} ref={rightRef} visible >
         <shaderMaterial
           uniforms={rightuniforms}
           vertexShader={vertexShader}

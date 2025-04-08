@@ -49,6 +49,7 @@ function EffectWrapper(components: IComponents[]) {
     return (
 
       <EffectComposer
+        disableNormalPass
         frameBufferType={HalfFloatType}
         ref={composerRef}
       >
