@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer } from '@react-three/postprocessing'
 import { useGameStore, useInteractStore } from '@utils/Store'
-import { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import { HalfFloatType } from 'three'
 
 interface IComponents {
@@ -11,7 +11,7 @@ interface IComponents {
 }
 
 function EffectWrapper(components: IComponents[]) {
-  return function Wrapper() {
+  return memo(() => {
     const composerRef = useRef<any>(null)
     const gl = useThree(state => state.gl)
 
@@ -21,7 +21,7 @@ function EffectWrapper(components: IComponents[]) {
         gl.setScissorTest(false)
         composer.dispose()
       }
-    })
+    }, [])
 
     useFrame((state, delta) => {
       const { gl } = state
@@ -63,7 +63,7 @@ function EffectWrapper(components: IComponents[]) {
       </EffectComposer>
 
     )
-  }
+  })
 }
 
 export { EffectWrapper }

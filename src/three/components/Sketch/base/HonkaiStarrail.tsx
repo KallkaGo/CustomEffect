@@ -74,13 +74,13 @@ function HonkaiStarrailScene() {
     const indices: number[] = []
     for (let i = 0; i < POINTS_SEGEMNTS; i++) {
       const vi = i * 2
-      indices[i * 12 + 0] = vi + 0
-      indices[i * 12 + 1] = vi + 1
-      indices[i * 12 + 2] = vi + 2
+      indices[i * 6 + 0] = vi + 0
+      indices[i * 6 + 1] = vi + 1
+      indices[i * 6 + 2] = vi + 2
 
-      indices[i * 12 + 3] = vi + 2
-      indices[i * 12 + 4] = vi + 1
-      indices[i * 12 + 5] = vi + 3
+      indices[i * 6 + 3] = vi + 2
+      indices[i * 6 + 4] = vi + 1
+      indices[i * 6 + 5] = vi + 3
 
       /* Back Side  */
       // no need
@@ -252,7 +252,7 @@ function HonkaiStarrailScene() {
 
   return (
     <>
-      <mesh ref={logoRef} >
+      <mesh ref={logoRef}>
         <planeGeometry args={[2, 2]} />
         <meshBasicMaterial map={diffuseTex} transparent depthWrite={false} />
       </mesh>
@@ -267,7 +267,7 @@ function HonkaiStarrailScene() {
           blending={AdditiveBlending}
         />
       </mesh>
-      <mesh geometry={geo} ref={rightRef} visible >
+      <mesh geometry={geo} ref={rightRef} visible>
         <shaderMaterial
           uniforms={rightuniforms}
           vertexShader={vertexShader}
