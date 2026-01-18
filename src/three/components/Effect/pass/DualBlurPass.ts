@@ -51,6 +51,9 @@ class DualBlurPass extends Pass {
         uLuminanceThreshold: new Uniform(0),
       },
     })
+
+    this.downSampleMaterial.name = 'DualBlur.downSampleMaterial'
+
     this.upSampleMaterial = new ShaderMaterial({
       vertexShader: upVertex,
       fragmentShader: upFragment,
@@ -62,7 +65,10 @@ class DualBlurPass extends Pass {
       },
     })
 
+    this.upSampleMaterial.name = 'DualBlur.upSampleMaterial'
+
     this.downSamplePass = new ShaderPass(this.downSampleMaterial)
+
     this.upSamplePass = new ShaderPass(this.upSampleMaterial)
 
     this.finRT = new WebGLRenderTarget(1, 1, {
