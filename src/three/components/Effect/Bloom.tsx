@@ -1,17 +1,20 @@
+import type { ShaderPass } from 'postprocessing'
 import type {
   Texture,
   WebGLRenderer,
 } from 'three'
-import { Effect, ShaderPass } from 'postprocessing'
+import { Effect } from 'postprocessing'
 import { useEffect, useMemo } from 'react'
 import {
   Color,
+
   HalfFloatType,
   ShaderMaterial,
   SRGBColorSpace,
   Uniform,
   WebGLRenderTarget,
 } from 'three'
+
 import { DualBlurPass } from './pass/DualBlurPass'
 
 interface IProps {
@@ -34,18 +37,15 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `
 
-let tempRt: WebGLRenderTarget
-
 class BloomEffect extends Effect {
-  private luminancePass!: ShaderPass
-  private luminanceMaterial!: ShaderMaterial
+  public luminanceThreshold: number
   private dulaBlurPass!: DualBlurPass
+  public renderTarget: WebGLRenderTarget
 
   constructor({
     luminanceThreshold = 0.1,
     radius = 1,
     intensity = 1,
-    luminanceSmoothing = 0.1,
     glowColor = 'white',
     iteration = 4,
   }: IProps) {
@@ -56,45 +56,9 @@ class BloomEffect extends Effect {
         ['glowColor', new Uniform(new Color(glowColor))],
       ]),
     })
-    tempRt?.dispose()
-    tempRt = new WebGLRenderTarget(innerWidth, innerHeight, {
-      type: HalfFloatType,
-      colorSpace: SRGBColorSpace,
-    })
-
-    this.luminanceMaterial = new ShaderMaterial({
-      vertexShader: /* glsl */ `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: /* glsl */ `
-        uniform sampler2D inputBuffer;
-        uniform float luminanceThreshold;
-        uniform float luminanceSmoothing;
-        varying vec2 vUv;
-
-        float luminance(vec3 color) {
-          return 0.2125 * color.r + 0.7154 * color.g + 0.0721 * color.b; 
-        }
-
-        void main() {
-          vec4 color = texture2D(inputBuffer, vUv);
-          float luma = luminance(color.rgb);
-          luma *= smoothstep(luminanceThreshold, luminanceThreshold + luminanceSmoothing, luma);
-          gl_FragColor = vec4(color.rgb * luma, color.a);
-        }
-      `,
-      uniforms: {
-        inputBuffer: new Uniform(null),
-        luminanceThreshold: new Uniform(luminanceThreshold),
-        luminanceSmoothing: new Uniform(luminanceSmoothing),
-      },
-    })
-    this.luminancePass = new ShaderPass(this.luminanceMaterial)
-
+    this.renderTarget = new WebGLRenderTarget(1, 1, { depthBuffer: false })
+    this.renderTarget.texture.name = 'Bloom.Target'
+    this.luminanceThreshold = luminanceThreshold
     this.dulaBlurPass = new DualBlurPass({
       loopCount: iteration,
       blurRange: radius,
@@ -107,19 +71,15 @@ class BloomEffect extends Effect {
     inputBuffer: WebGLRenderTarget<Texture>,
     _: number | undefined,
   ) {
-    tempRt.setSize(inputBuffer.width, inputBuffer.height)
-    this.luminancePass.render(renderer, inputBuffer, tempRt)
+    this.renderTarget.setSize(inputBuffer.width, inputBuffer.height)
     this.dulaBlurPass.LuminanceThreshold
-      = this.luminanceMaterial.uniforms.luminanceThreshold.value
-    this.dulaBlurPass.render(renderer, tempRt)
+      = this.luminanceThreshold
+    this.dulaBlurPass.render(renderer, inputBuffer)
     this.uniforms.get('blurMap')!.value = this.dulaBlurPass.finRT.texture
   }
 
   dispose(): void {
-    this.luminanceMaterial.dispose()
-    this.luminancePass.dispose()
     this.dulaBlurPass.dispose()
-    tempRt.dispose()
   }
 }
 
@@ -132,7 +92,7 @@ function Bloom(props: IProps) {
     }
   })
 
-  return <primitive object={effect} dispose={effect.dispose}/>
+  return <primitive object={effect} dispose={effect.dispose} />
 }
 
 export { Bloom }

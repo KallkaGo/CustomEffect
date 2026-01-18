@@ -23,7 +23,7 @@ const colors = [
 function BloomEffect() {
   const props = useControls('Bloom', {
     intensity: {
-      value: 4.22,
+      value: 1.7,
       min: 0,
       max: 10,
       step: 0.01,
@@ -40,14 +40,8 @@ function BloomEffect() {
       max: 1,
       step: 0.01,
     },
-    luminanceSmoothing: {
-      value: 0.1,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
     iteration: {
-      value: 7,
+      value: 5,
       min: 1,
       max: 10,
       step: 1,
