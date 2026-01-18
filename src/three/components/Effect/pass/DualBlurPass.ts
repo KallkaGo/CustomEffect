@@ -90,6 +90,8 @@ class DualBlurPass extends Pass {
 
     // down sample
     for (let i = 0; i < count; i++) {
+      width = Math.max(Math.floor((width + 1) / 2), 1)
+      height = Math.max(Math.floor((height + 1) / 2), 1)
       downRt[i].setSize(width, height)
       upRt[i].setSize(width, height)
       this.finRT.setSize(width, height)
@@ -97,9 +99,6 @@ class DualBlurPass extends Pass {
         1 / downRt[i].width,
         1 / downRt[i].height,
       )
-
-      width = Math.max(width / 2, 1)
-      height = Math.max(height / 2, 1)
 
       this.downSampleMaterial.uniforms.uFirst.value = false
 
@@ -110,8 +109,6 @@ class DualBlurPass extends Pass {
       this.downSamplePass.render(renderer, this.finRT, downRt[i])
       this.finRT.texture = downRt[i].texture
     }
-    upRt[count - 1].texture = downRt[count - 1].texture
-    this.upSampleMaterial.uniforms.uSize.value.set(1 / upRt[count - 1].width, 1 / upRt[count - 1].height)
     // up sample
     for (let i = count - 2; i >= 0; i--) {
       this.finRT.setSize(upRt[i].width, upRt[i].height)
